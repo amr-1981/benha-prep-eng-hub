@@ -1,35 +1,34 @@
 import React, { useState } from 'react';
 import { Award, BarChart3, TrendingUp, CheckCircle2, AlertCircle, Compass, Sparkles, Building, Cpu, Zap, Hammer } from 'lucide-react';
 
-export default function GpaTrackerView({ facultyId }) {
-  // Grading scale state
-  const isShoubra = facultyId === 'shoubra';
-  const totalMax = isShoubra ? 150 : 100;
+export default function GpaTrackerView() {
+  // Grading scale state for Shoubra Engineering (150 marks total)
+  const totalMax = 150;
 
-  const [midterm, setMidterm] = useState(isShoubra ? 25 : 18);
-  const [quizzes, setQuizzes] = useState(isShoubra ? 15 : 10);
-  const [lab, setLab] = useState(isShoubra ? 20 : 12);
-  const [finalExam, setFinalExam] = useState(isShoubra ? 75 : 50);
+  const [midterm, setMidterm] = useState(25);
+  const [quizzes, setQuizzes] = useState(15);
+  const [lab, setLab] = useState(15);
+  const [finalExam, setFinalExam] = useState(75);
 
   const totalObtained = Number(midterm) + Number(quizzes) + Number(lab) + Number(finalExam);
   const percentage = (totalObtained / totalMax) * 100;
 
   // Grade calculation
   const getGradeInfo = (pct) => {
-    if (pct >= 90) return { grade: 'A+', gpa: '4.00', label: 'امتياز مرتفع (Excellent)', color: 'text-emerald-400', bg: 'bg-emerald-950 border-emerald-500' };
-    if (pct >= 85) return { grade: 'A', gpa: '3.75', label: 'امتياز (Excellent)', color: 'text-emerald-400', bg: 'bg-emerald-950 border-emerald-500' };
-    if (pct >= 80) return { grade: 'B+', gpa: '3.30', label: 'جيد جداً مرتفع (Very Good)', color: 'text-blue-400', bg: 'bg-blue-950 border-blue-500' };
-    if (pct >= 75) return { grade: 'B', gpa: '3.00', label: 'جيد جداً (Very Good)', color: 'text-blue-400', bg: 'bg-blue-950 border-blue-500' };
-    if (pct >= 70) return { grade: 'C+', gpa: '2.70', label: 'جيد مرتفع (Good)', color: 'text-amber-400', bg: 'bg-amber-950 border-amber-500' };
-    if (pct >= 65) return { grade: 'C', gpa: '2.40', label: 'جيد (Good)', color: 'text-amber-400', bg: 'bg-amber-950 border-amber-500' };
-    if (pct >= 60) return { grade: 'D+', gpa: '2.00', label: 'مقبول مرتفع (Pass)', color: 'text-orange-400', bg: 'bg-orange-950 border-orange-500' };
-    if (pct >= 50) return { grade: 'D', gpa: '1.50', label: 'مقبول (Pass)', color: 'text-orange-400', bg: 'bg-orange-950 border-orange-500' };
-    return { grade: 'F', gpa: '0.00', label: 'راسب (Fail)', color: 'text-rose-500', bg: 'bg-rose-950 border-rose-500' };
+    if (pct >= 90) return { grade: 'A+', gpa: '4.00', label: 'امتياز مرتفع (Excellent)', color: 'text-emerald-400', bg: 'bg-emerald-950/80 border-emerald-500' };
+    if (pct >= 85) return { grade: 'A', gpa: '3.75', label: 'امتياز (Excellent)', color: 'text-emerald-400', bg: 'bg-emerald-950/80 border-emerald-500' };
+    if (pct >= 80) return { grade: 'B+', gpa: '3.30', label: 'جيد جداً مرتفع (Very Good)', color: 'text-blue-400', bg: 'bg-blue-950/80 border-blue-500' };
+    if (pct >= 75) return { grade: 'B', gpa: '3.00', label: 'جيد جداً (Very Good)', color: 'text-blue-400', bg: 'bg-blue-950/80 border-blue-500' };
+    if (pct >= 70) return { grade: 'C+', gpa: '2.70', label: 'جيد مرتفع (Good)', color: 'text-amber-400', bg: 'bg-amber-950/80 border-amber-500' };
+    if (pct >= 65) return { grade: 'C', gpa: '2.40', label: 'جيد (Good)', color: 'text-amber-400', bg: 'bg-amber-950/80 border-amber-500' };
+    if (pct >= 60) return { grade: 'D+', gpa: '2.00', label: 'مقبول مرتفع (Pass)', color: 'text-orange-400', bg: 'bg-orange-950/80 border-orange-500' };
+    if (pct >= 50) return { grade: 'D', gpa: '1.50', label: 'مقبول (Pass)', color: 'text-orange-400', bg: 'bg-orange-950/80 border-orange-500' };
+    return { grade: 'F', gpa: '0.00', label: 'راسب (Fail)', color: 'text-rose-500', bg: 'bg-rose-950/80 border-rose-500' };
   };
 
   const gradeInfo = getGradeInfo(percentage);
 
-  // Shoubra & Benha Engineering Departments Data & historical cut-offs
+  // Shoubra Engineering 6 Departments Data & historical cut-offs
   const departments = [
     {
       id: 'cse',
@@ -38,7 +37,7 @@ export default function GpaTrackerView({ facultyId }) {
       icon: Cpu,
       historicalCutoff: '82% - 86%',
       color: 'from-cyan-600 to-blue-700',
-      description: 'الذكاء الاصطناعي، علوم البيانات، البرمجيات، النظم المدمجة، والأمن السيبراني. القسم الأعلى طلباً في تنسيق شبرا.'
+      description: 'الذكاء الاصطناعي، علوم البيانات، البرمجيات، النظم المدمجة، والأمن السيبراني. القسم الأعلى طلباً في تنسيق شبرا الداخلي.'
     },
     {
       id: 'ece',
@@ -56,16 +55,16 @@ export default function GpaTrackerView({ facultyId }) {
       icon: Compass,
       historicalCutoff: '69% - 74%',
       color: 'from-blue-600 to-indigo-700',
-      description: 'القسم التاريخي الشهير الذي تنفرد به هندسة شبرا على مستوى الجمهورية: نظم المعلومات الجغرافية (GIS)، الاستشعار عن بعد، مساحة الأقمار الصناعية والجيوديسيا.'
+      description: 'القسم التاريخي الشهير الذي تنفرد به هندسة شبرا على مستوى الجمهورية: نظم المعلومات الجغرافية (GIS)، الاستشعار عن بعد، ومساحة الأقمار الصناعية والجيوديسيا.'
     },
     {
       id: 'mech',
-      nameAr: 'الهندسة الميكانيكية (قوى ميكانيكية وإنتاج)',
+      nameAr: 'الهندسة الميكانيكية (قوى وإنتاج وميكاترونكس)',
       nameEn: 'Mechanical Engineering (Power & Production)',
       icon: Hammer,
       historicalCutoff: '72% - 77%',
       color: 'from-red-600 to-rose-700',
-      description: 'شعبتا قوى ميكانيكية وتوليد طاقة وتبريد + شعبة هندسة الإنتاج والتصميم الميكانيكي والميكاترونكس.'
+      description: 'شعبتا قوى ميكانيكية وتوليد طاقة وتبريد وتكييف + شعبة هندسة الإنتاج والتصميم الميكانيكي والميكاترونكس.'
     },
     {
       id: 'civil',
@@ -74,7 +73,7 @@ export default function GpaTrackerView({ facultyId }) {
       icon: Building,
       historicalCutoff: '68% - 73%',
       color: 'from-emerald-600 to-teal-700',
-      description: 'تصميم المنشآت والكباري، ميكانيكا التربة والأساسات، الهندسة الصحية والبيئية، وإدارة المشروعات.'
+      description: 'تصميم المنشآت الخرسانية والمعدنية والكباري، ميكانيكا التربة والأساسات، الهندسة الصحية والبيئية، وإدارة المشروعات.'
     },
     {
       id: 'arch',
@@ -99,17 +98,17 @@ export default function GpaTrackerView({ facultyId }) {
               <span>متابعة المعدل والتنسيق الداخلي • GPA & Departments</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              حَاسِبَةُ دَرَجَاتِ الكِيمْيَاءِ وَمُحَاكِي تَنْسِيقِ الأَقْسَامِ
+              حَاسِبَةُ دَرَجَاتِ الكِيمْيَاءِ وَمُحَاكِي تَنْسِيقِ أَقْسَامِ شُبْرَا
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              احسب مجموعك المتوقع في الكيمياء الهندسية، واكتشف متطلبات التنسيق الداخلي لأقسام هندسة بنها وشبرا
+              احسب مجموعك وتقديرك التراكمي في الكيمياء الهندسية، واكتشف متطلبات التنسيق الداخلي لأقسام كلية الهندسة بشبرا
             </p>
           </div>
 
-          <div className="bg-slate-800/80 p-3.5 rounded-2xl border border-slate-700 text-center shrink-0">
-            <span className="text-xs text-slate-400 font-bold">الكلية المحددة:</span>
+          <div className="bg-slate-800/80 p-3.5 rounded-2xl border border-blue-500/30 text-center shrink-0">
+            <span className="text-xs text-slate-400 font-bold">الكلية واللائحة:</span>
             <div className="text-sm font-black text-cyan-400 mt-0.5">
-              {isShoubra ? 'كلية الهندسة بشبرا (150 درجة)' : 'كلية الهندسة ببنها (100 درجة)'}
+              كلية الهندسة بشبرا (150 درجة)
             </div>
           </div>
         </div>
@@ -118,7 +117,7 @@ export default function GpaTrackerView({ facultyId }) {
       {/* Grade Calculator Section */}
       <div className="bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl space-y-6">
         <h2 className="text-lg font-black text-white border-b border-slate-700 pb-3">
-          ١. حاسبة درجات مادة الكيمياء الهندسية (أعمال السنة + العملي + التحريري)
+          ١. حاسبة درجات مادة الكيمياء الهندسية (شبرا: أعمال سنة + عملي + فاينال = 150)
         </h2>
 
         <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
@@ -129,11 +128,13 @@ export default function GpaTrackerView({ facultyId }) {
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                min="0"
+                max="30"
                 value={midterm}
                 onChange={(e) => setMidterm(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
               />
-              <span className="text-xs text-slate-400 font-bold">/ {isShoubra ? 30 : 20}</span>
+              <span className="text-xs text-slate-400 font-bold font-mono">/ 30</span>
             </div>
           </div>
 
@@ -144,11 +145,13 @@ export default function GpaTrackerView({ facultyId }) {
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                min="0"
+                max="15"
                 value={quizzes}
                 onChange={(e) => setQuizzes(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
               />
-              <span className="text-xs text-slate-400 font-bold">/ {isShoubra ? 15 : 10}</span>
+              <span className="text-xs text-slate-400 font-bold font-mono">/ 15</span>
             </div>
           </div>
 
@@ -159,26 +162,30 @@ export default function GpaTrackerView({ facultyId }) {
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                min="0"
+                max="15"
                 value={lab}
                 onChange={(e) => setLab(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
               />
-              <span className="text-xs text-slate-400 font-bold">/ {isShoubra ? 15 : 10}</span>
+              <span className="text-xs text-slate-400 font-bold font-mono">/ 15</span>
             </div>
           </div>
 
           <div className="p-4 rounded-2xl bg-slate-900 border border-slate-700">
             <label className="block text-xs font-bold text-slate-300 mb-1">
-              توقع امتحان الفاينال (Final):
+              امتحان الفاينال التحريري (Final):
             </label>
             <div className="flex items-center gap-2">
               <input
                 type="number"
+                min="0"
+                max="90"
                 value={finalExam}
                 onChange={(e) => setFinalExam(Number(e.target.value))}
-                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
               />
-              <span className="text-xs text-slate-400 font-bold">/ {isShoubra ? 90 : 60}</span>
+              <span className="text-xs text-slate-400 font-bold font-mono">/ 90</span>
             </div>
           </div>
         </div>
@@ -191,28 +198,28 @@ export default function GpaTrackerView({ facultyId }) {
               <span className={`text-4xl sm:text-5xl font-black font-mono ${gradeInfo.color}`}>
                 {gradeInfo.grade}
               </span>
-              <span className="text-lg font-black text-white">({gradeInfo.label})</span>
+              <span className="text-lg font-black text-white">{gradeInfo.label}</span>
               <span className="text-xs font-bold text-slate-400 font-mono">GPA: {gradeInfo.gpa}</span>
             </div>
           </div>
 
           <div className="text-center sm:text-left">
             <span className="text-xs font-bold text-slate-300">المجموع والنسبة المئوية:</span>
-            <div className="text-3xl font-black text-white font-mono mt-1">
+            <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
               {totalObtained} / {totalMax} <span className="text-xl text-cyan-300 font-sans">({percentage.toFixed(1)}%)</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Benha Engineering Departments Guide & Coordination */}
+      {/* Shoubra Engineering Departments Guide & Coordination */}
       <div className="space-y-4">
         <div>
           <h2 className="text-xl font-black text-white">
-            ٢. دليل التنسيق الداخلي لأقسام كلية الهندسة (بنها وشبرا)
+            ٢. دليل التنسيق الداخلي لأقسام كلية الهندسة بشبرا (جامعة بنها)
           </h2>
           <p className="text-xs text-slate-400 font-bold mt-1">
-            مجموع سنة إعدادي هو الذي يحدد قسمك الأكاديمي للسنوات الأربع التالية. إليك خريطة الأقسام والحدود التقريبية:
+            مجموع سنة إعدادي هو الذي يحدد قسمك الأكاديمي للسنوات الأربع التالية في شبرا. إليك خريطة الأقسام والحدود التقريبية:
           </p>
         </div>
 
@@ -235,14 +242,14 @@ export default function GpaTrackerView({ facultyId }) {
                   </div>
 
                   <h3 className="font-black text-base text-white">{dept.nameAr}</h3>
-                  <p className="text-[11px] font-mono text-slate-400 mb-2">{dept.nameEn}</p>
+                  <p className="text-[11px] font-mono text-slate-400 mb-2" dir="ltr">{dept.nameEn}</p>
                   <p className="text-xs text-slate-300 leading-relaxed font-medium">{dept.description}</p>
                 </div>
 
                 <div className="mt-4 pt-3 border-t border-slate-700/60 text-[10px] text-slate-400 font-bold flex items-center justify-between">
                   <span>أهمية الكيمياء للقسم:</span>
                   <span className="text-cyan-300 font-extrabold">
-                    {dept.id === 'civil' ? 'عالية جداً (الأسمنت والمياه)' : dept.id === 'mech' ? 'عالية (الوقود والزيوت)' : 'أساسية'}
+                    {dept.id === 'civil' ? 'عالية جداً (الأسمنت والمياه ومواد البناء)' : dept.id === 'mech' ? 'عالية (الوقود والاحتراق والزيوت والتآكل)' : dept.id === 'ece' || dept.id === 'cse' ? 'أساسية (أشباه الموصلات والبطاريات)' : 'أساسية'}
                   </span>
                 </div>
               </div>

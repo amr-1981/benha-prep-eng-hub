@@ -20,18 +20,17 @@ export default function CalculatorsView() {
     naalo2: 0
   });
 
-  // Calculate CaCO3 Equivalents:
-  // Eq = (mg/L × 50) / Eq.wt
+  // Calculate CaCO3 Equivalents: Eq = (mg/L × 50) / Eq.wt
   const eqData = [
-    { name: 'Ca(HCO3)2 (بيكربونات كالسيوم)', val: salts.ca_hco3, eqWt: 81, factor: 50 / 81, reqLime: 1, reqSoda: 0 },
-    { name: 'Mg(HCO3)2 (بيكربونات مغنيسيوم)', val: salts.mg_hco3, eqWt: 73, factor: 50 / 73, reqLime: 2, reqSoda: 0 },
-    { name: 'CaSO4 (كبريتات كالسيوم)', val: salts.caso4, eqWt: 68, factor: 50 / 68, reqLime: 0, reqSoda: 1 },
-    { name: 'CaCl2 (كلوريد كالسيوم)', val: salts.cacl2, eqWt: 55.5, factor: 50 / 55.5, reqLime: 0, reqSoda: 1 },
-    { name: 'MgSO4 (كبريتات مغنيسيوم)', val: salts.mgso4, eqWt: 60, factor: 50 / 60, reqLime: 1, reqSoda: 1 },
-    { name: 'MgCl2 (كلوريد مغنيسيوم)', val: salts.mgcl2, eqWt: 47.5, factor: 50 / 47.5, reqLime: 1, reqSoda: 1 },
-    { name: 'CO2 (ثاني أكسيد كربون ذائب)', val: salts.co2, eqWt: 22, factor: 50 / 22, reqLime: 1, reqSoda: 0 },
-    { name: 'HCl (حمض هيدروكلوريك)', val: salts.hcl, eqWt: 36.5, factor: 50 / 36.5, reqLime: 1, reqSoda: 1 },
-    { name: 'NaAlO2 (ألومينات صوديوم مخثرة)', val: salts.naalo2, eqWt: 82, factor: 50 / 82, reqLime: -1, reqSoda: 0 }
+    { formula: 'Ca(HCO3)2', arabicName: 'بيكربونات كالسيوم', val: salts.ca_hco3, eqWt: 81, factor: 50 / 81, reqLime: 1, reqSoda: 0 },
+    { formula: 'Mg(HCO3)2', arabicName: 'بيكربونات مغنيسيوم', val: salts.mg_hco3, eqWt: 73, factor: 50 / 73, reqLime: 2, reqSoda: 0 },
+    { formula: 'CaSO4', arabicName: 'كبريتات كالسيوم', val: salts.caso4, eqWt: 68, factor: 50 / 68, reqLime: 0, reqSoda: 1 },
+    { formula: 'CaCl2', arabicName: 'كلوريد كالسيوم', val: salts.cacl2, eqWt: 55.5, factor: 50 / 55.5, reqLime: 0, reqSoda: 1 },
+    { formula: 'MgSO4', arabicName: 'كبريتات مغنيسيوم', val: salts.mgso4, eqWt: 60, factor: 50 / 60, reqLime: 1, reqSoda: 1 },
+    { formula: 'MgCl2', arabicName: 'كلوريد مغنيسيوم', val: salts.mgcl2, eqWt: 47.5, factor: 50 / 47.5, reqLime: 1, reqSoda: 1 },
+    { formula: 'CO2', arabicName: 'ثاني أكسيد كربون ذائب', val: salts.co2, eqWt: 22, factor: 50 / 22, reqLime: 1, reqSoda: 0 },
+    { formula: 'HCl', arabicName: 'حمض هيدروكلوريك', val: salts.hcl, eqWt: 36.5, factor: 50 / 36.5, reqLime: 1, reqSoda: 1 },
+    { formula: 'NaAlO2', arabicName: 'مخثر ألومينات صوديوم', val: salts.naalo2, eqWt: 82, factor: 50 / 82, reqLime: -1, reqSoda: 0 }
   ];
 
   let sumLimeEq = 0;
@@ -90,6 +89,18 @@ export default function CalculatorsView() {
   const c2s = 2.87 * cementSio2 - 0.754 * c3s;
   const lsf = (cementCao - 0.7 * cementSo3) / (2.8 * cementSio2 + 1.2 * cementAl2o3 + 0.65 * cementFe2o3);
 
+  const saltLabels = {
+    ca_hco3: { formula: 'Ca(HCO3)2', name: 'بيكربونات كالسيوم' },
+    mg_hco3: { formula: 'Mg(HCO3)2', name: 'بيكربونات مغنيسيوم' },
+    caso4: { formula: 'CaSO4', name: 'كبريتات كالسيوم' },
+    cacl2: { formula: 'CaCl2', name: 'كلوريد كالسيوم' },
+    mgso4: { formula: 'MgSO4', name: 'كبريتات مغنيسيوم' },
+    mgcl2: { formula: 'MgCl2', name: 'كلوريد مغنيسيوم' },
+    co2: { formula: 'CO2', name: 'ثاني أكسيد كربون' },
+    hcl: { formula: 'HCl', name: 'حمض هيدروكلوريك' },
+    naalo2: { formula: 'NaAlO2', name: 'مخثر ألومينات صوديوم' }
+  };
+
   return (
     <div className="space-y-8 pb-16">
       
@@ -105,7 +116,7 @@ export default function CalculatorsView() {
               حاسبات مسائل الكيمياء الهندسية الذكية
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              حل فوري مع خطوات التعويض والتحويل لمسائل شيتات وامتحانات هندسة بنها وشبرا
+              حل فوري مع خطوات التعويض والتحويل لمسائل شيتات وامتحانات كلية الهندسة بشبرا
             </p>
           </div>
 
@@ -197,7 +208,8 @@ export default function CalculatorsView() {
                   type="number"
                   value={waterVolume}
                   onChange={(e) => setWaterVolume(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
@@ -209,7 +221,8 @@ export default function CalculatorsView() {
                   type="number"
                   value={limePurity}
                   onChange={(e) => setLimePurity(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
@@ -221,7 +234,8 @@ export default function CalculatorsView() {
                   type="number"
                   value={sodaPurity}
                   onChange={(e) => setSodaPurity(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-xl px-3 py-2 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                  dir="ltr"
                 />
               </div>
             </div>
@@ -232,30 +246,26 @@ export default function CalculatorsView() {
             </h3>
             <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-6">
               {Object.keys(salts).map((key) => {
-                const labelMap = {
-                  ca_hco3: 'Ca(HCO3)2 بيكربونات كالسيوم',
-                  mg_hco3: 'Mg(HCO3)2 بيكربونات مغنيسيوم',
-                  caso4: 'CaSO4 كبريتات كالسيوم',
-                  cacl2: 'CaCl2 كلوريد كالسيوم',
-                  mgso4: 'MgSO4 كبريتات مغنيسيوم',
-                  mgcl2: 'MgCl2 كلوريد مغنيسيوم',
-                  co2: 'CO2 ثاني أكسيد كربون ذائب',
-                  hcl: 'HCl حمض هيدروكلوريك',
-                  naalo2: 'NaAlO2 مخثر ألومينات صوديوم'
-                };
+                const info = saltLabels[key];
                 return (
-                  <div key={key} className="p-3 rounded-xl bg-slate-900/40 border border-slate-700/60">
-                    <label className="block text-[11px] font-bold text-slate-300 mb-1 truncate" title={labelMap[key]}>
-                      {labelMap[key]}
-                    </label>
+                  <div key={key} className="p-3 rounded-xl bg-slate-900/60 border border-slate-700/60">
+                    <div className="flex items-center justify-between mb-1.5">
+                      <span dir="ltr" className="font-mono text-cyan-300 font-bold text-xs bg-slate-950 px-1.5 py-0.5 rounded border border-slate-800">
+                        {info.formula}
+                      </span>
+                      <span className="text-[11px] text-slate-300 font-medium truncate">
+                        {info.name}
+                      </span>
+                    </div>
                     <div className="flex items-center gap-2">
                       <input
                         type="number"
                         value={salts[key]}
                         onChange={(e) => setSalts({ ...salts, [key]: Number(e.target.value) })}
-                        className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-cyan-400"
+                        className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                        dir="ltr"
                       />
-                      <span className="text-[10px] text-slate-400 font-bold">mg/L</span>
+                      <span className="text-[10px] text-slate-400 font-bold font-mono">mg/L</span>
                     </div>
                   </div>
                 );
@@ -278,18 +288,25 @@ export default function CalculatorsView() {
                 <tbody className="divide-y divide-slate-700/60 font-bold">
                   {processedSalts.map((item, idx) => (
                     <tr key={idx} className={Number(item.val) > 0 ? 'bg-slate-800/80' : 'bg-slate-900/30 text-slate-500'}>
-                      <td className="p-3 text-cyan-200">{item.name}</td>
-                      <td className="p-3">{item.val}</td>
-                      <td className="p-3 text-slate-400">50 / {item.eqWt}</td>
-                      <td className="p-3 font-mono font-black text-amber-300">{item.caco3Eq}</td>
-                      <td className="p-3 font-mono text-blue-300">{item.limeContribution}</td>
-                      <td className="p-3 font-mono text-emerald-300">{item.sodaContribution}</td>
+                      <td className="p-3">
+                        <div className="flex items-center gap-2">
+                          <span dir="ltr" className="font-mono font-bold text-cyan-300 bg-slate-900 px-2 py-0.5 rounded border border-slate-700/70 text-xs">
+                            {item.formula}
+                          </span>
+                          <span className="text-slate-300 text-xs">{item.arabicName}</span>
+                        </div>
+                      </td>
+                      <td className="p-3 font-mono">{item.val}</td>
+                      <td className="p-3 text-slate-400 font-mono" dir="ltr">50 / {item.eqWt}</td>
+                      <td className="p-3 font-mono font-black text-amber-300" dir="ltr">{item.caco3Eq}</td>
+                      <td className="p-3 font-mono text-blue-300" dir="ltr">{item.limeContribution}</td>
+                      <td className="p-3 font-mono text-emerald-300" dir="ltr">{item.sodaContribution}</td>
                     </tr>
                   ))}
                   <tr className="bg-slate-950 font-black text-sm">
                     <td colSpan="4" className="p-3 text-white">إجمالي المكافئات Σ (mg/L):</td>
-                    <td className="p-3 text-blue-400 font-mono text-base">{sumLimeEq.toFixed(2)}</td>
-                    <td className="p-3 text-emerald-400 font-mono text-base">{sumSodaEq.toFixed(2)}</td>
+                    <td className="p-3 text-blue-400 font-mono text-base" dir="ltr">{sumLimeEq.toFixed(2)}</td>
+                    <td className="p-3 text-emerald-400 font-mono text-base" dir="ltr">{sumSodaEq.toFixed(2)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -302,12 +319,12 @@ export default function CalculatorsView() {
                   <span className="text-xs font-extrabold text-blue-300">كمية الجير التجاري المطلوبة (Commercial Lime)</span>
                   <span className="text-xs bg-blue-500/20 text-blue-200 px-2 py-0.5 rounded-full font-bold">نقاوة {limePurity}%</span>
                 </div>
-                <div className="text-3xl font-black text-white font-mono">
+                <div className="text-3xl font-black text-white font-mono" dir="ltr">
                   {commLimeKg.toFixed(2)} <span className="text-lg font-bold text-blue-300">kg</span>
                 </div>
-                <p className="text-[11px] text-slate-300 mt-2 font-mono leading-relaxed">
+                <div className="mt-2 p-2 rounded-xl bg-slate-950/70 border border-slate-800 font-mono text-[11px] text-blue-300" dir="ltr">
                   Lime = (74/100) × {sumLimeEq.toFixed(2)} × {waterVolume.toLocaleString()} × 10⁻⁶ × (100/{limePurity})
-                </p>
+                </div>
               </div>
 
               <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-950 to-slate-900 border-2 border-emerald-500 shadow-lg">
@@ -315,12 +332,12 @@ export default function CalculatorsView() {
                   <span className="text-xs font-extrabold text-emerald-300">كمية رماد الصودا التجاري المطلوب (Commercial Soda)</span>
                   <span className="text-xs bg-emerald-500/20 text-emerald-200 px-2 py-0.5 rounded-full font-bold">نقاوة {sodaPurity}%</span>
                 </div>
-                <div className="text-3xl font-black text-white font-mono">
+                <div className="text-3xl font-black text-white font-mono" dir="ltr">
                   {commSodaKg.toFixed(2)} <span className="text-lg font-bold text-emerald-300">kg</span>
                 </div>
-                <p className="text-[11px] text-slate-300 mt-2 font-mono leading-relaxed">
+                <div className="mt-2 p-2 rounded-xl bg-slate-950/70 border border-slate-800 font-mono text-[11px] text-emerald-300" dir="ltr">
                   Soda = (106/100) × {sumSodaEq.toFixed(2)} × {waterVolume.toLocaleString()} × 10⁻⁶ × (100/{sodaPurity})
-                </p>
+                </div>
               </div>
             </div>
           </div>
@@ -358,69 +375,89 @@ export default function CalculatorsView() {
             {/* Fuel Ultimate Analysis Inputs */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الكربون C %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الكربون</span>
+                  <span dir="ltr" className="font-mono text-amber-400 font-bold text-xs">C %</span>
+                </div>
                 <input
                   type="number"
                   value={fuelC}
                   onChange={(e) => setFuelC(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الهيدروجين H %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الهيدروجين</span>
+                  <span dir="ltr" className="font-mono text-amber-400 font-bold text-xs">H %</span>
+                </div>
                 <input
                   type="number"
                   value={fuelH}
                   onChange={(e) => setFuelH(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الأكسجين O %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الأكسجين</span>
+                  <span dir="ltr" className="font-mono text-amber-400 font-bold text-xs">O %</span>
+                </div>
                 <input
                   type="number"
                   value={fuelO}
                   onChange={(e) => setFuelO(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الكبريت S %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الكبريت</span>
+                  <span dir="ltr" className="font-mono text-amber-400 font-bold text-xs">S %</span>
+                </div>
                 <input
                   type="number"
                   value={fuelS}
                   onChange={(e) => setFuelS(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الرطوبة Moisture %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الرطوبة</span>
+                  <span dir="ltr" className="font-mono text-amber-400 font-bold text-xs">Moisture %</span>
+                </div>
                 <input
                   type="number"
                   value={fuelMoisture}
                   onChange={(e) => setFuelMoisture(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                  dir="ltr"
                 />
               </div>
             </div>
 
             {/* Calculations Breakdown */}
             <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 mb-6 space-y-2 text-xs font-bold text-slate-300">
-              <div className="flex justify-between border-b border-slate-800 pb-2">
-                <span>الهيدروجين المتاح للاحتراق (Available Hydrogen = H - O/8):</span>
-                <span className="font-mono text-amber-300 text-sm">{availableH.toFixed(2)} %</span>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                <span>الهيدروجين المتاح للاحتراق (Available Hydrogen):</span>
+                <span className="font-mono text-amber-300 text-sm" dir="ltr">H - (O / 8) = {availableH.toFixed(2)} %</span>
               </div>
-              <div className="flex justify-between border-b border-slate-800 pb-2">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
                 <span>معادلة دولونج GCV: (1/100) × [8080 C + 34500 (H - O/8) + 2240 S]:</span>
-                <span className="font-mono text-cyan-300 text-sm">{gcvKcal.toFixed(2)} kcal/kg</span>
+                <span className="font-mono text-cyan-300 text-sm" dir="ltr">{gcvKcal.toFixed(2)} kcal/kg</span>
               </div>
-              <div className="flex justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
                 <span>القيمة بالوحدات الدولية (kJ/kg = kcal/kg × 4.184):</span>
-                <span className="font-mono text-emerald-300 text-sm">{gcvKj.toFixed(2)} kJ/kg</span>
+                <span className="font-mono text-emerald-300 text-sm" dir="ltr">{gcvKj.toFixed(2)} kJ/kg</span>
               </div>
             </div>
 
@@ -428,28 +465,28 @@ export default function CalculatorsView() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/60">
                 <span className="text-[11px] font-bold text-amber-300">القيمة الحرارية العليا GCV</span>
-                <div className="text-2xl font-black text-white font-mono mt-1">
+                <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
                   {gcvKcal.toFixed(1)} <span className="text-xs text-amber-300">kcal/kg</span>
                 </div>
               </div>
 
               <div className="p-4 rounded-2xl bg-orange-950/60 border border-orange-500/60">
                 <span className="text-[11px] font-bold text-orange-300">القيمة الحرارية الصغرى NCV</span>
-                <div className="text-2xl font-black text-white font-mono mt-1">
+                <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
                   {ncvKcal.toFixed(1)} <span className="text-xs text-orange-300">kcal/kg</span>
                 </div>
               </div>
 
               <div className="p-4 rounded-2xl bg-cyan-950/60 border border-cyan-500/60">
                 <span className="text-[11px] font-bold text-cyan-300">كتلة الهواء النظري (بالكتلة 23%)</span>
-                <div className="text-2xl font-black text-white font-mono mt-1">
+                <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
                   {airReqMass.toFixed(2)} <span className="text-xs text-cyan-300">kg air / kg fuel</span>
                 </div>
               </div>
 
               <div className="p-4 rounded-2xl bg-blue-950/60 border border-blue-500/60">
                 <span className="text-[11px] font-bold text-blue-300">حجم الهواء النظري (بالحجم 21%)</span>
-                <div className="text-2xl font-black text-white font-mono mt-1">
+                <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
                   {airReqVol.toFixed(2)} <span className="text-xs text-blue-300">m³ air / kg fuel</span>
                 </div>
               </div>
@@ -489,52 +526,72 @@ export default function CalculatorsView() {
             {/* Oxides Input */}
             <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الجير CaO %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الجير</span>
+                  <span dir="ltr" className="font-mono text-emerald-400 font-bold text-xs">CaO %</span>
+                </div>
                 <input
                   type="number"
                   value={cementCao}
                   onChange={(e) => setCementCao(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">السيليكا SiO2 %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">السيليكا</span>
+                  <span dir="ltr" className="font-mono text-emerald-400 font-bold text-xs">SiO2 %</span>
+                </div>
                 <input
                   type="number"
                   value={cementSio2}
                   onChange={(e) => setCementSio2(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">الألومينا Al2O3 %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">الألومينا</span>
+                  <span dir="ltr" className="font-mono text-emerald-400 font-bold text-xs">Al2O3 %</span>
+                </div>
                 <input
                   type="number"
                   value={cementAl2o3}
                   onChange={(e) => setCementAl2o3(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">أكسيد الحديد Fe2O3 %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">أكسيد الحديد</span>
+                  <span dir="ltr" className="font-mono text-emerald-400 font-bold text-xs">Fe2O3 %</span>
+                </div>
                 <input
                   type="number"
                   value={cementFe2o3}
                   onChange={(e) => setCementFe2o3(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400 font-mono"
+                  dir="ltr"
                 />
               </div>
 
               <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
-                <label className="block text-xs font-bold text-slate-300 mb-1">ثالث أكسيد الكبريت SO3 %:</label>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-xs font-bold text-slate-300">ثالث أكسيد الكبريت</span>
+                  <span dir="ltr" className="font-mono text-emerald-400 font-bold text-xs">SO3 %</span>
+                </div>
                 <input
                   type="number"
                   value={cementSo3}
                   onChange={(e) => setCementSo3(Number(e.target.value))}
-                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400"
+                  className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-emerald-400 font-mono"
+                  dir="ltr"
                 />
               </div>
             </div>
@@ -542,26 +599,38 @@ export default function CalculatorsView() {
             {/* Results Grid */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="p-4 rounded-2xl bg-emerald-950/60 border border-emerald-500/60">
-                <span className="text-[11px] font-bold text-emerald-300">C3S (Alite - القوة المبكرة 28 يوم)</span>
-                <div className="text-3xl font-black text-white font-mono mt-1">{c3s.toFixed(2)} %</div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span dir="ltr" className="font-mono font-black text-xs px-2 py-0.5 rounded bg-emerald-900 text-white border border-emerald-500/40">C3S</span>
+                  <span className="text-xs font-bold text-emerald-300">Alite (القوة المبكرة)</span>
+                </div>
+                <div className="text-3xl font-black text-white font-mono mt-2" dir="ltr">{c3s.toFixed(2)} %</div>
                 <p className="text-[10px] text-slate-400 mt-1">النسبة المثالية: 45 - 65%</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-teal-950/60 border border-teal-500/60">
-                <span className="text-[11px] font-bold text-teal-300">C2S (Belite - القوة طويلة المدى)</span>
-                <div className="text-3xl font-black text-white font-mono mt-1">{c2s.toFixed(2)} %</div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span dir="ltr" className="font-mono font-black text-xs px-2 py-0.5 rounded bg-teal-900 text-white border border-teal-500/40">C2S</span>
+                  <span className="text-xs font-bold text-teal-300">Belite (القوة طويلة المدى)</span>
+                </div>
+                <div className="text-3xl font-black text-white font-mono mt-2" dir="ltr">{c2s.toFixed(2)} %</div>
                 <p className="text-[10px] text-slate-400 mt-1">النسبة المثالية: 15 - 30%</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/60">
-                <span className="text-[11px] font-bold text-amber-300">C3A (Celite - حرارة التفاعل والشك)</span>
-                <div className="text-3xl font-black text-white font-mono mt-1">{c3a.toFixed(2)} %</div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span dir="ltr" className="font-mono font-black text-xs px-2 py-0.5 rounded bg-amber-900 text-white border border-amber-500/40">C3A</span>
+                  <span className="text-xs font-bold text-amber-300">Celite (حرارة التفاعل والشك)</span>
+                </div>
+                <div className="text-3xl font-black text-white font-mono mt-2" dir="ltr">{c3a.toFixed(2)} %</div>
                 <p className="text-[10px] text-slate-400 mt-1">النسبة المثالية: 6 - 12%</p>
               </div>
 
               <div className="p-4 rounded-2xl bg-purple-950/60 border border-purple-500/60">
-                <span className="text-[11px] font-bold text-purple-300">C4AF (Ferrite - اللون الرمادي)</span>
-                <div className="text-3xl font-black text-white font-mono mt-1">{c4af.toFixed(2)} %</div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span dir="ltr" className="font-mono font-black text-xs px-2 py-0.5 rounded bg-purple-900 text-white border border-purple-500/40">C4AF</span>
+                  <span className="text-xs font-bold text-purple-300">Ferrite (اللون الرمادي)</span>
+                </div>
+                <div className="text-3xl font-black text-white font-mono mt-2" dir="ltr">{c4af.toFixed(2)} %</div>
                 <p className="text-[10px] text-slate-400 mt-1">النسبة المثالية: 6 - 10%</p>
               </div>
             </div>
@@ -570,7 +639,7 @@ export default function CalculatorsView() {
             <div className="p-4 rounded-2xl bg-slate-900 border border-slate-700 flex flex-col sm:flex-row items-center justify-between gap-4">
               <div>
                 <span className="text-xs font-bold text-cyan-300">معامل تشبع الجير (Lime Saturation Factor - LSF):</span>
-                <div className="text-2xl font-black text-white font-mono mt-0.5">{lsf.toFixed(3)}</div>
+                <div className="text-2xl font-black text-white font-mono mt-0.5" dir="ltr">{lsf.toFixed(3)}</div>
               </div>
               <div className="text-xs font-bold text-slate-300 max-w-md">
                 {lsf >= 0.66 && lsf <= 1.02 ? (

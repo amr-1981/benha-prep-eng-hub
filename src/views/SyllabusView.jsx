@@ -132,7 +132,7 @@ export default function SyllabusView() {
         <div className="space-y-3 pt-2">
           <h3 className="text-sm font-black text-rose-300 flex items-center gap-2">
             <AlertTriangle className="w-4 h-4 text-rose-400" />
-            <span>النقاط المتكررة وأسئلة الفاينال المفضلة لدكاترة بنها (Exam Hotspots):</span>
+            <span>النقاط المتكررة وأسئلة الفاينال المفضلة لدكاترة هندسة شبرا (Exam Hotspots):</span>
           </h3>
           <div className="space-y-2">
             {selectedModule.examHotspots.map((spot, i) => (
@@ -151,7 +151,7 @@ export default function SyllabusView() {
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xl">💡</span>
           <h2 className="text-lg font-black text-white">
-            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة بنها وشبرا
+            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة شبرا (جامعة بنها)
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
