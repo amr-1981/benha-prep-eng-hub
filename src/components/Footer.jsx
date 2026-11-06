@@ -13,9 +13,9 @@ export default function Footer({ setActiveTab }) {
               <GraduationCap className="w-5 h-5" />
             </div>
             <div>
-              <span className="text-white font-black">بوابة مهندس بنها | Benha Prep-Eng Hub</span>
+              <span className="text-white font-black">بوابة إعدادي هندسة شبرا | كلية الهندسة بشبرا - جامعة بنها (FES)</span>
               <p className="text-[11px] text-slate-500 font-normal">
-                منصة أكاديمية وتفاعلية غير ربحية مخصصة لطلاب إعدادي هندسة - جامعة بنها (كليتي الهندسة ببنها وشبرا)
+                منصة أكاديمية وتفاعلية غير ربحية مخصصة لطلاب إعدادي هندسة شبرا (مبنى روض الفرج ومبنى الخلفاوي - 108 شارع شبرا)
               </p>
             </div>
           </div>

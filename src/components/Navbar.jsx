@@ -27,7 +27,7 @@ export default function Navbar({ activeTab, setActiveTab, facultyId, setFacultyI
             onClick={() => setActiveTab('syllabus')}
             className="flex items-center gap-3 cursor-pointer group"
           >
-            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-blue-700 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 border border-blue-400/40 group-hover:scale-105 transition-transform">
+            <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 border border-blue-400/40 group-hover:scale-105 transition-transform">
               <GraduationCap className="w-6 h-6 sm:w-7 sm:h-7" />
             </div>
             <div>
@@ -36,11 +36,11 @@ export default function Navbar({ activeTab, setActiveTab, facultyId, setFacultyI
                   {FACULTY_INFO.universityAr}
                 </span>
                 <span className="text-[11px] font-bold text-amber-300 hidden sm:inline">
-                  الفرقة الإعدادية (إعدادي هندسة)
+                  {facultyId === 'shoubra' ? 'كلية الهندسة بشبرا (FES)' : 'كلية الهندسة ببنها (BFAC)'}
                 </span>
               </div>
               <h1 className="text-sm sm:text-lg font-black text-white group-hover:text-cyan-300 transition-colors leading-tight">
-                بوابة مهندس بنها | Benha Prep-Eng Hub
+                {facultyId === 'shoubra' ? 'بوابة إعدادي هندسة شبرا 🏛️' : 'بوابة إعدادي هندسة بنها 🏛️'}
               </h1>
             </div>
           </div>

@@ -29,43 +29,52 @@ export default function GpaTrackerView({ facultyId }) {
 
   const gradeInfo = getGradeInfo(percentage);
 
-  // Benha Engineering Departments Data & historical cut-offs
+  // Shoubra & Benha Engineering Departments Data & historical cut-offs
   const departments = [
     {
       id: 'cse',
-      nameAr: 'هندسة الحاسبات والتحكم النظمي',
+      nameAr: 'هندسة الحاسبات والتحكم النظمي (مبنى الخلفاوي)',
       nameEn: 'Computer & Systems Engineering',
       icon: Cpu,
-      historicalCutoff: '82% - 85%',
+      historicalCutoff: '82% - 86%',
       color: 'from-cyan-600 to-blue-700',
-      description: 'الذكاء الاصطناعي، البرمجيات، النظم المدمجة، والأمن السيبراني. القسم الأعلى طلباً في السنوات الأخيرة.'
+      description: 'الذكاء الاصطناعي، علوم البيانات، البرمجيات، النظم المدمجة، والأمن السيبراني. القسم الأعلى طلباً في تنسيق شبرا.'
     },
     {
       id: 'ece',
-      nameAr: 'الهندسة الكهربية والاتصالات والإلكترونيات',
-      nameEn: 'Electrical & Communications Engineering',
+      nameAr: 'الهندسة الكهربية (اتصالات وقوى وآلات)',
+      nameEn: 'Electrical Engineering (Telecom & Power)',
       icon: Zap,
-      historicalCutoff: '76% - 80%',
+      historicalCutoff: '76% - 81%',
       color: 'from-amber-600 to-orange-700',
-      description: 'شبكات المحمول، معالجة الإشارات، الدوائر الإلكترونية المتكاملة، وتوليد ونقل الطاقة الكهربائية.'
+      description: 'شعبتا الاتصالات والإلكترونيات + القوى والآلات الكهربية، شبكات الطاقة، والمحركات الكهربية.'
+    },
+    {
+      id: 'survey',
+      nameAr: 'هندسة المساحة (القسم الفريد في هندسة شبرا 🌟)',
+      nameEn: 'Surveying & Geomatics Engineering',
+      icon: Compass,
+      historicalCutoff: '69% - 74%',
+      color: 'from-blue-600 to-indigo-700',
+      description: 'القسم التاريخي الشهير الذي تنفرد به هندسة شبرا على مستوى الجمهورية: نظم المعلومات الجغرافية (GIS)، الاستشعار عن بعد، مساحة الأقمار الصناعية والجيوديسيا.'
     },
     {
       id: 'mech',
-      nameAr: 'الهندسة الميكانيكية والميكاترونكس',
-      nameEn: 'Mechanical Engineering & Mechatronics',
+      nameAr: 'الهندسة الميكانيكية (قوى ميكانيكية وإنتاج)',
+      nameEn: 'Mechanical Engineering (Power & Production)',
       icon: Hammer,
-      historicalCutoff: '72% - 76%',
+      historicalCutoff: '72% - 77%',
       color: 'from-red-600 to-rose-700',
-      description: 'محطات القوى، التكييف والتبريد، التصميم الميكانيكي، والتحكم الآلي والروبوتات.'
+      description: 'شعبتا قوى ميكانيكية وتوليد طاقة وتبريد + شعبة هندسة الإنتاج والتصميم الميكانيكي والميكاترونكس.'
     },
     {
       id: 'civil',
-      nameAr: 'الهندسة المدنية (إنشاءات ومياه ومساحة)',
-      nameEn: 'Civil Engineering',
+      nameAr: 'الهندسة المدنية (إنشاءات ومياه وأشغال عامة)',
+      nameEn: 'Civil Engineering (Shoubra Campus)',
       icon: Building,
       historicalCutoff: '68% - 73%',
       color: 'from-emerald-600 to-teal-700',
-      description: 'تصميم المنشآت الخرسانية والمعدنية، الكباري، الطرق والكباري، ميكانيكا التربة، وهندسة الموانئ والري.'
+      description: 'تصميم المنشآت والكباري، ميكانيكا التربة والأساسات، الهندسة الصحية والبيئية، وإدارة المشروعات.'
     },
     {
       id: 'arch',
@@ -74,7 +83,7 @@ export default function GpaTrackerView({ facultyId }) {
       icon: Compass,
       historicalCutoff: '70% - 75% + اختبار قدرات',
       color: 'from-purple-600 to-indigo-700',
-      description: 'التصميم المعماري، تكنولوجيا البناء، والتخطيط الحضري للمدن الذكية والمستدامة.'
+      description: 'التصميم المعماري، تكنولوجيا البناء المستدام، وتخطيط وتطوير المدن والمجتمعات العمرانية.'
     }
   ];
 

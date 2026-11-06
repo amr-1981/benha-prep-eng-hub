@@ -11,7 +11,7 @@ import GpaTrackerView from './views/GpaTrackerView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('syllabus');
-  const [facultyId, setFacultyId] = useState('benha'); // 'benha' or 'shoubra'
+  const [facultyId, setFacultyId] = useState('shoubra'); // Default: Faculty of Engineering at Shoubra
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-arabic selection:bg-blue-600 selection:text-white">

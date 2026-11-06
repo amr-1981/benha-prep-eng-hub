@@ -1,32 +1,38 @@
 // Comprehensive Curriculum Data for Engineering Chemistry - Preparatory Year
-// Tailored for Faculty of Engineering at Benha (BFAC) & Shoubra (FES) - Benha University (Term 1)
+// Specifically Tailored for Faculty of Engineering at Shoubra (FES) - Benha University (Term 1)
 
 export const FACULTY_INFO = {
   universityAr: "جامعة بنها",
   universityEn: "Benha University",
+  facultyNameAr: "كلية الهندسة بشبرا",
+  facultyNameEn: "Faculty of Engineering at Shoubra (FES)",
+  shortName: "هندسة شبرا",
+  campusAr: "108 شارع شبرا / روض الفرج / مبنى الخلفاوي، القاهرة",
+  establishmentYear: "1961",
+  gradingSystem: "150 درجة إجمالية (أعمال سنة ومعمل 60 + امتحان فاينال تحريري 90)",
+  subjectTitleAr: "الكيمياء الهندسية",
+  subjectTitleEn: "Engineering Chemistry",
+  code: "CHM 001",
+  term: "الفصل الدراسي الأول",
+  prepYear: "الفرقة الإعدادية (إعدادي هندسة شبرا)",
   faculties: [
-    {
-      id: "benha",
-      nameAr: "كلية الهندسة ببنها",
-      nameEn: "Faculty of Engineering at Benha",
-      short: "هندسة بنها",
-      campus: "مجمع الكليات - كفر سعد، بنها",
-      gradingSystem: "100 درجة (أعمال سنة 40 + فاينال 60)"
-    },
     {
       id: "shoubra",
       nameAr: "كلية الهندسة بشبرا",
       nameEn: "Faculty of Engineering at Shoubra",
-      short: "هندسة شبرا",
-      campus: "108 شارع شبرا / روض الفرج، القاهرة",
-      gradingSystem: "150 درجة (أعمال سنة 60 + فاينال 90)"
+      short: "هندسة شبرا (الأساسي)",
+      campus: "108 شارع شبرا / مبنى الخلفاوي، القاهرة",
+      gradingSystem: "150 درجة (أعمال سنة 45 + معمل وشفوي 15 + فاينال 90)"
+    },
+    {
+      id: "benha",
+      nameAr: "كلية الهندسة ببنها",
+      nameEn: "Faculty of Engineering at Benha",
+      short: "هندسة بنها (كفر سعد)",
+      campus: "مجمع الكليات - كفر سعد، بنها",
+      gradingSystem: "100 درجة (أعمال سنة 40 + فاينال 60)"
     }
-  ],
-  subjectTitleAr: "الكيمياء الهندسية",
-  subjectTitleEn: "Engineering Chemistry",
-  code: "CHE 001",
-  term: "الفصل الدراسي الأول",
-  prepYear: "الفرقة الإعدادية (إعدادي هندسة)"
+  ]
 };
 
 export const CHEMISTRY_MODULES = [
@@ -211,21 +217,23 @@ export const CHEMISTRY_MODULES = [
   }
 ];
 
-export const BENHA_EXAM_TIPS = [
+export const SHOUBRA_EXAM_TIPS = [
   {
     title: "لا تهمل كتابة المعادلات الكيميائية الموزونة",
-    tip: "دكاترة قسم الكيمياء بهندسة بنها وشبرا يمنحون نصف درجة السؤال على المعادلات الكيميائية الموزونة (مثل تفاعلات الجير، وترسيب فوسفات الكالسيوم، وتفاعلات الصدأ)."
+    tip: "دكاترة قسم الكيمياء بهندسة شبرا يمنحون نصف درجة السؤال على المعادلات الكيميائية الموزونة (مثل تفاعلات الجير، وترسيب فوسفات الكالسيوم، وتفاعلات الصدأ)."
   },
   {
-    title: "خطوات مسألة الـ Lime-Soda بالتفصيل",
+    title: "خطوات مسألة الـ Lime-Soda في فاينال شبرا (15-20 درجة)",
     tip: "ابدأ دائماً بجدول تحويل كل ملح إلى مكافئ كربونات الكالسيوم (CaCO3 Equivalent = Salt mg/L × 50 / Eq.wt). الخطوة الخاطئة في الجدول تعطل حسابات الجير والصودا بالكامل."
   },
   {
-    title: "وحدات القيمة الحرارية في مسألة الوقود",
-    tip: "انتبه لما إذا كانت نسب العناصر في التحليل الوزني معطاة مع نسبة رطوبة أم على أساس جاف، واكتب الناتج دائماً بـ kcal/kg أو kJ/kg."
+    title: "الرسم التوضيحي للجهاز في الامتحان التحريري",
+    tip: "رسم جهاز أورسات (Orsat)، البومب كالوريميتر، خلية التآكل الجلفاني، وقطب التضحية يعتبر شرطاً أساسياً للحصول على الدرجة الكاملة في أسئلة المقال بهندسة شبرا."
   },
   {
-    title: "الرسومات التوضيحية عليها درجات بونص",
-    tip: "رسم خلية التآكل الجلفاني، وقطب التضحية، وفرن الأسمنت الدوار، وجهاز البومب كالوريميتر يضمن لك الدرجة النهائية في الأسئلة المقالية."
+    title: "امتحان العملي والشفوي (الـ Viva)",
+    tip: "يُسأل الطالب في شبرا عن ألوان الأدلة (EBT مع EDTA ولماذا pH=10)، والفرق بين ريدوود 1 و 2، وأهمية نقطة الوميض في تأمين مخازن الوقود."
   }
 ];
+
+export const BENHA_EXAM_TIPS = SHOUBRA_EXAM_TIPS;

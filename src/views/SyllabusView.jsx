@@ -22,20 +22,20 @@ export default function SyllabusView() {
           <div className="space-y-2 text-center md:text-right">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
               <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-              مقرر الفصل الدراسي الأول • إعدادي هندسة بنها وشبرا
+              مقرر الفصل الدراسي الأول • كلية الهندسة بشبرا (جامعة بنها)
             </span>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
               موسوعة الكيمياء الهندسية (Engineering Chemistry)
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              الدليل الشامل للوحدات الدراسية الخمس، مفردات المنهج المعتمدة، نواتج التعلم، وأهم القوانين والمسائل الشائعة في الامتحانات.
+              الدليل الشامل للوحدات الدراسية الخمس، مفردات المنهج المعتمدة، نواتج التعلم، وأهم القوانين والمسائل الشائعة في امتحانات هندسة شبرا.
             </p>
           </div>
 
           <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/80 shrink-0 text-center sm:text-right space-y-1">
-            <span className="text-[11px] font-bold text-slate-400">كود المادة باللائحة:</span>
-            <div className="text-lg font-black text-cyan-400 font-mono">CHE 001</div>
-            <div className="text-[11px] text-amber-300 font-bold">100 أو 150 درجة إجمالية</div>
+            <span className="text-[11px] font-bold text-slate-400">كود المادة بلائحة شبرا:</span>
+            <div className="text-lg font-black text-cyan-400 font-mono">CHM 001</div>
+            <div className="text-[11px] text-amber-300 font-bold">150 درجة إجمالية (شبرا)</div>
           </div>
         </div>
       </div>
