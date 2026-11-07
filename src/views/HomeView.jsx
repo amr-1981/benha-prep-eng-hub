@@ -349,14 +349,14 @@ export default function HomeView({ setActiveTab, setActiveDivision }) {
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <button
-            onClick={() => handleSelectDivision('all', 'calculators')}
+            onClick={() => handleSelectDivision('all', 'lab')}
             className="p-4 rounded-2xl bg-slate-900/70 hover:bg-slate-850 border border-slate-800 hover:border-cyan-500/50 transition-all text-center sm:text-right space-y-2 group"
           >
             <div className="w-9 h-9 rounded-xl bg-blue-500/20 text-cyan-300 flex items-center justify-center border border-blue-500/30 group-hover:scale-110 transition-transform">
               <Calculator className="w-5 h-5" />
             </div>
-            <div className="font-black text-xs text-white">المعمل الحسابي الذكي</div>
-            <div className="text-[10px] text-slate-400">حل فوري لمسائل الشيت والفاينال</div>
+            <div className="font-black text-xs text-white">المعمل (حاسبات وتجارب)</div>
+            <div className="text-[10px] text-slate-400">حل المسائل ومحاكاة التجارب والشفوي</div>
           </button>
 
           <button

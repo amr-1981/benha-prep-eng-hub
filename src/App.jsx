@@ -4,9 +4,8 @@ import Footer from './components/Footer';
 import HomeView from './views/HomeView';
 import SyllabusView from './views/SyllabusView';
 import GlossaryView from './views/GlossaryView';
-import CalculatorsView from './views/CalculatorsView';
+import LabView from './views/LabView';
 import CheatSheetsView from './views/CheatSheetsView';
-import VirtualLabView from './views/VirtualLabView';
 import QuizArenaView from './views/QuizArenaView';
 import MaterialsView from './views/MaterialsView';
 import LecturesView from './views/LecturesView';
@@ -17,14 +16,27 @@ export default function App() {
   // Default to 'home' landing page featuring the academic department portal cards
   const [activeTab, setActiveTab] = useState('home');
   const [activeDivision, setActiveDivision] = useState('all'); // 'all' | 'thermal' | 'electro'
+  const [labSubTab, setLabSubTab] = useState('calculators'); // 'calculators' | 'experiments'
+
+  const handleTabChange = (tabId, subMode = null) => {
+    if (tabId === 'calculators') {
+      setActiveTab('lab');
+      setLabSubTab('calculators');
+    } else if (tabId === 'lab') {
+      setActiveTab('lab');
+      if (subMode) setLabSubTab(subMode);
+    } else {
+      setActiveTab(tabId);
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-arabic selection:bg-blue-600 selection:text-white">
       
       {/* Sticky Header Navigation */}
       <Navbar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
+        activeTab={activeTab === 'calculators' ? 'lab' : activeTab}
+        setActiveTab={handleTabChange}
         activeDivision={activeDivision}
         setActiveDivision={setActiveDivision}
       />
@@ -133,7 +145,7 @@ export default function App() {
         {/* 1. HOME LANDING PAGE WITH DEPARTMENT CARDS */}
         {activeTab === 'home' && (
           <HomeView 
-            setActiveTab={setActiveTab} 
+            setActiveTab={handleTabChange} 
             activeDivision={activeDivision}
             setActiveDivision={setActiveDivision} 
           />
@@ -149,9 +161,13 @@ export default function App() {
           <GlossaryView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
-        {/* 4. SMART CALCULATORS LAB */}
-        {activeTab === 'calculators' && (
-          <CalculatorsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+        {/* 4. UNIFIED ENGINEERING LAB (SMART CALCULATORS + VIRTUAL EXPERIMENTS) */}
+        {(activeTab === 'lab' || activeTab === 'calculators') && (
+          <LabView 
+            activeDivision={activeDivision} 
+            setActiveDivision={setActiveDivision}
+            subTab={activeTab === 'calculators' ? 'calculators' : labSubTab}
+          />
         )}
 
         {/* 5. A4 PRINTABLE CHEAT SHEETS */}
@@ -159,34 +175,29 @@ export default function App() {
           <CheatSheetsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
-        {/* 6. VIRTUAL LAB & EXPERIMENTS */}
-        {activeTab === 'lab' && (
-          <VirtualLabView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
-        )}
-
-        {/* 7. QUIZ ARENA (MCQ) */}
+        {/* 6. QUIZ ARENA (MCQ) */}
         {activeTab === 'quiz' && (
           <QuizArenaView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
-        {/* 8. MATERIALS & REPOSITORY */}
+        {/* 7. MATERIALS & REPOSITORY */}
         {activeTab === 'materials' && (
-          <MaterialsView setActiveTab={setActiveTab} activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+          <MaterialsView setActiveTab={handleTabChange} activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
-        {/* 9. VIDEO LECTURES */}
+        {/* 8. VIDEO LECTURES */}
         {activeTab === 'lectures' && (
           <LecturesView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
-        {/* 10. GPA TRACKER & DEPARTMENT COORDINATION */}
+        {/* 9. GPA TRACKER & DEPARTMENT COORDINATION */}
         {activeTab === 'gpa' && (
           <GpaTrackerView />
         )}
       </main>
 
       {/* Footer */}
-      <Footer setActiveTab={setActiveTab} />
+      <Footer setActiveTab={handleTabChange} />
 
     </div>
   );

@@ -10,9 +10,8 @@ export default function Navbar({ activeTab, setActiveTab, activeDivision, setAct
     { id: 'home', label: 'الرئيسية (الأقسام)', icon: Home, badge: 'بوابة المادة' },
     { id: 'syllabus', label: 'موسوعة المنهج', icon: BookOpen, badge: '6 وحدات' },
     { id: 'glossary', label: 'معجم الحفظ والقوانين', icon: BrainCircuit, badge: 'بنك الحفظ' },
-    { id: 'calculators', label: 'المعمل الحسابي', icon: Calculator, badge: 'حاسبات ذكية' },
+    { id: 'lab', label: 'المعمل', icon: TestTube, badge: 'حاسبات وتجارب' },
     { id: 'cheatsheets', label: 'شيتات وقوانين A4', icon: Printer, badge: 'جاهز للطباعة' },
-    { id: 'lab', label: 'المعمل الافتراضي', icon: TestTube, badge: 'تجارب وشفوي' },
     { id: 'quiz', label: 'بنك الأسئلة والامتحانات', icon: Award, badge: 'MCQ' },
     { id: 'materials', label: 'مكتبة الماتريال', icon: FolderArchive, badge: 'PDF وتحميل' },
     { id: 'lectures', label: 'المحاضرات المرئية', icon: Youtube, badge: 'YouTube' },
@@ -66,51 +65,6 @@ export default function Navbar({ activeTab, setActiveTab, activeDivision, setAct
 
           </div>
 
-        </div>
-
-        {/* Dedicated Two-Branch Academic Division Switcher */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between py-2 border-t border-slate-850 gap-2">
-          <div className="flex items-center gap-2 text-xs">
-            <span className="text-[11px] font-bold text-slate-400">تصفية المقرر حسب القسم الأكاديمي:</span>
-          </div>
-
-          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-2xl border border-slate-800 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('all')}
-              className={`px-3 py-1 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeDivision === 'all'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Sparkles className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكل (القسمان معاً)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('thermal')}
-              className={`px-3 py-1 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeDivision === 'thermal'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('electro')}
-              className={`px-3 py-1 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap shrink-0 ${
-                activeDivision === 'electro'
-                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-                  : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 text-cyan-300" />
-              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-            </button>
-          </div>
         </div>
 
         {/* Bottom Nav Tabs Bar */}
