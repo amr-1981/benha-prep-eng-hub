@@ -1,12 +1,13 @@
 import React from 'react';
 import { 
-  BookOpen, Calculator, Printer, TestTube, Youtube, Award, 
+  Home, BookOpen, Calculator, Printer, TestTube, Youtube, Award, 
   BarChart3, GraduationCap, BrainCircuit, FolderArchive, Flame, Zap, Sparkles 
 } from 'lucide-react';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 export default function Navbar({ activeTab, setActiveTab, activeDivision, setActiveDivision }) {
   const navItems = [
+    { id: 'home', label: 'الرئيسية (الأقسام)', icon: Home, badge: 'بوابة المادة' },
     { id: 'syllabus', label: 'موسوعة المنهج', icon: BookOpen, badge: '6 وحدات' },
     { id: 'glossary', label: 'معجم الحفظ والقوانين', icon: BrainCircuit, badge: 'بنك الحفظ' },
     { id: 'calculators', label: 'المعمل الحسابي', icon: Calculator, badge: 'حاسبات ذكية' },
@@ -27,7 +28,7 @@ export default function Navbar({ activeTab, setActiveTab, activeDivision, setAct
           
           {/* Logo & Platform Title */}
           <div 
-            onClick={() => setActiveTab('syllabus')}
+            onClick={() => { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
             className="flex items-center gap-3 cursor-pointer group"
           >
             <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-2xl bg-gradient-to-tr from-blue-700 via-indigo-600 to-cyan-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/20 border border-blue-400/40 group-hover:scale-105 transition-transform">

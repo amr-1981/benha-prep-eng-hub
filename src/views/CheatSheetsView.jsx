@@ -3,6 +3,33 @@ import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
+// BiDi Isolation Helper: Guarantees English formulas, brackets, and chemical notations inside Arabic text never flip backwards
+function SafeBiDiText({ text, className = "" }) {
+  if (!text) return null;
+  const parts = text.split(/(\[[^\]]+\]|\([A-Za-z0-9_\-\+\*\/\.\s=°%]+\)|[A-Za-z0-9_\-°%]{2,}(?:\s*=\s*[A-Za-z0-9_\-°%\/\.]+)?)/g);
+
+  return (
+    <span dir="rtl" className={className}>
+      {parts.map((part, index) => {
+        if (!part) return null;
+        const isEnglishFormula = /^(\[|\()/.test(part) || /[A-Za-z]/.test(part);
+        if (isEnglishFormula) {
+          return (
+            <bdi
+              key={index}
+              dir="ltr"
+              className="inline-block font-mono font-black text-blue-900 bg-blue-100/70 px-1.5 py-0.5 rounded text-[11px] mx-1 border border-blue-200/80 shadow-xs"
+            >
+              {part}
+            </bdi>
+          );
+        }
+        return <span key={index}>{part}</span>;
+      })}
+    </span>
+  );
+}
+
 export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
@@ -315,10 +342,11 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
 
                           {fItem.note && !fItem.noteText && (
                             <div 
-                              className="font-arabic text-[11px] font-bold text-amber-950 bg-amber-50/90 p-2.5 rounded-lg border border-amber-200 text-right leading-relaxed" 
+                              className="font-arabic text-[11px] font-bold text-amber-950 bg-amber-50/90 p-2.5 rounded-lg border border-amber-200 text-right leading-relaxed flex items-center gap-1.5" 
                               dir="rtl"
                             >
-                              {fItem.note}
+                              <span className="text-amber-800 font-black shrink-0">💡 ملاحظة:</span>
+                              <SafeBiDiText text={fItem.note} />
                             </div>
                           )}
                         </div>
@@ -330,18 +358,18 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
                   {sec.type === 'examProblem' && (
                     <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-3">
                       <div className="font-arabic font-bold text-slate-900 bg-amber-100/80 p-3 rounded-xl border border-amber-300 leading-relaxed text-right" dir="rtl">
-                        {sec.question}
+                        <SafeBiDiText text={sec.question} />
                       </div>
 
                       <div className="space-y-3 font-arabic text-slate-800 text-right" dir="rtl">
                         <div className="text-emerald-800 font-black text-xs">خطوات وتفاصيل الحل النموذجي:</div>
-                        {sec.solutionSteps.map((step, si) => (
+                        {(sec.solutionSteps || []).map((step, si) => (
                           <div key={si} className="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5">
                             <div className="text-xs font-bold text-slate-700 leading-relaxed">
-                              {step.desc}
+                              <SafeBiDiText text={step.desc} />
                             </div>
                             <div className="space-y-1">
-                              {step.calcs.map((calc, ci) => (
+                              {(step.calcs || []).map((calc, ci) => (
                                 <div 
                                   key={ci} 
                                   className="font-mono text-[11px] font-bold text-blue-950 bg-slate-50 p-2 rounded border border-slate-200 text-left overflow-x-auto" 
