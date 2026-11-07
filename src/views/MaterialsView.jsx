@@ -2,17 +2,18 @@ import React, { useState } from 'react';
 import { 
   FolderArchive, Download, ExternalLink, Search, Filter, BookOpen, 
   FileText, Award, Sparkles, FileCode, CheckCircle2, FolderPlus, 
-  Share2, HardDrive, Send, AlertCircle, Info, ChevronRight
+  Share2, HardDrive, Send, AlertCircle, Info, ChevronRight, Flame, Zap
 } from 'lucide-react';
 import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/materialsData';
 
-export default function MaterialsView({ setActiveTab }) {
+export default function MaterialsView({ setActiveTab, activeDivision = 'all', setActiveDivision }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
 
   // Filter materials
   const filteredFiles = MATERIAL_FILES.filter((file) => {
+    const matchDivision = !activeDivision || activeDivision === 'all' || file.division === 'all' || file.division === activeDivision;
     const matchCat = activeCategory === 'all' || file.category === activeCategory;
     const query = searchQuery.trim().toLowerCase();
     const matchQuery = query === '' ||
@@ -21,7 +22,7 @@ export default function MaterialsView({ setActiveTab }) {
       file.author.toLowerCase().includes(query) ||
       file.tags.some(t => t.toLowerCase().includes(query));
     
-    return matchCat && matchQuery;
+    return matchDivision && matchCat && matchQuery;
   });
 
   return (
@@ -163,6 +164,46 @@ export default function MaterialsView({ setActiveTab }) {
         </div>
       </div>
 
+      {/* Two-Branch Academic Division Bar */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <span>قسم الماتريال:</span>
+        </span>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+            activeDivision === 'all'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          الكل (القسمان معاً)
+        </button>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('thermal')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'thermal'
+              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-300" />
+          <span>الكيمياء الحرارية والوقود (د. هناء)</span>
+        </button>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('electro')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'electro'
+              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5 text-cyan-300" />
+          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+        </button>
+      </div>
+
       {/* Search & Category Filter Navigation */}
       <div className="bg-slate-800/90 p-4 sm:p-5 rounded-2xl border border-slate-700 shadow-md space-y-4">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -217,12 +258,21 @@ export default function MaterialsView({ setActiveTab }) {
                 
                 {/* Header row: Format pill + Size + Pages */}
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <span className="font-mono text-[10px] font-black px-2.5 py-0.5 rounded-full bg-rose-950 text-rose-300 border border-rose-800/60">
                       {file.format}
                     </span>
                     <span className="text-[11px] font-bold text-slate-400 font-mono">
                       {file.size} • {file.pages} صفحة
+                    </span>
+                    <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${
+                      file.division === 'thermal'
+                        ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
+                        : file.division === 'electro'
+                        ? 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
+                        : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/60'
+                    }`}>
+                      {file.division === 'thermal' ? '🔥 حرارية (د. هناء)' : file.division === 'electro' ? '⚡ كهربية (د. سمر)' : '📑 منصة شبرا'}
                     </span>
                   </div>
 

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, Sparkles, Filter } from 'lucide-react';
+import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, Sparkles, Filter, Flame, Zap } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { QUIZ_QUESTIONS } from '../data/quizBankData';
 
-export default function QuizArenaView() {
+export default function QuizArenaView({ activeDivision = 'all', setActiveDivision }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -11,7 +11,10 @@ export default function QuizArenaView() {
   const [isFinished, setIsFinished] = useState(false);
 
   const filteredQuestions = QUIZ_QUESTIONS.filter((q) => {
-    return activeFilter === 'all' || q.module === activeFilter;
+    const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
+    const matchDivision = !activeDivision || activeDivision === 'all' || (activeDivision === 'electro' ? isElectro : !isElectro);
+    const matchFilter = activeFilter === 'all' || q.module === activeFilter;
+    return matchDivision && matchFilter;
   });
 
   const currentQ = filteredQuestions[currentIdx] || filteredQuestions[0];
@@ -69,6 +72,58 @@ export default function QuizArenaView() {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Two-Branch Academic Division Switcher */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
+          <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+          <span>قسم الاختبار:</span>
+        </span>
+        <button
+          onClick={() => {
+            setActiveDivision && setActiveDivision('all');
+            setActiveFilter('all');
+            handleRestart();
+          }}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+            activeDivision === 'all'
+              ? 'bg-purple-600 text-white shadow-md'
+              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          الامتحان الشامل (القسمان)
+        </button>
+        <button
+          onClick={() => {
+            setActiveDivision && setActiveDivision('thermal');
+            setActiveFilter('all');
+            handleRestart();
+          }}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'thermal'
+              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-300" />
+          <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
+        </button>
+        <button
+          onClick={() => {
+            setActiveDivision && setActiveDivision('electro');
+            setActiveFilter('all');
+            handleRestart();
+          }}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'electro'
+              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5 text-cyan-300" />
+          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+        </button>
       </div>
 
       {/* Module Filter Tabs */}

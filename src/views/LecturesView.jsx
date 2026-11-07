@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Play, ExternalLink, Search, Filter, Youtube, Clock, Eye, Sparkles } from 'lucide-react';
+import { Play, ExternalLink, Search, Filter, Youtube, Clock, Eye, Sparkles, Flame, Zap } from 'lucide-react';
 import { VIDEO_TOPICS, YOUTUBE_CHANNELS, LECTURE_VIDEOS } from '../data/videosData';
 
-export default function LecturesView() {
+export default function LecturesView({ activeDivision = 'all', setActiveDivision }) {
   const [activeTopic, setActiveTopic] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   const filteredVideos = LECTURE_VIDEOS.filter((v) => {
+    const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
+    const matchDivision = !activeDivision || activeDivision === 'all' || (activeDivision === 'electro' ? isElectro : !isElectro);
     const matchTopic = activeTopic === 'all' || v.topic === activeTopic;
     const matchSearch = searchQuery.trim() === '' ||
       v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       v.channel.toLowerCase().includes(searchQuery.toLowerCase()) ||
       v.tags.some(t => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    return matchTopic && matchSearch;
+    return matchDivision && matchTopic && matchSearch;
   });
 
   return (
@@ -80,6 +82,52 @@ export default function LecturesView() {
             </div>
           </a>
         ))}
+      </div>
+
+      {/* Two-Branch Academic Division Switcher */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
+          <Sparkles className="w-3.5 h-3.5 text-rose-400" />
+          <span>قسم الفيديوهات:</span>
+        </span>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+            activeDivision === 'all'
+              ? 'bg-rose-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          جميع الفيديوهات (القسمان)
+        </button>
+        <button
+          onClick={() => {
+            setActiveDivision && setActiveDivision('thermal');
+            setActiveTopic('all');
+          }}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'thermal'
+              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-300" />
+          <span>فيديوهات الكيمياء الحرارية والصناعية (د. هناء)</span>
+        </button>
+        <button
+          onClick={() => {
+            setActiveDivision && setActiveDivision('electro');
+            setActiveTopic('all');
+          }}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'electro'
+              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5 text-cyan-300" />
+          <span>فيديوهات الكيمياء الكهربية والتآكل (د. سمر)</span>
+        </button>
       </div>
 
       {/* Topic Filter Pills */}

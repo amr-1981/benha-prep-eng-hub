@@ -20,31 +20,52 @@ export const CLOUD_DRIVES = [
 ];
 
 export const REAL_MATERIAL_FILES = [
-  // 1. Genuine Scanned Notebook from Dr. Samar & Dr. Hanaa
+  // 1. Scanned Lectures Part 1: Dr. Samar Abdelhamed (Electrochemistry & Corrosion)
   {
-    id: 'mat-notebook-01',
+    id: 'mat-notebook-samar',
     category: 'lectures',
-    title: 'كشكول ملخص محاضرات الكيمياء الكهربية والحرارية والتآكل',
-    description: 'الملخص المكتوب بخط اليد والممسوح ضوئياً كاملاً (33 صفحة): محاضرات د. سمر عبد الحميد (الكيمياء الكهربية، نيرنست، والتآكل) + محاضرات د. هناء عبد الوهاب (الكيمياء الحرارية، قانون هس، والوقود).',
-    author: 'محاضرات د. سمر عبد الحميد & د. هناء عبد الوهاب - هندسة شبرا',
+    division: 'electro',
+    title: 'كشكول محاضرات الكيمياء الكهربية والتآكل (د. سمر عبد الحميد)',
+    description: 'الملخص المكتوب بخط اليد والمعتمد من طلاب شبرا (الصفحات 1 إلى 14): الخلايا الجلفانية، السلسلة الكهروكيميائية، قطب SHE، معادلة نيرنست، طاقة جيبس ΔG°، ميكانيكية التآكل والصدأ، الحماية الكاثودية (قطب التضحية والتيار القسري)، والطلاء ومثبطات التآكل.',
+    author: 'محاضرات د. سمر عبد الحميد - هندسة شبرا',
     format: 'PDF',
-    size: '52.3 MB',
-    pages: 33,
+    size: 'متاح للتحميل',
+    pages: 14,
     date: 'الفصل الدراسي الأول',
     isOfficial: true,
     actionType: 'external_link',
     viewUrl: 'https://drive.google.com/file/d/1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N/view?usp=sharing',
     downloadUrl: 'https://drive.usercontent.google.com/download?id=1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N&export=download',
-    tags: ['Dr. Samar', 'Dr. Hanaa', 'Electrochemistry', 'Thermochemistry', 'Corrosion', 'Hess Law']
+    tags: ['Dr. Samar', 'Electrochemistry', 'Nernst Equation', 'Corrosion', 'Cathodic Protection']
   },
 
-  // 2. Real Platform Printable A4 Sheet: Water Treatment
+  // 2. Scanned Lectures Part 2: Dr. Hanaa Abdelwahaab (Thermochemistry & Fuels)
+  {
+    id: 'mat-notebook-hanaa',
+    category: 'lectures',
+    division: 'thermal',
+    title: 'كشكول محاضرات الكيمياء الحرارية وهندسة الوقود (د. هناء عبد الوهاب)',
+    description: 'الملخص المكتوب بخط اليد والمعتمد من طلاب شبرا (الصفحات 15 إلى 33): القانون الأول للديناميكا، وحدات الطاقة، حسابات ΔH = ΔE + ΔnRT والشغل، قانون هس وطاقات الروابط، مسعر القنبلة والقهوة، التحليل التقريبي والنهائي للفحم، ومعادلة دولونج.',
+    author: 'محاضرات د. هناء عبد الوهاب - هندسة شبرا',
+    format: 'PDF',
+    size: 'متاح للتحميل',
+    pages: 19,
+    date: 'الفصل الدراسي الأول',
+    isOfficial: true,
+    actionType: 'external_link',
+    viewUrl: 'https://drive.google.com/file/d/1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N/view?usp=sharing',
+    downloadUrl: 'https://drive.usercontent.google.com/download?id=1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N&export=download',
+    tags: ['Dr. Hanaa', 'Thermochemistry', 'Hess Law', 'Bomb Calorimeter', 'Fuels', 'Dulong']
+  },
+
+  // 3. Real Platform Printable A4 Sheet: Water Treatment
   {
     id: 'mat-sheet-water',
     category: 'cheatsheets',
+    division: 'thermal',
     title: 'شيت ملخص قوانين ومعادلات معالجة المياه والجير والصودا (A4)',
     description: 'ورقة A4 ملخصة جاهزة للطباعة والتصدير كـ PDF: جميع معادلات الترسيب، جدول تحويل مكافئ CaCO3 Eq، وقوانين الجير والصودا التجارية مع مسألة فاينال نموذجية محلولة بالخطوات.',
-    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء (د. هناء)',
     format: 'A4 / PDF',
     size: 'محتوى تفاعلي',
     pages: 1,
@@ -56,13 +77,14 @@ export const REAL_MATERIAL_FILES = [
     tags: ['Water Treatment', 'Lime Soda', 'A4 Printable', 'Model Solution']
   },
 
-  // 3. Real Platform Printable A4 Sheet: Fuels & Combustion
+  // 4. Real Platform Printable A4 Sheet: Fuels & Combustion
   {
     id: 'mat-sheet-fuels',
     category: 'cheatsheets',
+    division: 'thermal',
     title: 'شيت ملخص قوانين الوقود والاحتراق ومعادلة دولونج (A4)',
     description: 'ورقة A4 ملخصة جاهزة للطباعة: معادلة دولونج للقيمة الحرارية GCV و NCV، قوانين حساب كتلة وحجم الهواء النظري للاحتراق، ومقارنة الرقم الأوكتاني والرقم السيتاني.',
-    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء (د. هناء)',
     format: 'A4 / PDF',
     size: 'محتوى تفاعلي',
     pages: 1,
@@ -74,13 +96,14 @@ export const REAL_MATERIAL_FILES = [
     tags: ['Fuels', 'Dulong Formula', 'Combustion Air', 'Octane Number']
   },
 
-  // 4. Real Platform Printable A4 Sheet: Corrosion & Cathodic Protection
+  // 5. Real Platform Printable A4 Sheet: Corrosion & Cathodic Protection
   {
     id: 'mat-sheet-corrosion',
     category: 'cheatsheets',
+    division: 'electro',
     title: 'شيت ملخص كيمياء التآكل والصدأ والحماية الكاثودية (A4)',
     description: 'ورقة A4 ملخصة جاهزة للطباعة: تفاعلات الأنود والكاثود، أنواع التآكل، مقارنة الجلفنة بالقصدير، وقوانين الحماية بقطب التضحية والتيار القسري المفروض.',
-    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء (د. سمر)',
     format: 'A4 / PDF',
     size: 'محتوى تفاعلي',
     pages: 1,
@@ -92,13 +115,14 @@ export const REAL_MATERIAL_FILES = [
     tags: ['Corrosion', 'Cathodic Protection', 'Rust Reactions', 'Galvanizing']
   },
 
-  // 5. Real Platform Printable A4 Sheet: Cement & Bogue
+  // 6. Real Platform Printable A4 Sheet: Cement & Bogue
   {
     id: 'mat-sheet-cement',
     category: 'cheatsheets',
+    division: 'thermal',
     title: 'شيت ملخص كيمياء الأسمنت البورتلاندي ومركبات بوج و LSF (A4)',
     description: 'ورقة A4 ملخصة جاهزة للطباعة: معادلات بوج الأربعة (C3S, C2S, C3A, C4AF)، قانون معامل تشبع الجير LSF والمدى القياسي، ودور الجبس في منع الشك الخاطف.',
-    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء (د. هناء)',
     format: 'A4 / PDF',
     size: 'محتوى تفاعلي',
     pages: 1,
@@ -110,13 +134,14 @@ export const REAL_MATERIAL_FILES = [
     tags: ['Cement', 'Bogue', 'LSF Ratio', 'Concrete Durability']
   },
 
-  // 6. Real Platform Printable A4 Sheet: Polymers & Lubricants
+  // 7. Real Platform Printable A4 Sheet: Polymers & Lubricants
   {
     id: 'mat-sheet-polymers',
     category: 'cheatsheets',
+    division: 'thermal',
     title: 'شيت ملخص البوليمرات واللدائن وزيوت التزييت والتشحيم (A4)',
     description: 'ورقة A4 ملخصة جاهزة للطباعة: مقارنة اللدائن الحرارية والمتصلدة، مؤشر اللزوجة VI، نقطة الوميض، وقانون رقم التصبن S.V. لكشف غش الزيوت.',
-    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء (د. هناء)',
     format: 'A4 / PDF',
     size: 'محتوى تفاعلي',
     pages: 1,
@@ -128,10 +153,11 @@ export const REAL_MATERIAL_FILES = [
     tags: ['Polymers', 'Lubricants', 'Flash Point', 'Saponification']
   },
 
-  // 7. Full Memorization Glossary Vault
+  // 8. Full Memorization Glossary Vault
   {
     id: 'mat-glossary-vault',
     category: 'vault',
+    division: 'all',
     title: 'بنك ومعجم مصطلحات وقوانين الكيمياء الهندسية ليلة الامتحان',
     description: 'الدليل الكامل للمصطلحات العلمية والقوانين والتعليلات (علل) للمنهج كاملاً مع نظام الفلاش كاردز التفاعلي للحفظ بنسبة إتقان وإمكانية الطباعة المباشرة A4.',
     author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',

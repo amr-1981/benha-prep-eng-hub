@@ -2,11 +2,11 @@ import React, { useState, useMemo } from 'react';
 import { 
   BookMarked, Search, Filter, Sparkles, CheckCircle2, RotateCcw, 
   HelpCircle, Eye, EyeOff, Copy, Check, Printer, BrainCircuit,
-  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator
+  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap
 } from 'lucide-react';
 import { GLOSSARY_ITEMS, GLOSSARY_MODULES, GLOSSARY_TYPES } from '../data/glossaryData';
 
-export default function GlossaryView() {
+export default function GlossaryView({ activeDivision = 'all', setActiveDivision }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -21,6 +21,11 @@ export default function GlossaryView() {
   // Filter items
   const filteredItems = useMemo(() => {
     return GLOSSARY_ITEMS.filter((item) => {
+      // Division filter
+      const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
+      const matchDivision = !activeDivision || activeDivision === 'all' ||
+        (activeDivision === 'electro' ? isElectro : !isElectro);
+
       const matchModule = selectedModule === 'all' || item.module === selectedModule;
       const matchType = selectedType === 'all' || item.type === selectedType;
       
@@ -31,9 +36,9 @@ export default function GlossaryView() {
         item.definitionAr.toLowerCase().includes(query) ||
         (item.keywords && item.keywords.some(k => k.toLowerCase().includes(query)));
 
-      return matchModule && matchType && matchSearch;
+      return matchDivision && matchModule && matchType && matchSearch;
     });
-  }, [searchQuery, selectedModule, selectedType]);
+  }, [searchQuery, selectedModule, selectedType, activeDivision]);
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 
@@ -193,6 +198,60 @@ export default function GlossaryView() {
             </button>
           </div>
 
+        </div>
+
+        {/* Filter Row 0: Academic Division Selector */}
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+          <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>القسم الأكاديمي:</span>
+          </span>
+          <button
+            onClick={() => {
+              setActiveDivision && setActiveDivision('all');
+              setFlashcardIdx(0);
+              setIsRevealed(false);
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
+              activeDivision === 'all'
+                ? 'bg-blue-600 text-white shadow'
+                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
+            }`}
+          >
+            الكل (القسمان معاً)
+          </button>
+          <button
+            onClick={() => {
+              setActiveDivision && setActiveDivision('thermal');
+              setSelectedModule('all');
+              setFlashcardIdx(0);
+              setIsRevealed(false);
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 ${
+              activeDivision === 'thermal'
+                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow'
+                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
+            }`}
+          >
+            <Flame className="w-3.5 h-3.5 text-amber-300" />
+            <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
+          </button>
+          <button
+            onClick={() => {
+              setActiveDivision && setActiveDivision('electro');
+              setSelectedModule('all');
+              setFlashcardIdx(0);
+              setIsRevealed(false);
+            }}
+            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 ${
+              activeDivision === 'electro'
+                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow'
+                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5 text-cyan-300" />
+            <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+          </button>
         </div>
 
         {/* Filter Row 1: Module Selector */}
@@ -423,12 +482,21 @@ export default function GlossaryView() {
                     
                     {/* Header: English Term + Actions */}
                     <div className="flex items-start justify-between gap-3">
-                      <span 
-                        dir="ltr" 
-                        className="font-mono font-bold text-xs text-cyan-300 bg-slate-900 px-2.5 py-0.5 rounded-lg border border-slate-700"
-                      >
-                        {item.termEn}
-                      </span>
+                      <div className="flex items-center gap-1.5 flex-wrap">
+                        <span 
+                          dir="ltr" 
+                          className="font-mono font-bold text-xs text-cyan-300 bg-slate-900 px-2.5 py-0.5 rounded-lg border border-slate-700"
+                        >
+                          {item.termEn}
+                        </span>
+                        <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
+                          item.module === 'corrosion' || item.id.startsWith('c-')
+                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                            : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                        }`}>
+                          {item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ كهربية (د. سمر)' : '🔥 حرارية (د. هناء)'}
+                        </span>
+                      </div>
 
                       <div className="flex items-center gap-1 no-print">
                         <button

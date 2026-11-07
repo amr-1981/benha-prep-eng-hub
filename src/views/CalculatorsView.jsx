@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Calculator, Droplets, Flame, Building2, Zap, ArrowLeft, RefreshCw, CheckCircle2, AlertCircle } from 'lucide-react';
 
-export default function CalculatorsView() {
+export default function CalculatorsView({ activeDivision = 'all', setActiveDivision }) {
   const [activeCalc, setActiveCalc] = useState('lime-soda');
 
   // ================= 1. LIME-SODA STATE =================
@@ -144,7 +144,7 @@ export default function CalculatorsView() {
       
       {/* Top Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-blue-500/40 shadow-xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
           <div>
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30 mb-2">
               <Calculator className="w-4 h-4 text-cyan-400" />
@@ -154,60 +154,125 @@ export default function CalculatorsView() {
               حاسبات مسائل الكيمياء الهندسية الذكية
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              حل فوري مع خطوات التعويض والتحويل لمسائل شيتات وامتحانات كلية الهندسة بشبرا
+              حل فوري مع خطوات التعويض والتحويل لمسائل شيتات وامتحانات كلية الهندسة بشبرا (مفصولة بالقسمين الأكاديميين)
             </p>
           </div>
 
-          {/* Calculator Selector Tabs */}
-          <div className="flex items-center gap-2 bg-slate-800/80 p-1.5 rounded-2xl border border-slate-700">
+          {/* Division Switcher */}
+          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 shrink-0 overflow-x-auto no-scrollbar">
             <button
-              onClick={() => setActiveCalc('lime-soda')}
-              className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
-                activeCalc === 'lime-soda'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              onClick={() => setActiveDivision && setActiveDivision('all')}
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+                activeDivision === 'all' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Droplets className="w-3.5 h-3.5" />
-              <span>الجير والصودا (Lime-Soda)</span>
+              جميع الحاسبات
             </button>
-
             <button
-              onClick={() => setActiveCalc('dulong')}
-              className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
-                activeCalc === 'dulong'
-                  ? 'bg-amber-600 text-white shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              onClick={() => {
+                setActiveDivision && setActiveDivision('thermal');
+                if (subThermoMode === 'nernst' && activeCalc === 'thermo') setSubThermoMode('enthalpy');
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'thermal' ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Flame className="w-3.5 h-3.5" />
-              <span>دولونج والوقود (GCV / NCV)</span>
+              <Flame className="w-3.5 h-3.5 text-amber-300" />
+              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
             </button>
-
             <button
-              onClick={() => setActiveCalc('bogue')}
-              className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
-                activeCalc === 'bogue'
-                  ? 'bg-emerald-600 text-white shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              onClick={() => {
+                setActiveDivision && setActiveDivision('electro');
+                setActiveCalc('thermo');
+                setSubThermoMode('nernst');
+              }}
+              className={`px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'electro' ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
               }`}
             >
-              <Building2 className="w-3.5 h-3.5" />
-              <span>مركبات بوج للأسمنت</span>
-            </button>
-
-            <button
-              onClick={() => setActiveCalc('thermo')}
-              className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
-                activeCalc === 'thermo'
-                  ? 'bg-purple-600 text-white shadow-md'
-                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكيمياء الحرارية ونيرنست (د. هناء ود. سمر)</span>
+              <Zap className="w-3.5 h-3.5 text-cyan-300" />
+              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
             </button>
           </div>
+        </div>
+
+        {/* Grouped Calculator Selector Buttons */}
+        <div className="mt-6 pt-5 border-t border-slate-700/70 flex flex-wrap items-center gap-2">
+          
+          {/* Thermal Group Buttons */}
+          {(activeDivision === 'all' || activeDivision === 'thermal') && (
+            <>
+              <button
+                onClick={() => setActiveCalc('lime-soda')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                  activeCalc === 'lime-soda'
+                    ? 'bg-blue-600 text-white shadow-md'
+                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700/60'
+                }`}
+              >
+                <Droplets className="w-3.5 h-3.5 text-cyan-400" />
+                <span>الجير والصودا لمياه الغلايات (د. هناء)</span>
+              </button>
+
+              <button
+                onClick={() => setActiveCalc('dulong')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                  activeCalc === 'dulong'
+                    ? 'bg-amber-600 text-white shadow-md'
+                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700/60'
+                }`}
+              >
+                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <span>دولونج والوقود وهوائه (GCV / NCV)</span>
+              </button>
+
+              <button
+                onClick={() => setActiveCalc('bogue')}
+                className={`px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                  activeCalc === 'bogue'
+                    ? 'bg-emerald-600 text-white shadow-md'
+                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700/60'
+                }`}
+              >
+                <Building2 className="w-3.5 h-3.5 text-emerald-400" />
+                <span>مركبات بوج للأسمنت و LSF</span>
+              </button>
+
+              <button
+                onClick={() => {
+                  setActiveCalc('thermo');
+                  setSubThermoMode('enthalpy');
+                }}
+                className={`px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                  activeCalc === 'thermo' && subThermoMode !== 'nernst'
+                    ? 'bg-purple-600 text-white shadow-md'
+                    : 'bg-slate-800/80 text-slate-300 hover:text-white hover:bg-slate-700 border border-slate-700/60'
+                }`}
+              >
+                <Flame className="w-3.5 h-3.5 text-orange-400" />
+                <span>الإنتالبي وقانون هس ومسعر القنبلة (د. هناء)</span>
+              </button>
+            </>
+          )}
+
+          {/* Electrochemistry Group Buttons */}
+          {(activeDivision === 'all' || activeDivision === 'electro') && (
+            <button
+              onClick={() => {
+                setActiveCalc('thermo');
+                setSubThermoMode('nernst');
+              }}
+              className={`px-3.5 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                activeCalc === 'thermo' && subThermoMode === 'nernst'
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md border border-cyan-400'
+                  : 'bg-slate-800/80 text-cyan-300 hover:text-white hover:bg-slate-700 border border-cyan-800/60'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5 text-cyan-300 animate-pulse" />
+              <span>معادلة نيرنست وطاقة جيبس E_cell & ΔG° (د. سمر)</span>
+            </button>
+          )}
+
         </div>
       </div>
 

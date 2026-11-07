@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
-import { TestTube, Play, RotateCcw, CheckCircle2, AlertCircle, HelpCircle, Sparkles } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { TestTube, Play, RotateCcw, CheckCircle2, AlertCircle, HelpCircle, Sparkles, Flame, Zap } from 'lucide-react';
 import { LAB_EXPERIMENTS } from '../data/labExperimentsData';
 
-export default function VirtualLabView() {
-  const [selectedExp, setSelectedExp] = useState(LAB_EXPERIMENTS[0]);
+export default function VirtualLabView({ activeDivision = 'all', setActiveDivision }) {
+  const filteredExperiments = LAB_EXPERIMENTS.filter(exp => {
+    return !activeDivision || activeDivision === 'all' || exp.division === activeDivision;
+  });
+
+  const [selectedExp, setSelectedExp] = useState(filteredExperiments[0] || LAB_EXPERIMENTS[0]);
+
+  useEffect(() => {
+    if (!filteredExperiments.some(e => e.id === selectedExp.id)) {
+      if (filteredExperiments.length > 0) {
+        setSelectedExp(filteredExperiments[0]);
+      }
+    }
+  }, [activeDivision, filteredExperiments, selectedExp]);
 
   // Titration simulator state for Experiment 1
   const [edtaVolume, setEdtaVolume] = useState(0);
@@ -38,7 +50,7 @@ export default function VirtualLabView() {
               تَجَارِبُ المَعْمَلِ وَأَسْئِلَةُ الامْتِحَانِ الشَّفَوِي (VIVA)
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              شرح تفاعلي للأجهزة وخطوات العمل، محاكاة معايرة EDTA، وأسئلة الشفوي المقررة في كلية الهندسة بشبرا
+              شرح تفاعلي للأجهزة وخطوات العمل مقسم بين: <strong>تجارب الكيمياء الحرارية والصناعية (د. هناء)</strong> و <strong>تجارب الكيمياء الكهربية والتآكل (د. سمر)</strong>.
             </p>
           </div>
 
@@ -49,9 +61,49 @@ export default function VirtualLabView() {
         </div>
       </div>
 
+      {/* Two-Branch Academic Division Switcher */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
+          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <span>قسم التجارب:</span>
+        </span>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+            activeDivision === 'all'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          جميع التجارب (القسمان)
+        </button>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('thermal')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'thermal'
+              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-300" />
+          <span>تجارب الكيمياء الحرارية والصناعية (د. هناء)</span>
+        </button>
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('electro')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'electro'
+              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5 text-cyan-300" />
+          <span>تجارب الكيمياء الكهربية والتآكل (د. سمر)</span>
+        </button>
+      </div>
+
       {/* Experiment Selector Tabs */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {LAB_EXPERIMENTS.map((exp) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {filteredExperiments.map((exp) => (
           <button
             key={exp.id}
             onClick={() => {
@@ -60,18 +112,30 @@ export default function VirtualLabView() {
             }}
             className={`p-4 rounded-2xl border-2 text-right transition-all flex flex-col justify-between ${
               selectedExp.id === exp.id
-                ? 'bg-gradient-to-br from-indigo-900/90 to-slate-900 border-cyan-400 shadow-lg scale-[1.02]'
-                : 'bg-slate-800/60 hover:bg-slate-800 border-slate-700 text-slate-300'
+                ? exp.division === 'thermal'
+                  ? 'bg-gradient-to-br from-amber-950/80 to-slate-900 border-amber-400 shadow-lg shadow-amber-950/50'
+                  : 'bg-gradient-to-br from-cyan-950/80 to-slate-900 border-cyan-400 shadow-lg shadow-cyan-950/50'
+                : 'bg-slate-800/80 hover:bg-slate-800 border-slate-700 text-slate-300'
             }`}
           >
             <div className="flex items-center justify-between mb-2">
-              <span className="text-[10px] font-black text-cyan-400 bg-cyan-950 px-2 py-0.5 rounded-full border border-cyan-800">
+              <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
+                selectedExp.id === exp.id
+                  ? 'bg-white text-slate-950 border-white font-mono'
+                  : 'bg-slate-900 text-slate-400 border-slate-700'
+              }`}>
                 تجربة {exp.number}
               </span>
-              <span className="text-xs text-amber-300 font-bold">{exp.marks}</span>
+              <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
+                exp.division === 'thermal'
+                  ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
+                  : 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
+              }`}>
+                {exp.division === 'thermal' ? '🔥 حرارية (د. هناء)' : '⚡ كهربية (د. سمر)'}
+              </span>
             </div>
-            <h3 className="font-black text-xs text-white line-clamp-2">{exp.titleAr}</h3>
-            <span className="text-[10px] text-slate-400 mt-2 font-mono">{exp.duration}</span>
+            <h3 className="font-black text-xs text-white leading-snug line-clamp-2">{exp.titleAr}</h3>
+            <span className="text-[10px] text-slate-400 line-clamp-1 mt-1 font-mono">{exp.titleEn}</span>
           </button>
         ))}
       </div>

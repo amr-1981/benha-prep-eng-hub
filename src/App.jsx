@@ -13,6 +13,7 @@ import GpaTrackerView from './views/GpaTrackerView';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('syllabus');
+  const [activeDivision, setActiveDivision] = useState('all'); // 'all' | 'thermal' | 'electro'
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-arabic selection:bg-blue-600 selection:text-white">
@@ -21,40 +22,42 @@ export default function App() {
       <Navbar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        activeDivision={activeDivision}
+        setActiveDivision={setActiveDivision}
       />
 
       {/* Main Content Container */}
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {activeTab === 'syllabus' && (
-          <SyllabusView />
+          <SyllabusView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'glossary' && (
-          <GlossaryView />
+          <GlossaryView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'calculators' && (
-          <CalculatorsView />
+          <CalculatorsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'cheatsheets' && (
-          <CheatSheetsView />
+          <CheatSheetsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'lab' && (
-          <VirtualLabView />
+          <VirtualLabView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'quiz' && (
-          <QuizArenaView />
+          <QuizArenaView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'materials' && (
-          <MaterialsView setActiveTab={setActiveTab} />
+          <MaterialsView setActiveTab={setActiveTab} activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'lectures' && (
-          <LecturesView />
+          <LecturesView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
         )}
 
         {activeTab === 'gpa' && (

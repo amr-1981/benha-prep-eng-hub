@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
-import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight } from 'lucide-react';
+import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap } from 'lucide-react';
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
-export default function CheatSheetsView() {
+export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
 
   const filteredSheets = CHEAT_SHEETS_DATA.filter((s) => {
-    return activeCategory === 'all' || s.category === activeCategory;
+    const matchCategory = activeCategory === 'all' || s.category === activeCategory;
+    const matchDivision = !activeDivision || activeDivision === 'all' || s.division === 'all' || s.division === activeDivision;
+    return matchCategory && matchDivision;
   });
 
   const handlePrint = (sheet) => {
@@ -33,7 +35,7 @@ export default function CheatSheetsView() {
               شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 لتراجع منها قبل ليلة الامتحان
+              ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: <strong>الكيمياء الحرارية (د. هناء)</strong> و <strong>الكيمياء الكهربية (د. سمر)</strong>.
             </p>
           </div>
 
@@ -45,6 +47,49 @@ export default function CheatSheetsView() {
             <span>طباعة الصفحة الحالية 🖨️</span>
           </button>
         </div>
+      </div>
+
+      {/* Two-Branch Academic Division Switcher */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-print">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-xs">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
+          <span>قسم الكيمياء:</span>
+        </span>
+
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('all')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
+            activeDivision === 'all'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          جميع الشيتات (القسمان)
+        </button>
+
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('thermal')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'thermal'
+              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Flame className="w-3.5 h-3.5 text-amber-300" />
+          <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
+        </button>
+
+        <button
+          onClick={() => setActiveDivision && setActiveDivision('electro')}
+          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+            activeDivision === 'electro'
+              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+          }`}
+        >
+          <Zap className="w-3.5 h-3.5 text-cyan-300" />
+          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+        </button>
       </div>
 
       {/* Category Filters (Hidden on Print) */}
@@ -72,10 +117,21 @@ export default function CheatSheetsView() {
             className="bg-slate-800/90 rounded-3xl p-6 border-2 border-slate-700 hover:border-emerald-400/60 transition-all shadow-md flex flex-col justify-between"
           >
             <div>
-              <div className="flex items-center justify-between mb-3">
-                <span className="text-[10px] font-black text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">
-                  ورقة عمل {sheet.paperSize} • {sheet.pagesCount} صفحة
-                </span>
+              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[10px] font-black text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">
+                    ورقة عمل {sheet.paperSize} • {sheet.pagesCount} صفحة
+                  </span>
+                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
+                    sheet.division === 'thermal'
+                      ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
+                      : sheet.division === 'electro'
+                      ? 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
+                      : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/60'
+                  }`}>
+                    {sheet.division === 'thermal' ? '🔥 حرارية (د. هناء)' : sheet.division === 'electro' ? '⚡ كهربية (د. سمر)' : '🏛️ شامل الفاينال'}
+                  </span>
+                </div>
                 <span className="text-xs text-slate-400 font-bold">جاهز للطباعة 🖨️</span>
               </div>
               <h3 className="text-lg font-black text-white">{sheet.title}</h3>
