@@ -20,12 +20,14 @@ export default function Footer({ setActiveTab }) {
             </div>
           </div>
 
-          <div className="flex items-center gap-4 text-xs">
+          <div className="flex flex-wrap items-center gap-3 sm:gap-4 text-xs">
             <button onClick={() => setActiveTab('syllabus')} className="hover:text-cyan-400 transition">المنهج</button>
+            <button onClick={() => setActiveTab('glossary')} className="hover:text-cyan-400 transition">معجم الحفظ</button>
             <button onClick={() => setActiveTab('calculators')} className="hover:text-cyan-400 transition">الحاسبات</button>
             <button onClick={() => setActiveTab('cheatsheets')} className="hover:text-cyan-400 transition">شيتات A4</button>
             <button onClick={() => setActiveTab('lab')} className="hover:text-cyan-400 transition">المعمل</button>
             <button onClick={() => setActiveTab('quiz')} className="hover:text-cyan-400 transition">الامتحانات</button>
+            <button onClick={() => setActiveTab('materials')} className="hover:text-cyan-400 transition">الماتريال</button>
           </div>
         </div>
 

@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import SyllabusView from './views/SyllabusView';
+import GlossaryView from './views/GlossaryView';
 import CalculatorsView from './views/CalculatorsView';
 import CheatSheetsView from './views/CheatSheetsView';
 import VirtualLabView from './views/VirtualLabView';
 import QuizArenaView from './views/QuizArenaView';
+import MaterialsView from './views/MaterialsView';
 import LecturesView from './views/LecturesView';
 import GpaTrackerView from './views/GpaTrackerView';
 
@@ -27,6 +29,10 @@ export default function App() {
           <SyllabusView />
         )}
 
+        {activeTab === 'glossary' && (
+          <GlossaryView />
+        )}
+
         {activeTab === 'calculators' && (
           <CalculatorsView />
         )}
@@ -41,6 +47,10 @@ export default function App() {
 
         {activeTab === 'quiz' && (
           <QuizArenaView />
+        )}
+
+        {activeTab === 'materials' && (
+          <MaterialsView />
         )}
 
         {activeTab === 'lectures' && (

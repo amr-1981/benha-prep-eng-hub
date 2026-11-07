@@ -1,14 +1,16 @@
 import React from 'react';
-import { BookOpen, Calculator, Printer, TestTube, Youtube, Award, BarChart3, GraduationCap } from 'lucide-react';
+import { BookOpen, Calculator, Printer, TestTube, Youtube, Award, BarChart3, GraduationCap, BrainCircuit, FolderArchive } from 'lucide-react';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 export default function Navbar({ activeTab, setActiveTab }) {
   const navItems = [
     { id: 'syllabus', label: 'موسوعة المنهج', icon: BookOpen, badge: '5 وحدات' },
+    { id: 'glossary', label: 'معجم الحفظ والقوانين', icon: BrainCircuit, badge: 'بنك الحفظ' },
     { id: 'calculators', label: 'المعمل الحسابي', icon: Calculator, badge: 'حاسبات ذكية' },
     { id: 'cheatsheets', label: 'شيتات وقوانين A4', icon: Printer, badge: 'جاهز للطباعة' },
     { id: 'lab', label: 'المعمل الافتراضي', icon: TestTube, badge: 'تجارب وشفوي' },
     { id: 'quiz', label: 'بنك الأسئلة والامتحانات', icon: Award, badge: 'MCQ' },
+    { id: 'materials', label: 'مكتبة الماتريال', icon: FolderArchive, badge: 'PDF وتحميل' },
     { id: 'lectures', label: 'المحاضرات المرئية', icon: Youtube, badge: 'YouTube' },
     { id: 'gpa', label: 'المعدل وتنسيق الأقسام', icon: BarChart3, badge: '150 درجة' }
   ];
