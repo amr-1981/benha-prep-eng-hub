@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/materialsData';
 
-export default function MaterialsView() {
+export default function MaterialsView({ setActiveTab }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -255,22 +255,46 @@ export default function MaterialsView() {
 
               </div>
 
-              {/* Author & Action Buttons */}
-              <div className="pt-3 border-t border-slate-700/60 flex items-center justify-between gap-2">
+              {/* Author & Real Action Buttons (No dead or dummy links) */}
+              <div className="pt-3 border-t border-slate-700/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                 <div className="text-[11px] text-slate-400">
                   <span className="text-slate-500 block text-[10px]">المصدر / الإعداد:</span>
                   <span className="font-bold text-slate-300">{file.author}</span>
                 </div>
 
-                <div className="flex items-center gap-2 shrink-0">
-                  <a
-                    href={file.downloadUrl}
-                    download
-                    className="px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs flex items-center gap-1.5 transition shadow"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span>تحميل</span>
-                  </a>
+                <div className="flex flex-wrap items-center gap-2 shrink-0">
+                  {file.actionType === 'external_link' && (
+                    <>
+                      <a
+                        href={file.viewUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3 py-1.5 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-slate-200 hover:text-white font-bold text-xs flex items-center gap-1.5 transition border border-slate-600 shadow"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>معاينة Google Drive</span>
+                      </a>
+                      <a
+                        href={file.downloadUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white font-black text-xs flex items-center gap-1.5 transition shadow-md"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                        <span>تحميل PDF مباشر</span>
+                      </a>
+                    </>
+                  )}
+
+                  {file.actionType === 'platform_sheet' && (
+                    <button
+                      onClick={() => setActiveTab && setActiveTab(file.targetTab)}
+                      className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs flex items-center gap-1.5 transition shadow"
+                    >
+                      <FileText className="w-3.5 h-3.5 text-cyan-300" />
+                      <span>فتح وعرض الشيت للطباعة A4 🖨️</span>
+                    </button>
+                  )}
                 </div>
               </div>
 

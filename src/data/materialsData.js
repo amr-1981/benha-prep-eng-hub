@@ -1,316 +1,149 @@
-// Materials & Course Repository Data for Engineering Chemistry - Shoubra Engineering (FES)
+// Verified Real Course Materials & Repository Data - Shoubra Engineering (FES)
+// All files here have genuine, working download/view links with zero dummy or dead links.
 
 export const MATERIAL_CATEGORIES = [
-  { id: 'all', label: 'جميع الماتريال والملفات', icon: 'FolderArchive', count: 18 },
-  { id: 'lectures', label: '📚 محاضرات وسلايدات الدكاترة', icon: 'BookOpen', count: 5 },
-  { id: 'sheets', label: '📝 شيتات وسكاشن المعيدين وحلولها', icon: 'FileText', count: 5 },
-  { id: 'exams', label: '🏛️ امتحانات سابقة وميدتيرم وفاينال', icon: 'Award', count: 4 },
-  { id: 'summaries', label: '⚡ ملخصات ومراجعات ليلة الامتحان', icon: 'Sparkles', count: 4 }
+  { id: 'all', label: 'جميع الماتريال المتاحة حالياً', icon: 'FolderArchive' },
+  { id: 'lectures', label: '📚 كشاكيل وسلايدات المحاضرات', icon: 'BookOpen' },
+  { id: 'cheatsheets', label: '🖨️ شيتات A4 الجاهزة للطباعة والـ PDF', icon: 'FileText' },
+  { id: 'vault', label: '🧠 بنك الحفظ والمصطلحات المعتمد', icon: 'Sparkles' }
 ];
 
 export const CLOUD_DRIVES = [
   {
-    title: 'فولدر درايف الدفعة المعتمد (Google Drive)',
-    subtitle: 'شامل كل مذكرات وتسجيلات وسلايدات إعدادي هندسة شبرا للترم الأول',
-    link: 'https://drive.google.com',
+    title: 'رابط ملف ملخص المحاضرات على Google Drive',
+    subtitle: 'ملخص محاضرات د. سمر عبد الحميد ود. هناء عبد الوهاب (33 صفحة ممسوحة ضوئياً)',
+    link: 'https://drive.google.com/file/d/1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N/view?usp=sharing',
     type: 'drive',
-    badge: 'درايف سحابي رسمي',
+    badge: 'ملف Drive حقيقي معتمد',
     color: 'from-blue-600 to-indigo-700'
-  },
-  {
-    title: 'قناة تليجرام مادة الكيمياء الهندسية',
-    subtitle: 'تنبيهات مواعيد تسليم الشيتات، كويزات المعمل، ونماذج إجابات الامتحانات',
-    link: 'https://t.me',
-    type: 'telegram',
-    badge: 'تليجرام المادة',
-    color: 'from-cyan-600 to-blue-700'
-  },
-  {
-    title: 'مكتبة الامتحانات والكنترول (Shoubra Archive)',
-    subtitle: 'أرشيف امتحانات السنوات الخمس الماضية مع نماذج التصحيح الرسمية',
-    link: 'https://drive.google.com',
-    type: 'archive',
-    badge: 'أرشيف الامتحانات',
-    color: 'from-amber-600 to-orange-700'
   }
 ];
 
-export const MATERIAL_FILES = [
-  // Lectures
+export const REAL_MATERIAL_FILES = [
+  // 1. Genuine Scanned Notebook from Dr. Samar & Dr. Hanaa
   {
-    id: 'mat-lec-01',
+    id: 'mat-notebook-01',
     category: 'lectures',
-    title: 'سلايدات ومحاضرات الوحدة الأولى: تكنولوجيا ومعالجة عسر المياه',
-    description: 'شرح متكامل لمصادر المياه، العسر المؤقت والدائم، الغلايات، وحسابات الجير والصودا المعتمدة من قسم الكيمياء بشبرا.',
-    author: 'أعضاء هيئة التدريس - قسم الكيمياء الهندسية',
+    title: 'كشكول ملخص محاضرات الكيمياء الكهربية والحرارية والتآكل',
+    description: 'الملخص المكتوب بخط اليد والممسوح ضوئياً كاملاً (33 صفحة): محاضرات د. سمر عبد الحميد (الكيمياء الكهربية، نيرنست، والتآكل) + محاضرات د. هناء عبد الوهاب (الكيمياء الحرارية، قانون هس، والوقود).',
+    author: 'محاضرات د. سمر عبد الحميد & د. هناء عبد الوهاب - هندسة شبرا',
     format: 'PDF',
-    size: '14.2 MB',
-    pages: 68,
-    date: '2024 / 2025',
-    downloadUrl: '#',
-    previewUrl: '#',
+    size: '52.3 MB',
+    pages: 33,
+    date: 'الفصل الدراسي الأول',
     isOfficial: true,
-    tags: ['Water Treatment', 'Lime Soda', 'Boilers']
-  },
-  {
-    id: 'mat-lec-02',
-    category: 'lectures',
-    title: 'سلايدات الوحدة الثانية: هندسة الوقود والاحتراق ومعادلة دولونج',
-    description: 'الوقود الصلب والسائل والغازي، التحليل التقريبي والنهائي، حسابات القيمة الحرارية والهواء النظري.',
-    author: 'أعضاء هيئة التدريس - قسم الكيمياء الهندسية',
-    format: 'PDF',
-    size: '11.8 MB',
-    pages: 54,
-    date: '2024 / 2025',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Fuels', 'Dulong', 'Combustion']
-  },
-  {
-    id: 'mat-lec-03',
-    category: 'lectures',
-    title: 'سلايدات الوحدة الثالثة: التآكل والصدأ والحماية الكاثودية',
-    description: 'الآلية الكهروكيميائية للصدأ، العوامل المؤثرة، خلايا التآكل الجلفاني، وسبل الحماية بالقطب المضحي والتيار المفروض.',
-    author: 'أعضاء هيئة التدريس - هندسة شبرا',
-    format: 'PDF',
-    size: '9.6 MB',
-    pages: 42,
-    date: '2024 / 2025',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Corrosion', 'Cathodic Protection', 'Rust']
-  },
-  {
-    id: 'mat-lec-04',
-    category: 'lectures',
-    title: 'سلايدات الوحدة الرابعة: كيمياء الأسمنت البورتلاندي ومركبات بوج',
-    description: 'المواد الخام للأسمنت، مراحل تصنيع الكلنكر، مركبات بوج الأربعة، حسابات LSF، وتأثير الجبس على زمن الشك.',
-    author: 'أعضاء هيئة التدريس - هندسة شبرا',
-    format: 'PDF',
-    size: '12.4 MB',
-    pages: 48,
-    date: '2024 / 2025',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Cement', 'Bogue', 'LSF', 'Concrete']
-  },
-  {
-    id: 'mat-lec-05',
-    category: 'lectures',
-    title: 'سلايدات الوحدة الخامسة: البوليمرات واللدائن ومواد التزييت والتشحيم',
-    description: 'أنواع البلمرة، مقارنة اللدائن الحرارية والمتصلدة، خواص زيوت التزييت، مؤشر اللزوجة، ونقطة الوميض.',
-    author: 'أعضاء هيئة التدريس - هندسة شبرا',
-    format: 'PDF',
-    size: '15.1 MB',
-    pages: 60,
-    date: '2024 / 2025',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Polymers', 'Lubricants', 'Flash Point', 'Bakelite']
+    actionType: 'external_link',
+    viewUrl: 'https://drive.google.com/file/d/1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N/view?usp=sharing',
+    downloadUrl: 'https://drive.usercontent.google.com/download?id=1TvPbTdmj_b8lzBEvgS0BS_ddN3lfCF7N&export=download',
+    tags: ['Dr. Samar', 'Dr. Hanaa', 'Electrochemistry', 'Thermochemistry', 'Corrosion', 'Hess Law']
   },
 
-  // Sheets
+  // 2. Real Platform Printable A4 Sheet: Water Treatment
   {
-    id: 'mat-sht-01',
-    category: 'sheets',
-    title: 'شيت 1 + الحل النموذجي: مسائل معالجة عسر المياه والجير والصودا',
-    description: 'حلول 25 مسألة شيت كاملة بالخطوات التفصيلية وجداول التحويل لـ CaCO3 Eq وحسابات نسبة النقاوة التجارية.',
-    author: 'هيئة معاونة - معيدو الكيمياء بشبرا',
-    format: 'PDF',
-    size: '6.4 MB',
-    pages: 22,
-    date: 'الفصل الدراسي الأول',
-    downloadUrl: '#',
-    previewUrl: '#',
+    id: 'mat-sheet-water',
+    category: 'cheatsheets',
+    title: 'شيت ملخص قوانين ومعادلات معالجة المياه والجير والصودا (A4)',
+    description: 'ورقة A4 ملخصة جاهزة للطباعة والتصدير كـ PDF: جميع معادلات الترسيب، جدول تحويل مكافئ CaCO3 Eq، وقوانين الجير والصودا التجارية مع مسألة فاينال نموذجية محلولة بالخطوات.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
     isOfficial: true,
-    tags: ['Sheet 1', 'Lime Soda Solutions', 'Hardness Calculations']
-  },
-  {
-    id: 'mat-sht-02',
-    category: 'sheets',
-    title: 'شيت 2 + الحل النموذجي: مسائل الوقود والاحتراق ومعادلة دولونج',
-    description: 'مسائل حساب GCV و NCV وحسابات كتلة وحجم الهواء النظري المطلوب للاحتراق ونسب الغازات العادمة.',
-    author: 'هيئة معاونة - معيدو الكيمياء بشبرا',
-    format: 'PDF',
-    size: '5.2 MB',
-    pages: 18,
-    date: 'الفصل الدراسي الأول',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Sheet 2', 'Dulong Solutions', 'Combustion Air']
-  },
-  {
-    id: 'mat-sht-03',
-    category: 'sheets',
-    title: 'شيت 3 + الحل النموذجي: مسائل التآكل الجلفاني وسرعة الصدأ',
-    description: 'مسائل فرق الجهد الكهربي للخلايا الجلفانية، حسابات مساحة السطح وكثافة تيار التآكل، ووزن قطب الماغنسيوم المضحي.',
-    author: 'هيئة معاونة - معيدو الكيمياء بشبرا',
-    format: 'PDF',
-    size: '4.8 MB',
-    pages: 14,
-    date: 'الفصل الدراسي الأول',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Sheet 3', 'Corrosion Cells', 'Anode Sizing']
-  },
-  {
-    id: 'mat-sht-04',
-    category: 'sheets',
-    title: 'شيت 4 + الحل النموذجي: مسائل حساب مركبات بوج ومعامل LSF',
-    description: 'تحويل نسب الأكاسيد (CaO, SiO2, Al2O3, Fe2O3, SO3) إلى نسب مركبات C3S, C2S, C3A, C4AF والحكم على جودة الأسمنت.',
-    author: 'هيئة معاونة - معيدو الكيمياء بشبرا',
-    format: 'PDF',
-    size: '5.9 MB',
-    pages: 16,
-    date: 'الفصل الدراسي الأول',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Sheet 4', 'Bogue Compounds', 'LSF Ratio']
-  },
-  {
-    id: 'mat-sht-05',
-    category: 'sheets',
-    title: 'شيت 5 + الحل النموذجي: مسائل البوليمرات ورقم التصبن للزيوت',
-    description: 'مسائل حساب درجة البلمرة (DP)، حساب رقم التصبن (S.V.) لكشف الغش، وحسابات مؤشر اللزوجة.',
-    author: 'هيئة معاونة - معيدو الكيمياء بشبرا',
-    format: 'PDF',
-    size: '4.1 MB',
-    pages: 12,
-    date: 'الفصل الدراسي الأول',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Sheet 5', 'Saponification', 'Polymerization DP']
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    targetSheetId: 'sheet-water',
+    tags: ['Water Treatment', 'Lime Soda', 'A4 Printable', 'Model Solution']
   },
 
-  // Exams
+  // 3. Real Platform Printable A4 Sheet: Fuels & Combustion
   {
-    id: 'mat-exm-01',
-    category: 'exams',
-    title: 'امتحان فاينال الكيمياء الهندسية - يناير 2024 (مع نموذج الإجابة الرسمي)',
-    description: 'الامتحان التحريري الفاينال الرسمي لهندسة شبرا (90 درجة) كاملاً مع الحل النموذجي وتوزيع الدرجات.',
-    author: 'كنترول إعدادي هندسة شبرا',
-    format: 'PDF',
-    size: '7.8 MB',
-    pages: 12,
-    date: 'يناير 2024',
-    downloadUrl: '#',
-    previewUrl: '#',
+    id: 'mat-sheet-fuels',
+    category: 'cheatsheets',
+    title: 'شيت ملخص قوانين الوقود والاحتراق ومعادلة دولونج (A4)',
+    description: 'ورقة A4 ملخصة جاهزة للطباعة: معادلة دولونج للقيمة الحرارية GCV و NCV، قوانين حساب كتلة وحجم الهواء النظري للاحتراق، ومقارنة الرقم الأوكتاني والرقم السيتاني.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
     isOfficial: true,
-    tags: ['Final Exam', '2024', 'Model Answer', '90 Marks']
-  },
-  {
-    id: 'mat-exm-02',
-    category: 'exams',
-    title: 'امتحان فاينال الكيمياء الهندسية - يناير 2023 (مع نموذج الإجابة)',
-    description: 'الامتحان التحريري الفاينال للعام السابق مع رسومات الأجهزة المطلوبة (أورسات والمسعر القنبلي).',
-    author: 'كنترول إعدادي هندسة شبرا',
-    format: 'PDF',
-    size: '6.9 MB',
-    pages: 10,
-    date: 'يناير 2023',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Final Exam', '2023', 'Orsat', 'Bomb Calorimeter']
-  },
-  {
-    id: 'mat-exm-03',
-    category: 'exams',
-    title: 'امتحانات الميدتيرم المجمعة (2020 - 2024) - هندسة شبرا',
-    description: 'تجميعة شاملة لجميع نماذج امتحانات أعمال السنة والميدتيرم (30 درجة) مع الحلول النموذجية.',
-    author: 'اتحاد طلاب شبرا & معيدو القسم',
-    format: 'PDF',
-    size: '18.5 MB',
-    pages: 45,
-    date: 'ميدتيرم',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Midterm', 'Past Papers', '30 Marks']
-  },
-  {
-    id: 'mat-exm-04',
-    category: 'exams',
-    title: 'كتيب أسئلة امتحان المعمل والشفوي (Lab Viva Guide)',
-    description: 'بنك أسئلة الـ 15 درجة الخاصة بامتحان العملي والشفوي: ألوان الأدلة، أجهزة قياس اللزوجة، ونقطة الوميض.',
-    author: 'مسؤولو معامل الكيمياء - هندسة شبرا',
-    format: 'PDF',
-    size: '4.5 MB',
-    pages: 15,
-    date: 'امتحان العملي',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: true,
-    tags: ['Lab Exam', 'Viva Questions', 'EDTA Titration']
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    targetSheetId: 'sheet-fuels',
+    tags: ['Fuels', 'Dulong Formula', 'Combustion Air', 'Octane Number']
   },
 
-  // Summaries
+  // 4. Real Platform Printable A4 Sheet: Corrosion & Cathodic Protection
   {
-    id: 'mat-sum-01',
-    category: 'summaries',
-    title: 'كبسولة ليلة الامتحان: ملخص شامل لكيمياء إعدادي شبرا في 25 صفحة',
-    description: 'الملخص الأقوى لدفعة إعدادي هندسة شبرا: كل القوانين والمعادلات والرسومات والتعليلات الهامة بدون حشو.',
-    author: 'أوائل دفعة هندسة شبرا',
-    format: 'PDF',
-    size: '8.3 MB',
-    pages: 25,
+    id: 'mat-sheet-corrosion',
+    category: 'cheatsheets',
+    title: 'شيت ملخص كيمياء التآكل والصدأ والحماية الكاثودية (A4)',
+    description: 'ورقة A4 ملخصة جاهزة للطباعة: تفاعلات الأنود والكاثود، أنواع التآكل، مقارنة الجلفنة بالقصدير، وقوانين الحماية بقطب التضحية والتيار القسري المفروض.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    targetSheetId: 'sheet-corrosion',
+    tags: ['Corrosion', 'Cathodic Protection', 'Rust Reactions', 'Galvanizing']
+  },
+
+  // 5. Real Platform Printable A4 Sheet: Cement & Bogue
+  {
+    id: 'mat-sheet-cement',
+    category: 'cheatsheets',
+    title: 'شيت ملخص كيمياء الأسمنت البورتلاندي ومركبات بوج و LSF (A4)',
+    description: 'ورقة A4 ملخصة جاهزة للطباعة: معادلات بوج الأربعة (C3S, C2S, C3A, C4AF)، قانون معامل تشبع الجير LSF والمدى القياسي، ودور الجبس في منع الشك الخاطف.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    targetSheetId: 'sheet-cement',
+    tags: ['Cement', 'Bogue', 'LSF Ratio', 'Concrete Durability']
+  },
+
+  // 6. Real Platform Printable A4 Sheet: Polymers & Lubricants
+  {
+    id: 'mat-sheet-polymers',
+    category: 'cheatsheets',
+    title: 'شيت ملخص البوليمرات واللدائن وزيوت التزييت والتشحيم (A4)',
+    description: 'ورقة A4 ملخصة جاهزة للطباعة: مقارنة اللدائن الحرارية والمتصلدة، مؤشر اللزوجة VI، نقطة الوميض، وقانون رقم التصبن S.V. لكشف غش الزيوت.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    targetSheetId: 'sheet-polymers',
+    tags: ['Polymers', 'Lubricants', 'Flash Point', 'Saponification']
+  },
+
+  // 7. Full Memorization Glossary Vault
+  {
+    id: 'mat-glossary-vault',
+    category: 'vault',
+    title: 'بنك ومعجم مصطلحات وقوانين الكيمياء الهندسية ليلة الامتحان',
+    description: 'الدليل الكامل للمصطلحات العلمية والقوانين والتعليلات (علل) للمنهج كاملاً مع نظام الفلاش كاردز التفاعلي للحفظ بنسبة إتقان وإمكانية الطباعة المباشرة A4.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الكيمياء',
+    format: 'تفاعلي / طباعة',
+    size: 'بنك شامل',
+    pages: 35,
     date: 'مراجعة نهائية',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: false,
-    tags: ['Crash Course', 'Summary', 'Night of Exam']
-  },
-  {
-    id: 'mat-sum-02',
-    category: 'summaries',
-    title: 'خرائط المفاهيم وجداول المقارنات الشاملة (Mind Maps)',
-    description: 'مقارنات جدولية: العسر المؤقت والدائم، أنواع البوليمرات، طرق الحماية الكاثودية، وأنواع الفحم والوقود.',
-    author: 'فريق الدعم الأكاديمي',
-    format: 'PDF',
-    size: '5.7 MB',
-    pages: 14,
-    date: 'خرائط ذهنية',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: false,
-    tags: ['Mind Maps', 'Comparisons Table']
-  },
-  {
-    id: 'mat-sum-03',
-    category: 'summaries',
-    title: 'دليل كتابة المعادلات والرسومات الهندسية المقررة',
-    description: 'تجميعة رسمية لكافة المعادلات الكيميائية ورسومات الأجهزة المطلوب رسمها بيدك في ورقة الفاينال.',
-    author: 'قسم الكيمياء الهندسية',
-    format: 'PDF',
-    size: '6.1 MB',
-    pages: 16,
-    date: 'رسومات ومعادلات',
-    downloadUrl: '#',
-    previewUrl: '#',
     isOfficial: true,
-    tags: ['Equations', 'Apparatus Diagrams', 'Full Marks']
-  },
-  {
-    id: 'mat-sum-04',
-    category: 'summaries',
-    title: 'شيت القوانين المجمعة ووحدات التحويل الهندسي',
-    description: 'ورقة واحدة A4 بها كل القوانين وثوابت التحويل (ppm, mg/L, kcal/kg, kJ/kg, LSF, VI) للمراجعة في لجنة الامتحان.',
-    author: 'إعدادي هندسة شبرا',
-    format: 'PDF',
-    size: '2.2 MB',
-    pages: 4,
-    date: 'قوانين سريعة',
-    downloadUrl: '#',
-    previewUrl: '#',
-    isOfficial: false,
-    tags: ['Formula Sheet', 'Conversion Units']
+    actionType: 'platform_sheet',
+    targetTab: 'glossary',
+    tags: ['Glossary', 'Definitions', 'Formulas', 'Flashcards', 'Exam Review']
   }
 ];
+
+export const MATERIAL_FILES = REAL_MATERIAL_FILES;

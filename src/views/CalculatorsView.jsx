@@ -89,6 +89,44 @@ export default function CalculatorsView() {
   const c2s = 2.87 * cementSio2 - 0.754 * c3s;
   const lsf = (cementCao - 0.7 * cementSo3) / (2.8 * cementSio2 + 1.2 * cementAl2o3 + 0.65 * cementFe2o3);
 
+  // ================= 4. THERMOCHEMISTRY & NERNST STATE (Dr. Hanaa & Dr. Samar) =================
+  const [subThermoMode, setSubThermoMode] = useState('enthalpy'); // 'enthalpy' | 'nernst' | 'bomb'
+
+  // A) ΔH = ΔE + Δn.R.T
+  const [deltaE, setDeltaE] = useState(-332.19);
+  const [tempC, setTempC] = useState(17);
+  const [deltaN, setDeltaN] = useState(-1);
+  const [thermoUnit, setThermoUnit] = useState('kcal');
+
+  const tempK = Number(tempC) + 273.15;
+  const rConstant = thermoUnit === 'kcal' ? 1.99e-3 : 8.314e-3;
+  const deltaH = Number(deltaE) + (Number(deltaN) * rConstant * tempK);
+  const workExp = -Number(deltaN) * rConstant * tempK; // W = -P.ΔV = -Δn.R.T
+
+  // B) Nernst Equation & Gibbs Free Energy: E = E° - (0.0592/n) log Q
+  const [eStandard, setEStandard] = useState(0.93);
+  const [electronsN, setElectronsN] = useState(2);
+  const [qReaction, setQReaction] = useState(0.1778); // [Pb2+] / [Ag+]^2 = 0.1 / (0.75)^2
+
+  const safeQ = Number(qReaction) > 0 ? Number(qReaction) : 1e-6;
+  const nernstFactor = (0.0592 / (Number(electronsN) || 1)) * Math.log10(safeQ);
+  const eCell = Number(eStandard) - nernstFactor;
+  const deltaGStandard = -Number(electronsN) * 96.485 * Number(eStandard); // kJ
+  const deltaGCell = -Number(electronsN) * 96.485 * eCell; // kJ
+
+  // C) Bomb Calorimeter: q = -[(mw sw ΔT) + (C_bomb ΔT)]
+  const [sampleMass, setSampleMass] = useState(3.19); // g
+  const [molarMass, setMolarMass] = useState(180); // g/mol (glucose)
+  const [waterMass, setWaterMass] = useState(775); // g
+  const [bombCapacity, setBombCapacity] = useState(893); // J/°C
+  const [tempDelta, setTempDelta] = useState(11.8); // °C
+
+  const qWaterJ = Number(waterMass) * 4.184 * Number(tempDelta);
+  const qBombJ = Number(bombCapacity) * Number(tempDelta);
+  const qTotalJ = -(qWaterJ + qBombJ);
+  const qPerGramJ = (Number(sampleMass) || 1) > 0 ? qTotalJ / Number(sampleMass) : 0;
+  const qPerMoleKJ = (qPerGramJ * (Number(molarMass) || 1)) / 1000;
+
   const saltLabels = {
     ca_hco3: { formula: 'Ca(HCO3)2', name: 'بيكربونات كالسيوم' },
     mg_hco3: { formula: 'Mg(HCO3)2', name: 'بيكربونات مغنيسيوم' },
@@ -156,6 +194,18 @@ export default function CalculatorsView() {
             >
               <Building2 className="w-3.5 h-3.5" />
               <span>مركبات بوج للأسمنت</span>
+            </button>
+
+            <button
+              onClick={() => setActiveCalc('thermo')}
+              className={`px-3 py-2 rounded-xl text-xs font-extrabold flex items-center gap-1.5 transition-all ${
+                activeCalc === 'thermo'
+                  ? 'bg-purple-600 text-white shadow-md'
+                  : 'text-slate-300 hover:text-white hover:bg-slate-700/50'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5 text-amber-300" />
+              <span>الكيمياء الحرارية ونيرنست (د. هناء ود. سمر)</span>
             </button>
           </div>
         </div>
@@ -344,6 +394,390 @@ export default function CalculatorsView() {
         </div>
       )}
 
+      {/* ================= 4. THERMOCHEMISTRY & NERNST CALCULATOR ================= */}
+      {activeCalc === 'thermo' && (
+        <div className="space-y-6">
+          <div className="bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-md">
+            
+            {/* Header & Sub-mode switch */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-700 pb-4 mb-6 gap-4">
+              <div>
+                <span className="text-xs font-extrabold text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded-full border border-purple-800/50">
+                  محاضرات د. هناء عبد الوهاب & د. سمر عبد الحميد • شبرا
+                </span>
+                <h2 className="text-xl font-black text-white mt-2">
+                  حاسبة الكيمياء الحرارية، قانون هس، ومعادلة نيرنست
+                </h2>
+              </div>
+
+              {/* Sub tabs */}
+              <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setSubThermoMode('enthalpy')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'enthalpy' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  ΔH = ΔE + ΔnRT
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('nernst')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'nernst' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  معادلة نيرنست (E_cell)
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('bomb')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'bomb' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  المسعر القنبلي (Bomb)
+                </button>
+              </div>
+            </div>
+
+            {/* Sub-mode 1: Enthalpy & Internal Energy */}
+            {subThermoMode === 'enthalpy' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-purple-300">
+                    حساب المحتوى الحراري من الطاقة الداخلية والعكس (ΔH vs ΔE):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setDeltaE(-332.19);
+                      setTempC(17);
+                      setDeltaN(-1);
+                      setThermoUnit('kcal');
+                    }}
+                    className="text-xs text-purple-300 hover:text-white flex items-center gap-1 bg-purple-950/60 border border-purple-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة احتراق الإيثيلين C2H4 (ص 13)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      الطاقة الداخلية ΔE (أو q_v):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={deltaE}
+                      onChange={(e) => setDeltaE(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      درجة الحرارة T (°C):
+                    </label>
+                    <input
+                      type="number"
+                      value={tempC}
+                      onChange={(e) => setTempC(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 font-mono block mt-1" dir="ltr">T = {tempK.toFixed(1)} K</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      فرق مولات الغازات Δn:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={deltaN}
+                      onChange={(e) => setDeltaN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 block mt-1">Δn = n(غازات نواتج) - n(غازات متفاعلات)</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      وحدة القياس المطلوبة:
+                    </label>
+                    <select
+                      value={thermoUnit}
+                      onChange={(e) => setThermoUnit(e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    >
+                      <option value="kcal">kcal (R = 2 × 10⁻³)</option>
+                      <option value="kJ">kJ (R = 8.314 × 10⁻³)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>قانون الربط: ΔH = ΔE + Δn · R · T</span>
+                    <span className="font-mono text-purple-300 text-sm" dir="ltr">
+                      ΔH = {deltaE} + ({deltaN} × {rConstant} × {tempK.toFixed(1)})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>شغل التمدد الميكانيكي المبذول (W = -P·ΔV = -Δn·R·T):</span>
+                    <span className="font-mono text-amber-300 text-sm" dir="ltr">
+                      {workExp.toFixed(2)} {thermoUnit}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-purple-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-purple-300">حرارة التفاعل عند ثبوت الضغط (ΔH = q_p)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaH.toFixed(2)} <span className="text-lg font-bold text-purple-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {deltaH < 0 ? '🔥 تفاعل طارد للحرارة (Exothermic Reaction).' : '❄️ تفاعل ماص للحرارة (Endothermic Reaction).'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-950 to-slate-900 border-2 border-blue-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-blue-300">طاقة التفاعل عند ثبوت الحجم (ΔE = q_v)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Number(deltaE).toFixed(2)} <span className="text-lg font-bold text-blue-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      القيمة المقاسة عملياً داخل المسعر القنبلي المغلق (Bomb Calorimeter).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 2: Nernst Equation */}
+            {subThermoMode === 'nernst' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-cyan-300">
+                    معادلة نيرنست وطاقة جيبس الحرة للخلية (Nernst & Gibbs Free Energy):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setEStandard(0.93);
+                      setElectronsN(2);
+                      setQReaction(0.1778);
+                    }}
+                    className="text-xs text-cyan-300 hover:text-white flex items-center gap-1 bg-cyan-950/60 border border-cyan-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة خلية الرصاص والفضة (ص 16)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      جهد الخلية القياسي E° (Volts):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={eStandard}
+                      onChange={(e) => setEStandard(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      عدد الإلكترونات المنقولة n:
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="6"
+                      value={electronsN}
+                      onChange={(e) => setElectronsN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      حاصل التفاعل Q = [M_oxid] / [M_reduc]:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.001"
+                      value={qReaction}
+                      onChange={(e) => setQReaction(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>معادلة نيرنست: E = E° - (0.0592 / n) · log Q</span>
+                    <span className="font-mono text-cyan-300 text-sm" dir="ltr">
+                      E = {eStandard} - (0.0592 / {electronsN}) × log10({safeQ})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>طاقة جيبس الحرة القياسية (ΔG° = -n · F · E°):</span>
+                    <span className="font-mono text-emerald-300 text-sm" dir="ltr">
+                      ΔG° = {deltaGStandard.toFixed(2)} kJ
+                    </span>
+                  </div>
+                </div>
+
+                {/* Output Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-cyan-950 to-slate-900 border-2 border-cyan-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-cyan-300">جهد الخلية غير القياسي (Cell Potential - E)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {eCell.toFixed(3)} <span className="text-lg font-bold text-cyan-300">V</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {eCell > 0 ? '⚡ التفاعل تلقائي ويولد تياراً كهربائياً (Spontaneous).' : '⚠️ التفاعل غير تلقائي تحت هذه التراكيز.'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 border-2 border-indigo-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-indigo-300">طاقة جيبس الحرة الفعلية (ΔG)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaGCell.toFixed(2)} <span className="text-lg font-bold text-indigo-300">kJ</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      أقصى شغل كهربائي مفيد يمكن استخلاصه من الخلية (F = 96,485 C/mol).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 3: Bomb Calorimeter */}
+            {subThermoMode === 'bomb' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-amber-300">
+                    حسابات المسعر القنبلي (Bomb Calorimeter - حرارة الاحتراق):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setSampleMass(3.19);
+                      setMolarMass(180);
+                      setWaterMass(775);
+                      setBombCapacity(893);
+                      setTempDelta(11.8);
+                    }}
+                    className="text-xs text-amber-300 hover:text-white flex items-center gap-1 bg-amber-950/60 border border-amber-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة حرق الجلوكوز (ص 29)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة العينة (g):</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={sampleMass}
+                      onChange={(e) => setSampleMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الكتلة المولية (g/mol):</label>
+                    <input
+                      type="number"
+                      value={molarMass}
+                      onChange={(e) => setMolarMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة ماء المسعر (g):</label>
+                    <input
+                      type="number"
+                      value={waterMass}
+                      onChange={(e) => setWaterMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">سعة المسعر C (J/°C):</label>
+                    <input
+                      type="number"
+                      value={bombCapacity}
+                      onChange={(e) => setBombCapacity(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الارتفاع في الحرارة ΔT (°C):</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={tempDelta}
+                      onChange={(e) => setTempDelta(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/60">
+                    <span className="text-[11px] font-bold text-amber-300">إجمالي الحرارة المنطلقة (q_reaction)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qTotalJ).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs text-amber-300">J</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-orange-950/60 border border-orange-500/60">
+                    <span className="text-[11px] font-bold text-orange-300">حرارة الاحتراق لكل جرام (J/g)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qPerGramJ).toFixed(1)} <span className="text-xs text-orange-300">J/g</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-rose-950/60 border border-rose-500/60">
+                    <span className="text-[11px] font-bold text-rose-300">حرارة الاحتراق المولية (ΔE = q_v)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {qPerMoleKJ.toFixed(1)} <span className="text-xs text-rose-300">kJ/mol</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+          </div>
+        </div>
+      )}
+
       {/* ================= 2. DULONG'S CALCULATOR ================= */}
       {activeCalc === 'dulong' && (
         <div className="space-y-6">
@@ -491,6 +925,390 @@ export default function CalculatorsView() {
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 4. THERMOCHEMISTRY & NERNST CALCULATOR ================= */}
+      {activeCalc === 'thermo' && (
+        <div className="space-y-6">
+          <div className="bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-md">
+            
+            {/* Header & Sub-mode switch */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-700 pb-4 mb-6 gap-4">
+              <div>
+                <span className="text-xs font-extrabold text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded-full border border-purple-800/50">
+                  محاضرات د. هناء عبد الوهاب & د. سمر عبد الحميد • شبرا
+                </span>
+                <h2 className="text-xl font-black text-white mt-2">
+                  حاسبة الكيمياء الحرارية، قانون هس، ومعادلة نيرنست
+                </h2>
+              </div>
+
+              {/* Sub tabs */}
+              <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setSubThermoMode('enthalpy')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'enthalpy' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  ΔH = ΔE + ΔnRT
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('nernst')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'nernst' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  معادلة نيرنست (E_cell)
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('bomb')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'bomb' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  المسعر القنبلي (Bomb)
+                </button>
+              </div>
+            </div>
+
+            {/* Sub-mode 1: Enthalpy & Internal Energy */}
+            {subThermoMode === 'enthalpy' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-purple-300">
+                    حساب المحتوى الحراري من الطاقة الداخلية والعكس (ΔH vs ΔE):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setDeltaE(-332.19);
+                      setTempC(17);
+                      setDeltaN(-1);
+                      setThermoUnit('kcal');
+                    }}
+                    className="text-xs text-purple-300 hover:text-white flex items-center gap-1 bg-purple-950/60 border border-purple-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة احتراق الإيثيلين C2H4 (ص 13)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      الطاقة الداخلية ΔE (أو q_v):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={deltaE}
+                      onChange={(e) => setDeltaE(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      درجة الحرارة T (°C):
+                    </label>
+                    <input
+                      type="number"
+                      value={tempC}
+                      onChange={(e) => setTempC(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 font-mono block mt-1" dir="ltr">T = {tempK.toFixed(1)} K</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      فرق مولات الغازات Δn:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={deltaN}
+                      onChange={(e) => setDeltaN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 block mt-1">Δn = n(غازات نواتج) - n(غازات متفاعلات)</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      وحدة القياس المطلوبة:
+                    </label>
+                    <select
+                      value={thermoUnit}
+                      onChange={(e) => setThermoUnit(e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    >
+                      <option value="kcal">kcal (R = 2 × 10⁻³)</option>
+                      <option value="kJ">kJ (R = 8.314 × 10⁻³)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>قانون الربط: ΔH = ΔE + Δn · R · T</span>
+                    <span className="font-mono text-purple-300 text-sm" dir="ltr">
+                      ΔH = {deltaE} + ({deltaN} × {rConstant} × {tempK.toFixed(1)})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>شغل التمدد الميكانيكي المبذول (W = -P·ΔV = -Δn·R·T):</span>
+                    <span className="font-mono text-amber-300 text-sm" dir="ltr">
+                      {workExp.toFixed(2)} {thermoUnit}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-purple-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-purple-300">حرارة التفاعل عند ثبوت الضغط (ΔH = q_p)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaH.toFixed(2)} <span className="text-lg font-bold text-purple-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {deltaH < 0 ? '🔥 تفاعل طارد للحرارة (Exothermic Reaction).' : '❄️ تفاعل ماص للحرارة (Endothermic Reaction).'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-950 to-slate-900 border-2 border-blue-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-blue-300">طاقة التفاعل عند ثبوت الحجم (ΔE = q_v)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Number(deltaE).toFixed(2)} <span className="text-lg font-bold text-blue-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      القيمة المقاسة عملياً داخل المسعر القنبلي المغلق (Bomb Calorimeter).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 2: Nernst Equation */}
+            {subThermoMode === 'nernst' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-cyan-300">
+                    معادلة نيرنست وطاقة جيبس الحرة للخلية (Nernst & Gibbs Free Energy):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setEStandard(0.93);
+                      setElectronsN(2);
+                      setQReaction(0.1778);
+                    }}
+                    className="text-xs text-cyan-300 hover:text-white flex items-center gap-1 bg-cyan-950/60 border border-cyan-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة خلية الرصاص والفضة (ص 16)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      جهد الخلية القياسي E° (Volts):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={eStandard}
+                      onChange={(e) => setEStandard(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      عدد الإلكترونات المنقولة n:
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="6"
+                      value={electronsN}
+                      onChange={(e) => setElectronsN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      حاصل التفاعل Q = [M_oxid] / [M_reduc]:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.001"
+                      value={qReaction}
+                      onChange={(e) => setQReaction(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>معادلة نيرنست: E = E° - (0.0592 / n) · log Q</span>
+                    <span className="font-mono text-cyan-300 text-sm" dir="ltr">
+                      E = {eStandard} - (0.0592 / {electronsN}) × log10({safeQ})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>طاقة جيبس الحرة القياسية (ΔG° = -n · F · E°):</span>
+                    <span className="font-mono text-emerald-300 text-sm" dir="ltr">
+                      ΔG° = {deltaGStandard.toFixed(2)} kJ
+                    </span>
+                  </div>
+                </div>
+
+                {/* Output Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-cyan-950 to-slate-900 border-2 border-cyan-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-cyan-300">جهد الخلية غير القياسي (Cell Potential - E)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {eCell.toFixed(3)} <span className="text-lg font-bold text-cyan-300">V</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {eCell > 0 ? '⚡ التفاعل تلقائي ويولد تياراً كهربائياً (Spontaneous).' : '⚠️ التفاعل غير تلقائي تحت هذه التراكيز.'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 border-2 border-indigo-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-indigo-300">طاقة جيبس الحرة الفعلية (ΔG)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaGCell.toFixed(2)} <span className="text-lg font-bold text-indigo-300">kJ</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      أقصى شغل كهربائي مفيد يمكن استخلاصه من الخلية (F = 96,485 C/mol).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 3: Bomb Calorimeter */}
+            {subThermoMode === 'bomb' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-amber-300">
+                    حسابات المسعر القنبلي (Bomb Calorimeter - حرارة الاحتراق):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setSampleMass(3.19);
+                      setMolarMass(180);
+                      setWaterMass(775);
+                      setBombCapacity(893);
+                      setTempDelta(11.8);
+                    }}
+                    className="text-xs text-amber-300 hover:text-white flex items-center gap-1 bg-amber-950/60 border border-amber-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة حرق الجلوكوز (ص 29)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة العينة (g):</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={sampleMass}
+                      onChange={(e) => setSampleMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الكتلة المولية (g/mol):</label>
+                    <input
+                      type="number"
+                      value={molarMass}
+                      onChange={(e) => setMolarMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة ماء المسعر (g):</label>
+                    <input
+                      type="number"
+                      value={waterMass}
+                      onChange={(e) => setWaterMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">سعة المسعر C (J/°C):</label>
+                    <input
+                      type="number"
+                      value={bombCapacity}
+                      onChange={(e) => setBombCapacity(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الارتفاع في الحرارة ΔT (°C):</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={tempDelta}
+                      onChange={(e) => setTempDelta(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/60">
+                    <span className="text-[11px] font-bold text-amber-300">إجمالي الحرارة المنطلقة (q_reaction)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qTotalJ).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs text-amber-300">J</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-orange-950/60 border border-orange-500/60">
+                    <span className="text-[11px] font-bold text-orange-300">حرارة الاحتراق لكل جرام (J/g)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qPerGramJ).toFixed(1)} <span className="text-xs text-orange-300">J/g</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-rose-950/60 border border-rose-500/60">
+                    <span className="text-[11px] font-bold text-rose-300">حرارة الاحتراق المولية (ΔE = q_v)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {qPerMoleKJ.toFixed(1)} <span className="text-xs text-rose-300">kJ/mol</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       )}
@@ -655,6 +1473,390 @@ export default function CalculatorsView() {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ================= 4. THERMOCHEMISTRY & NERNST CALCULATOR ================= */}
+      {activeCalc === 'thermo' && (
+        <div className="space-y-6">
+          <div className="bg-slate-800/90 rounded-3xl p-6 border border-slate-700 shadow-md">
+            
+            {/* Header & Sub-mode switch */}
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-b border-slate-700 pb-4 mb-6 gap-4">
+              <div>
+                <span className="text-xs font-extrabold text-purple-400 bg-purple-950/80 px-2.5 py-1 rounded-full border border-purple-800/50">
+                  محاضرات د. هناء عبد الوهاب & د. سمر عبد الحميد • شبرا
+                </span>
+                <h2 className="text-xl font-black text-white mt-2">
+                  حاسبة الكيمياء الحرارية، قانون هس، ومعادلة نيرنست
+                </h2>
+              </div>
+
+              {/* Sub tabs */}
+              <div className="flex items-center gap-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700">
+                <button
+                  onClick={() => setSubThermoMode('enthalpy')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'enthalpy' ? 'bg-purple-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  ΔH = ΔE + ΔnRT
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('nernst')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'nernst' ? 'bg-cyan-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  معادلة نيرنست (E_cell)
+                </button>
+                <button
+                  onClick={() => setSubThermoMode('bomb')}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold transition ${
+                    subThermoMode === 'bomb' ? 'bg-amber-600 text-white' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  المسعر القنبلي (Bomb)
+                </button>
+              </div>
+            </div>
+
+            {/* Sub-mode 1: Enthalpy & Internal Energy */}
+            {subThermoMode === 'enthalpy' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-purple-300">
+                    حساب المحتوى الحراري من الطاقة الداخلية والعكس (ΔH vs ΔE):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setDeltaE(-332.19);
+                      setTempC(17);
+                      setDeltaN(-1);
+                      setThermoUnit('kcal');
+                    }}
+                    className="text-xs text-purple-300 hover:text-white flex items-center gap-1 bg-purple-950/60 border border-purple-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة احتراق الإيثيلين C2H4 (ص 13)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      الطاقة الداخلية ΔE (أو q_v):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={deltaE}
+                      onChange={(e) => setDeltaE(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      درجة الحرارة T (°C):
+                    </label>
+                    <input
+                      type="number"
+                      value={tempC}
+                      onChange={(e) => setTempC(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 font-mono block mt-1" dir="ltr">T = {tempK.toFixed(1)} K</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      فرق مولات الغازات Δn:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.5"
+                      value={deltaN}
+                      onChange={(e) => setDeltaN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    />
+                    <span className="text-[10px] text-slate-400 block mt-1">Δn = n(غازات نواتج) - n(غازات متفاعلات)</span>
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      وحدة القياس المطلوبة:
+                    </label>
+                    <select
+                      value={thermoUnit}
+                      onChange={(e) => setThermoUnit(e.target.value)}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-purple-400 font-mono"
+                      dir="ltr"
+                    >
+                      <option value="kcal">kcal (R = 2 × 10⁻³)</option>
+                      <option value="kJ">kJ (R = 8.314 × 10⁻³)</option>
+                    </select>
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>قانون الربط: ΔH = ΔE + Δn · R · T</span>
+                    <span className="font-mono text-purple-300 text-sm" dir="ltr">
+                      ΔH = {deltaE} + ({deltaN} × {rConstant} × {tempK.toFixed(1)})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>شغل التمدد الميكانيكي المبذول (W = -P·ΔV = -Δn·R·T):</span>
+                    <span className="font-mono text-amber-300 text-sm" dir="ltr">
+                      {workExp.toFixed(2)} {thermoUnit}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-950 to-slate-900 border-2 border-purple-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-purple-300">حرارة التفاعل عند ثبوت الضغط (ΔH = q_p)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaH.toFixed(2)} <span className="text-lg font-bold text-purple-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {deltaH < 0 ? '🔥 تفاعل طارد للحرارة (Exothermic Reaction).' : '❄️ تفاعل ماص للحرارة (Endothermic Reaction).'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-blue-950 to-slate-900 border-2 border-blue-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-blue-300">طاقة التفاعل عند ثبوت الحجم (ΔE = q_v)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Number(deltaE).toFixed(2)} <span className="text-lg font-bold text-blue-300">{thermoUnit}</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      القيمة المقاسة عملياً داخل المسعر القنبلي المغلق (Bomb Calorimeter).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 2: Nernst Equation */}
+            {subThermoMode === 'nernst' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-cyan-300">
+                    معادلة نيرنست وطاقة جيبس الحرة للخلية (Nernst & Gibbs Free Energy):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setEStandard(0.93);
+                      setElectronsN(2);
+                      setQReaction(0.1778);
+                    }}
+                    className="text-xs text-cyan-300 hover:text-white flex items-center gap-1 bg-cyan-950/60 border border-cyan-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة خلية الرصاص والفضة (ص 16)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      جهد الخلية القياسي E° (Volts):
+                    </label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={eStandard}
+                      onChange={(e) => setEStandard(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      عدد الإلكترونات المنقولة n:
+                    </label>
+                    <input
+                      type="number"
+                      min="1"
+                      max="6"
+                      value={electronsN}
+                      onChange={(e) => setElectronsN(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">
+                      حاصل التفاعل Q = [M_oxid] / [M_reduc]:
+                    </label>
+                    <input
+                      type="number"
+                      step="0.001"
+                      value={qReaction}
+                      onChange={(e) => setQReaction(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2.5 py-1.5 text-sm font-bold text-white focus:outline-none focus:border-cyan-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Calculation breakdown */}
+                <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700 space-y-2 text-xs font-bold text-slate-300">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 border-b border-slate-800 pb-2">
+                    <span>معادلة نيرنست: E = E° - (0.0592 / n) · log Q</span>
+                    <span className="font-mono text-cyan-300 text-sm" dir="ltr">
+                      E = {eStandard} - (0.0592 / {electronsN}) × log10({safeQ})
+                    </span>
+                  </div>
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1">
+                    <span>طاقة جيبس الحرة القياسية (ΔG° = -n · F · E°):</span>
+                    <span className="font-mono text-emerald-300 text-sm" dir="ltr">
+                      ΔG° = {deltaGStandard.toFixed(2)} kJ
+                    </span>
+                  </div>
+                </div>
+
+                {/* Output Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-cyan-950 to-slate-900 border-2 border-cyan-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-cyan-300">جهد الخلية غير القياسي (Cell Potential - E)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {eCell.toFixed(3)} <span className="text-lg font-bold text-cyan-300">V</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      {eCell > 0 ? '⚡ التفاعل تلقائي ويولد تياراً كهربائياً (Spontaneous).' : '⚠️ التفاعل غير تلقائي تحت هذه التراكيز.'}
+                    </p>
+                  </div>
+
+                  <div className="p-5 rounded-2xl bg-gradient-to-br from-indigo-950 to-slate-900 border-2 border-indigo-500 shadow-lg">
+                    <span className="text-xs font-extrabold text-indigo-300">طاقة جيبس الحرة الفعلية (ΔG)</span>
+                    <div className="text-3xl font-black text-white font-mono mt-1" dir="ltr">
+                      {deltaGCell.toFixed(2)} <span className="text-lg font-bold text-indigo-300">kJ</span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-2">
+                      أقصى شغل كهربائي مفيد يمكن استخلاصه من الخلية (F = 96,485 C/mol).
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Sub-mode 3: Bomb Calorimeter */}
+            {subThermoMode === 'bomb' && (
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-black text-amber-300">
+                    حسابات المسعر القنبلي (Bomb Calorimeter - حرارة الاحتراق):
+                  </h3>
+                  <button
+                    onClick={() => {
+                      setSampleMass(3.19);
+                      setMolarMass(180);
+                      setWaterMass(775);
+                      setBombCapacity(893);
+                      setTempDelta(11.8);
+                    }}
+                    className="text-xs text-amber-300 hover:text-white flex items-center gap-1 bg-amber-950/60 border border-amber-800 px-3 py-1.5 rounded-xl transition"
+                  >
+                    <RefreshCw className="w-3 h-3" />
+                    <span>مسألة حرق الجلوكوز (ص 29)</span>
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة العينة (g):</label>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={sampleMass}
+                      onChange={(e) => setSampleMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الكتلة المولية (g/mol):</label>
+                    <input
+                      type="number"
+                      value={molarMass}
+                      onChange={(e) => setMolarMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">كتلة ماء المسعر (g):</label>
+                    <input
+                      type="number"
+                      value={waterMass}
+                      onChange={(e) => setWaterMass(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">سعة المسعر C (J/°C):</label>
+                    <input
+                      type="number"
+                      value={bombCapacity}
+                      onChange={(e) => setBombCapacity(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+
+                  <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-700">
+                    <label className="block text-xs font-bold text-slate-300 mb-1">الارتفاع في الحرارة ΔT (°C):</label>
+                    <input
+                      type="number"
+                      step="0.1"
+                      value={tempDelta}
+                      onChange={(e) => setTempDelta(Number(e.target.value))}
+                      className="w-full bg-slate-800 border border-slate-600 rounded-lg px-2 py-1.5 text-xs font-bold text-white focus:outline-none focus:border-amber-400 font-mono"
+                      dir="ltr"
+                    />
+                  </div>
+                </div>
+
+                {/* Results Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="p-4 rounded-2xl bg-amber-950/60 border border-amber-500/60">
+                    <span className="text-[11px] font-bold text-amber-300">إجمالي الحرارة المنطلقة (q_reaction)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qTotalJ).toLocaleString(undefined, { maximumFractionDigits: 1 })} <span className="text-xs text-amber-300">J</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-orange-950/60 border border-orange-500/60">
+                    <span className="text-[11px] font-bold text-orange-300">حرارة الاحتراق لكل جرام (J/g)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {Math.abs(qPerGramJ).toFixed(1)} <span className="text-xs text-orange-300">J/g</span>
+                    </div>
+                  </div>
+
+                  <div className="p-4 rounded-2xl bg-rose-950/60 border border-rose-500/60">
+                    <span className="text-[11px] font-bold text-rose-300">حرارة الاحتراق المولية (ΔE = q_v)</span>
+                    <div className="text-2xl font-black text-white font-mono mt-1" dir="ltr">
+                      {qPerMoleKJ.toFixed(1)} <span className="text-xs text-rose-300">kJ/mol</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
           </div>
         </div>
       )}

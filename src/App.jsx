@@ -50,7 +50,7 @@ export default function App() {
         )}
 
         {activeTab === 'materials' && (
-          <MaterialsView />
+          <MaterialsView setActiveTab={setActiveTab} />
         )}
 
         {activeTab === 'lectures' && (
