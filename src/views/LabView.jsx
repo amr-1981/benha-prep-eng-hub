@@ -3,7 +3,7 @@ import { Calculator, TestTube, Sparkles, Flame, Zap, Beaker, CheckCircle2 } from
 import CalculatorsView from './CalculatorsView';
 import VirtualLabView from './VirtualLabView';
 
-export default function LabView({ activeDivision = 'all', setActiveDivision, defaultMode = 'calculators', subTab }) {
+export default function LabView({ activeDivision = 'all', setActiveDivision, defaultMode = 'calculators', subTab, studyMode = 'bilingual' }) {
   const [labMode, setLabMode] = useState(subTab || defaultMode || 'calculators'); // 'calculators' | 'experiments'
 
   useEffect(() => {
@@ -100,6 +100,7 @@ export default function LabView({ activeDivision = 'all', setActiveDivision, def
           <CalculatorsView 
             activeDivision={activeDivision} 
             setActiveDivision={setActiveDivision} 
+            studyMode={studyMode}
           />
         )}
 
@@ -107,6 +108,7 @@ export default function LabView({ activeDivision = 'all', setActiveDivision, def
           <VirtualLabView 
             activeDivision={activeDivision} 
             setActiveDivision={setActiveDivision} 
+            studyMode={studyMode}
           />
         )}
       </div>

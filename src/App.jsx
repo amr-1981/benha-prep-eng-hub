@@ -17,6 +17,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [activeDivision, setActiveDivision] = useState('all'); // 'all' | 'thermal' | 'electro'
   const [labSubTab, setLabSubTab] = useState('calculators'); // 'calculators' | 'experiments'
+  const [studyMode, setStudyMode] = useState('bilingual'); // 'bilingual' | 'english_only'
 
   const handleTabChange = (tabId, subMode = null) => {
     if (tabId === 'calculators') {
@@ -131,6 +132,29 @@ export default function App() {
                 </button>
               )}
 
+              {/* Bilingual Study Mode vs English Exam Mode Switcher */}
+              <button
+                onClick={() => setStudyMode(prev => prev === 'bilingual' ? 'english_only' : 'bilingual')}
+                className={`px-3 py-1.5 rounded-xl font-black text-xs flex items-center gap-1.5 transition border shadow-sm ${
+                  studyMode === 'bilingual'
+                    ? 'bg-emerald-950/90 text-emerald-300 border-emerald-600/70 hover:bg-emerald-900'
+                    : 'bg-indigo-950/90 text-indigo-300 border-indigo-600/70 hover:bg-indigo-900'
+                }`}
+                title="التبديل بين وضع المذاكرة (عربي + إنجليزي) ووضع محاكاة الامتحان (English Only)"
+              >
+                {studyMode === 'bilingual' ? (
+                  <>
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span>📚 وضع المذاكرة (عربي + EN)</span>
+                  </>
+                ) : (
+                  <>
+                    <span className="w-2 h-2 rounded-full bg-indigo-400"></span>
+                    <span>📝 وضع الامتحان (English Only)</span>
+                  </>
+                )}
+              </button>
+
               <button
                 onClick={() => { setActiveTab('home'); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
                 className="px-3.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-black text-xs flex items-center gap-1.5 transition shadow-md shadow-blue-900/40"
@@ -153,12 +177,12 @@ export default function App() {
 
         {/* 2. SYLLABUS ENCYCLOPEDIA */}
         {activeTab === 'syllabus' && (
-          <SyllabusView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+          <SyllabusView activeDivision={activeDivision} setActiveDivision={setActiveDivision} studyMode={studyMode} />
         )}
 
         {/* 3. GLOSSARY & MEMORIZATION VAULT */}
         {activeTab === 'glossary' && (
-          <GlossaryView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+          <GlossaryView activeDivision={activeDivision} setActiveDivision={setActiveDivision} studyMode={studyMode} />
         )}
 
         {/* 4. UNIFIED ENGINEERING LAB (SMART CALCULATORS + VIRTUAL EXPERIMENTS) */}
@@ -167,17 +191,18 @@ export default function App() {
             activeDivision={activeDivision} 
             setActiveDivision={setActiveDivision}
             subTab={activeTab === 'calculators' ? 'calculators' : labSubTab}
+            studyMode={studyMode}
           />
         )}
 
         {/* 5. A4 PRINTABLE CHEAT SHEETS */}
         {activeTab === 'cheatsheets' && (
-          <CheatSheetsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+          <CheatSheetsView activeDivision={activeDivision} setActiveDivision={setActiveDivision} studyMode={studyMode} />
         )}
 
         {/* 6. QUIZ ARENA (MCQ) */}
         {activeTab === 'quiz' && (
-          <QuizArenaView activeDivision={activeDivision} setActiveDivision={setActiveDivision} />
+          <QuizArenaView activeDivision={activeDivision} setActiveDivision={setActiveDivision} studyMode={studyMode} />
         )}
 
         {/* 7. MATERIALS & REPOSITORY */}

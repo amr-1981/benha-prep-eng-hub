@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { BookOpen, Droplets, Flame, ShieldAlert, Building2, Layers, Zap, CheckCircle2, AlertTriangle, ArrowRight, Sparkles } from 'lucide-react';
 import { CHEMISTRY_MODULES, CHEMISTRY_DIVISIONS, BENHA_EXAM_TIPS } from '../data/chemistryCurriculumData';
+import { ConceptAccordion, TermBadge } from '../components/BilingualExplainer';
 
-export default function SyllabusView({ activeDivision = 'all', setActiveDivision }) {
+export default function SyllabusView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
   const iconMap = {
     Droplets: Droplets,
     Flame: Flame,
@@ -28,6 +29,79 @@ export default function SyllabusView({ activeDivision = 'all', setActiveDivision
   }, [activeDivision, filteredModules, selectedModule]);
 
   const currentDivisionInfo = CHEMISTRY_DIVISIONS.find(d => d.id === activeDivision) || CHEMISTRY_DIVISIONS[0];
+
+  const getModuleBilingualInsight = (id) => {
+    switch (id) {
+      case 'mod-water':
+        return {
+          titleEn: "Water Treatment & Boiler Problems: Conceptual Overview",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: تكنولوجيا المياه ومشاكل الغلايات",
+          points: [
+            "لماذا نهتم بمعالجة مياه التغذية (Boiler Feed Water) في المصانع ومحطات الكهرباء؟ لأن العسر وأملاح الكالسيوم والمغنيسيوم تترسب عند غليان الماء على جدران الغلايات مكونة قشوراً صلبة (Boiler Scales) رديئة التوصيل للحرارة مما يهدر الوقود ويؤدي لانفجار المواسير!",
+            "الفرق بين القشور (Scale) والحمأة (Sludge): القشور رواسب بلورية شديدة الصلابة تلتصق بجدران المواسير (CaSO4, CaCO3)، بينما الحمأة رواسب طينية طرية تترسب في قاع الغلاية ويسهل إزالتها بنفخ الغلاية (Blow-down).",
+            "طريقة الجير والصودا: الجير يزيل العسر المؤقت وأملاح المغنيسيوم، بينما الصودا تزيل أملاح الكالسيوم الدائمة."
+          ],
+          examTip: "سؤال فاينال متكرر: اذكر 4 مشاكل تسببها المياه العسرة في الغلايات؟ (1) Scales & Sludges (2) Boiler Corrosion (3) Caustic Embrittlement (4) Priming & Foaming."
+        };
+      case 'mod-fuels':
+        return {
+          titleEn: "Fuels, Combustion & Thermochemistry: Core Principles",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: الوقود والاحتراق والديناميكا الحرارية",
+          points: [
+            "التحليل التقريبي (Proximate Analysis) مقابل النهائي (Ultimate Analysis): التحليل التقريبي يحدد رطوبة الفحم والمواد المتطايرة والكربون الثابت والرماد بطرق فيزيائية سريعة. بينما التحليل النهائي يحدد النسب المئوية الكيميائية الدقيقة لعناصر C, H, O, N, S.",
+            "لماذا نقسم O على 8 في معادلة دولونج؟ لأن كل 1 كجم هيدروجين يرتبط بـ 8 كجم أكسجين لتكوين ماء خامل، فالهيدروجين الفعلي المتاح للاشتعال المنتج للطاقة هو (H - O/8).",
+            "الفرق بين المحتوى الحراري ΔH والطاقة الداخلية ΔE: المحتوى الحراري ΔH يُقاس عند ثبوت الضغط (q_p)، بينما ΔE تُقاس عند ثبوت الحجم (q_v) داخل مسعر القنبلة المغلق، والعلاقة الحاكمة بينهما: ΔH = ΔE + ΔnRT."
+          ],
+          examTip: "في حسابات Δn: نحسب فقط عدد مولات النواتج الغازية ناقص المتفاعلات الغازية (المواد الصلبة والسائلة تهمل تماماً لأن Δn = 0 لها)."
+        };
+      case 'mod-cement':
+        return {
+          titleEn: "Cement Clinker Mineralogy & Bogue Phase Roles",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: كيمياء الأسمنت البورتلاندي",
+          points: [
+            "المركبات الأربعة: C3S يعطي المقاومة المبكرة السريعة، C2S يعطي المقاومة المتأخرة طويلة الأجل، C3A مسؤول عن سرعة الشك وحرارة التفاعل العالية، C4AF يعطي اللون الرمادي ويخفض حرارة الحرق.",
+            "دور الجبس (Gypsum 2-3%): يمنع التصلب الفوري المفاجئ (Flash Set) لمركب C3A، ليعطي المهندسين والعمال وقتاً كافياً لنقل وصب الخرسانة.",
+            "معامل تشبع الجير LSF: يعبر عن النسبة المثالية للجير بالنسبة للأكاسيد الحمضية، ويجب أن يقع بين 0.66 و 1.02."
+          ],
+          examTip: "علل: يضاف الجبس بنسبة محددة ولا تزيد؟ لأن زيادة الجبس تؤدي لتكوين بلورات الإترنجايت لاحقاً مما يسبب انتفاخ وتشقق الخرسانة المتصلبة."
+        };
+      case 'mod-polymers':
+        return {
+          titleEn: "Polymers & Lubrication Engineering Principles",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: البوليمرات واللدائن وزيوت التزييت",
+          points: [
+            "اللدائن الحرارية (Thermoplastics) مقابل المتصلدة بالحرارة (Thermosetting): اللدائن الحرارية تلين بالتسخين وتتشكل عدة مرات ولها سلاسل خطية غير متشابكة (مثل البولي إيثيلين PVC). أما المتصلدة فتتصلب بروابط ثلاثية الأبعاد ولا تلين بالتسخين إطلاقاً (مثل الباكلايت ومقابض الأواني).",
+            "ميكانيكية التزييت والتشحيم: المحركات تحتاج زيوتاً ذات مؤشر لزوجة مرتفع (High VI) ونقطة وميض عالية لمنع احتكاك الأسطح المعدنية وامتصاص الحرارة دون احتراق الزيت.",
+            "رقم التصبن (Saponification Value): يُستخدم لكشف غش الزيوت المعدنية البترولية الرخيصة بالزيوت النباتية أو الحيوانية."
+          ],
+          examTip: "سؤال علل متكرر: علل يفضل استخدام الزيوت البرافينية عن النفثينية في تزييت المحركات؟ لأن الزيوت البرافينية لها مؤشر لزوجة VI مرتفع (يقارب 100) فلا تفقد لزوجتها بسهولة عند سخونة المحرك."
+        };
+      case 'mod-electrochemistry':
+        return {
+          titleEn: "Electrochemical Principles, EMF & Nernst Equation",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: الخلايا الجلفانية ومعادلة نيرنست",
+          points: [
+            "الأنود مقابل الكاثود: الأنود هو القطب الذي تحدث عنده عملية الأكسدة (فقد الإلكترونات)، بينما الكاثود تحدث عنده عملية الاختزال (اكتساب الإلكترونات).",
+            "السلسلة الكهروكيميائية: المعدن الأعلى في السلسلة (الأكثر سالبية في جهود الاختزال) يعمل كأنود ويحل محل المعدن الأسفل منه في محاليل أملاحه.",
+            "معادلة نيرنست وطاقة جيبس: تمكننا من حساب الجهد الحقيقي المتولد عند أي تركيز غير قياسي للمحاليل (E = E° - 0.0592/n log Q)، وقيمة ΔG° = -nFE° تحدد مقدار الشغل الكهربائي وتلقائية التفاعل."
+          ],
+          examTip: "إذا طلب في الامتحان رمز الاصطلاح للخلية (Cell Notation): الأنود دائماً على اليسار، تليه القنطرة الملحية ||، ثم الكاثود على اليمين."
+        };
+      case 'mod-corrosion':
+        return {
+          titleEn: "Corrosion Electrochemistry, Pilling-Bedworth & Cathodic Protection",
+          titleAr: "💡 افهم الفكرة والربط الهندسي بالعربي: ميكانيكية التآكل والصدأ والحماية الهندسية",
+          points: [
+            "ميكانيكية الصدأ الرطب: تآكل كهروكيميائي يتطلب وجود الماء والأكسجين معاً؛ الحديد يتأكسد كأنود مفرزاً Fe²⁺، والأكسجين يختزل عند الكاثود مكوناً أيونات الهيدروكسيل OH⁻، فيتكون هيدروكسيد الحديد ثم يتأكسد للصدأ الأحمر Fe2O3·xH2O.",
+            "قاعدة بيلينج-بيدورث (Pilling-Bedworth Ratio): إذا كان حجم أكسيد المعدن أكبر من حجم المعدن نفسه (PBR > 1)، تكون طبقة الأكسيد واقية وتحمي المعدن من استمرار الصدأ (مثل الألومنيوم). أما إذا كان أقل من 1 (كالصوديوم والمغنيسيوم)، تكون الطبقة مسامية وممزقة ويستمر التآكل.",
+            "الحماية الكاثودية: حماية الحديد بتوصيله بمعدن أنشط منه كقطب تضحية (الزنك)، أو بضخ تيار كهربائي مستمر (ICCP) يجعله كاثوداً سالباً دائماً."
+          ],
+          examTip: "علل: الصدأ في الحديد لا يتوقف بينما في الألومنيوم يتوقف فوراً؟ لأن أكسيد الألومنيوم Al2O3 له PBR > 1 ويكون طبقة متماسكة تمنع وصول الهواء، بينما صدأ الحديد Fe2O3 هش ومسامي وله PBR غير منتظم فيسمح بنفاذ الرطوبة وتآكل كامل المعدن."
+        };
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="space-y-8 pb-16">
@@ -201,6 +275,17 @@ export default function SyllabusView({ activeDivision = 'all', setActiveDivision
             ))}
           </div>
         </div>
+
+        {/* Bilingual Conceptual Decoded Insight for Syllabus Module */}
+        {getModuleBilingualInsight(selectedModule.id) && (
+          <ConceptAccordion
+            titleEn={getModuleBilingualInsight(selectedModule.id).titleEn}
+            titleAr={getModuleBilingualInsight(selectedModule.id).titleAr}
+            studyMode={studyMode}
+            points={getModuleBilingualInsight(selectedModule.id).points}
+            examTip={getModuleBilingualInsight(selectedModule.id).examTip}
+          />
+        )}
 
         {/* Exam Hotspots */}
         <div className="space-y-3 pt-2">

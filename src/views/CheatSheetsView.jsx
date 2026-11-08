@@ -30,7 +30,7 @@ function SafeBiDiText({ text, className = "" }) {
   );
 }
 
-export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision }) {
+export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
 

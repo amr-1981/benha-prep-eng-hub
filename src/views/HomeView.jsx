@@ -52,6 +52,9 @@ export default function HomeView({ setActiveTab, setActiveDivision }) {
             <span className="px-3 py-1 rounded-xl bg-slate-800/80 text-emerald-300 border border-slate-700/80 font-bold">
               ✅ محتوى معتمد ومطابق لدفعة 2024 / 2025
             </span>
+            <span className="px-3 py-1 rounded-xl bg-slate-800/80 text-purple-300 border border-slate-700/80 font-bold">
+              🌐 نظام ثنائي اللغة (مصطلحات إنجليزية + فك شفرة الفكرة بالعربي)
+            </span>
           </div>
         </div>
       </div>

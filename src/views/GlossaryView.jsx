@@ -2,11 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { 
   BookMarked, Search, Filter, Sparkles, CheckCircle2, RotateCcw, 
   HelpCircle, Eye, EyeOff, Copy, Check, Printer, BrainCircuit,
-  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap
+  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap, Lightbulb
 } from 'lucide-react';
 import { GLOSSARY_ITEMS, GLOSSARY_MODULES, GLOSSARY_TYPES } from '../data/glossaryData';
+import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 
-export default function GlossaryView({ activeDivision = 'all', setActiveDivision }) {
+export default function GlossaryView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -379,12 +380,27 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                 <div className="pt-4 border-t border-slate-800/80">
                   {isRevealed ? (
                     <div className="space-y-4 animate-in fade-in duration-300">
-                      <div>
-                        <span className="text-[11px] font-bold text-indigo-300 block mb-1">التعريف والإجابة النموذجية المعتمدة:</span>
-                        <p className="text-sm font-medium text-slate-200 leading-relaxed bg-slate-950/70 p-4 rounded-2xl border border-slate-800">
-                          {currentFlashcard.definitionAr}
-                        </p>
-                      </div>
+                      {/* Academic English Definition */}
+                      {ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn && (
+                        <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-left font-mono" dir="ltr">
+                          <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1">
+                            Academic English Definition (for Exam Answer Sheet):
+                          </span>
+                          <p className="text-xs text-slate-200 leading-relaxed font-bold">
+                            {ENGINEERING_TERMS[currentFlashcard.termEn].definitionEn}
+                          </p>
+                        </div>
+                      )}
+
+                      {/* Arabic Meaning & Conceptual Intuition */}
+                      {studyMode !== 'english_only' && (
+                        <div>
+                          <span className="text-[11px] font-bold text-amber-300 block mb-1">💡 الفهم والتفسير الهندسي بالعربي:</span>
+                          <p className="text-sm font-medium text-slate-200 leading-relaxed bg-slate-950/70 p-4 rounded-2xl border border-slate-800">
+                            {currentFlashcard.definitionAr}
+                          </p>
+                        </div>
+                      )}
 
                       {/* Formula if exists */}
                       {currentFlashcard.formula && (
@@ -524,10 +540,27 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       {item.termAr}
                     </h3>
 
-                    {/* Definition */}
-                    <p className="text-xs font-medium text-slate-300 leading-relaxed text-right whitespace-pre-line">
-                      {item.definitionAr}
-                    </p>
+                    {/* Academic English Definition (if available in Shoubra dictionary) */}
+                    {ENGINEERING_TERMS[item.termEn]?.definitionEn && (
+                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-left font-mono text-xs text-slate-200" dir="ltr">
+                        <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1">
+                          Academic English Definition (for Exam Answer Sheet):
+                        </span>
+                        {ENGINEERING_TERMS[item.termEn].definitionEn}
+                      </div>
+                    )}
+
+                    {/* Arabic Explanation & Intuition */}
+                    {studyMode !== 'english_only' && (
+                      <div className="space-y-1">
+                        <span className="text-[11px] font-bold text-amber-300 block">
+                          💡 الفهم والتفسير الهندسي بالعربي:
+                        </span>
+                        <p className="text-xs font-medium text-slate-300 leading-relaxed text-right whitespace-pre-line">
+                          {item.definitionAr}
+                        </p>
+                      </div>
+                    )}
 
                     {/* Formula Block (if law) */}
                     {item.formula && (

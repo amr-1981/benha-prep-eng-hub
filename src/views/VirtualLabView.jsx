@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { TestTube, Play, RotateCcw, CheckCircle2, AlertCircle, HelpCircle, Sparkles, Flame, Zap } from 'lucide-react';
 import { LAB_EXPERIMENTS } from '../data/labExperimentsData';
+import { ConceptAccordion, TermBadge } from '../components/BilingualExplainer';
 
-export default function VirtualLabView({ activeDivision = 'all', setActiveDivision }) {
+export default function VirtualLabView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
   const filteredExperiments = LAB_EXPERIMENTS.filter(exp => {
     return !activeDivision || activeDivision === 'all' || exp.division === activeDivision;
   });
@@ -16,6 +17,57 @@ export default function VirtualLabView({ activeDivision = 'all', setActiveDivisi
       }
     }
   }, [activeDivision, filteredExperiments, selectedExp]);
+
+  const getExpExplanation = (id) => {
+    switch (id) {
+      case 'exp-edta':
+        return {
+          titleEn: "EDTA Hardness Titration: Chemistry & Viva Secrets",
+          titleAr: "💡 افهم الفكرة المعملية والسر الكيميائي بالعربي: معايرة عسر الماء",
+          points: [
+            "لماذا نستخدم المحلول المنظم Ammonia Buffer pH = 10؟ لأن مركب EDTA يرتبط بالكالسيوم والمغنيسيوم بثبات تام عند pH = 10 فقط. إذا قل الـ pH عن 10 يتفكك المعقد ويفشل التفاعل، وإذا زاد عن 10 يترسب المغنيسيوم في صورة هيدروكسيد المغنيسيوم Mg(OH)2 قبل المعايرة.",
+            "سر التحول اللوني من الأحمر النبيذي (Wine Red) إلى الأزرق (Steel Blue): دليل EBT يرتبط بجزء ضئيل من أيونات Mg مكوناً لوناً أحمر نبيذي. وعند التنقيط بـ EDTA، يسحب الإديتا كل الكالسيوم أولاً ثم ينتزع المغنيسيوم من الدليل لأن ارتباط الإديتا أقوى بكثير، فيتحرر الدليل EBT حراً بلونه الأزرق النقي.",
+            "كيف نفرق بين العسر المؤقت والدائم عملياً؟ نعاير 50 مل ماء مباشرة لنعرف العسر الكلي (V1). ثم نغلي 100 مل ماء لترسيب بيكربونات الكالسيوم ونرشحها ونبردها، ونعاير الراشح لنعرف العسر الدائم (V2). ونطرحهما لنحصل على العسر المؤقت!"
+          ],
+          examTip: "سؤال شفوي متكرر في شبرا: لماذا يترسب الكالسيوم بالغليان كـ CaCO3 بينما يترسب المغنيسيوم كـ Mg(OH)2؟ لأن Mg(OH)2 أقل ذوبانية بكثير من MgCO3."
+        };
+      case 'exp-viscosity':
+        return {
+          titleEn: "Redwood Viscosity: Flow Rate & Temperature Effects",
+          titleAr: "💡 افهم الفكرة المعملية والسر الكيميائي بالعربي: لزوجة الزيوت ومقياس ريدوود",
+          points: [
+            "ما هي فكرة مقياس ريدوود؟ نقيس الزمن بالثواني اللازم لتدفق 50 مل من الزيت عبر فوهة عيارية ضيقة مصنوعة من العقيق تحت تأثير وزنه فقط.",
+            "لماذا تقل اللزوجة بارتفاع درجة الحرارة؟ لأن الحرارة تكسب جزيئات السائل طاقة حركية تباعد بينها وتضعف قوى التجاذب بين الجزيئات (Cohesive forces)، فيتدفق الزيت أسرع ويقل زمن ريدوود.",
+            "مؤشر اللزوجة (Viscosity Index - VI): مقياس لمدى احتفاظ الزيت بلزوجته مع تغير الحرارة؛ المحركات تحتاج زيوتاً ذات VI مرتفع لتحافظ على طبقة التزييت ومنع احتكاك وتآكل المعادن عند سخونة المحرك."
+          ],
+          examTip: "سؤال شفوي: ما الفرق بين مقياس ريدوود رقم 1 ورقم 2؟ رقم 1 للزيوت الخفيفة (زمن تدفق أقل من 2000 ثانية)، ورقم 2 للزيوت الثقيلة جداً (فوهته أوسع بمقدار 10 أضعاف تقريباً)."
+        };
+      case 'exp-flash':
+        return {
+          titleEn: "Pensky-Martens Flash & Fire Points: Oil Safety Decoded",
+          titleAr: "💡 افهم الفكرة المعملية والسر الكيميائي بالعربي: نقطة الوميض واشتعال الزيوت",
+          points: [
+            "الفرق بين نقطة الوميض ونقطة الاشتعال: نقطة الوميض (Flash Point) هي أدنى حرارة يطلق عندها الزيت أبخرة تشتعل لحظياً (ومضة) مع لهب الاختبار، بينما نقطة الاشتعال (Fire Point) تليها بنحو 5 إلى 20 درجة مئوية ويستمر الاشتعال بعدها 5 ثوانٍ على الأقل.",
+            "الأهمية الهندسية لاختبار الوميض: معيار أمان وقائي لتحديد أقصى درجات حرارة آمنة لنقل وتخزين واستخدام الزيوت والوقود في المصانع والمحركات لمنع اندلاع الحرائق.",
+            "جهاز بنسكي مارتنز (Pensky-Martens Closed Cup): يُستخدم الكوب المغلق للوقود والزيوت المتطايرة لمنع هروب الأبخرة وإعطاء قراءة دقيقة لحرارة الوميض."
+          ],
+          examTip: "سؤال شفوي: إذا احتوى زيت التزييت على شوائب من البنزين أو الكيروسين، ماذا يحدث لنقطة وميضه؟ تنخفض نقطة الوميض بشدة مما يمثل خطراً جسيماً على سلامة المحرك."
+        };
+      case 'exp-corrosion-galvanic':
+        return {
+          titleEn: "Galvanic EMF & Cathodic Sacrificial Anode: Protection Chemistry",
+          titleAr: "💡 افهم الفكرة المعملية والسر الكيميائي بالعربي: الخلية الجلفانية وقطب التضحية",
+          points: [
+            "تفاعل الأنود والكاثود: قطب الزنك ذو جهد اختزال قياسي سالب (-0.76 V) فيعمل كأنود يتأكسد ويفقد إلكترونات ويتآكل كيميائياً. بينما النحاس (+0.34 V) يعمل ككاثود يكتسب الإلكترونات ويترسب عليه النحاس دون تآكل.",
+            "ميكانيكية قطب التضحية لحماية الحديد: نوصل كتل من معدن أنشط من الحديد (كالزنك أو المغنيسيوم) بالمنشأة؛ فيضحي الزنك بنفسه ويتآكل كأنود، بينما يظل الحديد كاثوداً سالباً ومحمياً من الصدأ تماماً.",
+            "دور القنطرة الملحية (Salt Bridge): تحافظ على التعادل الكهربائي بين نصفي الخلية بالسماح بهجرة الأيونات دون اختلاط السوائل."
+          ],
+          examTip: "سؤال شفوي: لماذا نستخدم قطب تضحية من المغنيسيوم في التربة الجافة أو عالية المقاومة؟ لأن المغنيسيوم له جهد اختزال سالب جداً (-2.37 V) فيوفر فارق جهد كافٍ لدفع تيار الحماية."
+        };
+      default:
+        return null;
+    }
+  };
 
   // Titration simulator state for Experiment 1
   const [edtaVolume, setEdtaVolume] = useState(0);
@@ -243,6 +295,17 @@ export default function VirtualLabView({ activeDivision = 'all', setActiveDivisi
           <h4 className="text-xs font-black text-cyan-300">الأساس العلمي والنظري للتجربة (Principle & Theory):</h4>
           <p className="text-xs text-slate-300 font-medium leading-relaxed">{selectedExp.theory}</p>
         </div>
+
+        {/* Bilingual Conceptual Decoded Insight */}
+        {getExpExplanation(selectedExp.id) && (
+          <ConceptAccordion
+            titleEn={getExpExplanation(selectedExp.id).titleEn}
+            titleAr={getExpExplanation(selectedExp.id).titleAr}
+            studyMode={studyMode}
+            points={getExpExplanation(selectedExp.id).points}
+            examTip={getExpExplanation(selectedExp.id).examTip}
+          />
+        )}
 
         {/* Apparatus List */}
         <div>
