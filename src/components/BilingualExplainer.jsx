@@ -5,66 +5,53 @@ import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 /**
  * ConceptAccordion: Expandable bilingual explainer box designed to clarify the physical
  * and chemical intuition behind formulas, steps, and experiments for Egyptian engineering students.
+ * Collapsed by default (English-first) with a small button to reveal Arabic explanation when needed.
  */
 export function ConceptAccordion({ 
   titleEn = "Conceptual Intuition & Why?", 
   titleAr = "الفهم الهندسي وسر الخطوات بالعربي", 
   points = [], 
   examTip = "",
-  isOpenDefault = true,
+  isOpenDefault = false,
   studyMode = "bilingual"
 }) {
   const [isOpen, setIsOpen] = useState(isOpenDefault);
 
-  if (studyMode === 'english_only' && !isOpen) {
-    return (
-      <div className="pt-2">
-        <button
-          onClick={() => setIsOpen(true)}
-          className="text-[11px] font-bold text-slate-400 hover:text-cyan-300 flex items-center gap-1.5 transition px-3 py-1.5 rounded-xl bg-slate-900/60 border border-slate-800 hover:border-slate-700"
-        >
-          <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-          <span>Need Arabic explanation for this section? Click to expand 💡</span>
-        </button>
-      </div>
-    );
-  }
-
   return (
-    <div className="rounded-2xl border-2 border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-slate-900/90 to-amber-950/20 shadow-md overflow-hidden transition-all my-3 font-arabic">
-      {/* Header bar */}
+    <div className="rounded-2xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-slate-900/90 to-amber-950/20 shadow-sm overflow-hidden transition-all my-3 font-arabic">
+      {/* Header bar / Trigger button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full p-3.5 sm:p-4 flex items-center justify-between text-right bg-amber-950/30 hover:bg-amber-950/40 transition border-b border-amber-500/20"
+        className="w-full p-3 sm:p-3.5 flex items-center justify-between text-right bg-amber-950/20 hover:bg-amber-950/40 transition border-b border-amber-500/20"
       >
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center border border-amber-400/30 shrink-0">
-            <Lightbulb className="w-4 h-4 text-amber-400 animate-pulse" />
+          <div className="w-7 h-7 rounded-xl bg-amber-500/20 text-amber-300 flex items-center justify-center border border-amber-400/30 shrink-0">
+            <Lightbulb className="w-4 h-4 text-amber-400" />
           </div>
           <div>
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-black text-amber-300">{titleAr}</span>
-              <span className="text-[10px] font-mono font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-700" dir="ltr">
+              <span className="text-xs font-mono font-bold text-cyan-300 bg-slate-900 px-2 py-0.5 rounded-lg border border-slate-700" dir="ltr">
                 {titleEn}
               </span>
+              <span className="text-xs font-black text-amber-300">{titleAr}</span>
             </div>
             <p className="text-[11px] text-slate-400 mt-0.5 font-normal">
-              توضيح باللغة العربية البسيطة للربط بين المصطلح الإنجليزي والواقع الفيزيائي
+              اضغط لعرض الفهم الهندسي والتعليلات العلمية المقررة باللغة العربية
             </p>
           </div>
         </div>
 
         <div className="flex items-center gap-2 text-slate-400 shrink-0">
-          <span className="text-[11px] font-bold hidden sm:inline text-amber-400/80">
-            {isOpen ? 'إخفاء الشرح' : 'عرض الشرح بالعربي'}
+          <span className="text-[11px] font-bold text-amber-300 px-2.5 py-1 rounded-xl bg-amber-950/60 border border-amber-700/50 flex items-center gap-1">
+            <span>{isOpen ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+            <span className="text-[9px] opacity-70 font-mono">{isOpen ? '▲' : '▼'}</span>
           </span>
-          {isOpen ? <ChevronUp className="w-4 h-4 text-amber-400" /> : <ChevronDown className="w-4 h-4 text-amber-400" />}
         </div>
       </button>
 
       {/* Expandable Body */}
       {isOpen && (
-        <div className="p-4 sm:p-5 space-y-3 text-xs leading-relaxed animate-in fade-in duration-200">
+        <div className="p-4 sm:p-5 space-y-3 text-xs leading-relaxed animate-in fade-in duration-200" dir="rtl">
           <ul className="space-y-2.5">
             {points.map((pt, idx) => (
               <li key={idx} className="flex items-start gap-2.5 text-slate-200">
@@ -82,6 +69,78 @@ export function ConceptAccordion({
               <div>
                 <strong className="text-amber-300 font-black">سر الامتحان (Exam Insight): </strong>
                 <span>{examTip}</span>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ * ArabicExplanationDrawer: Compact, on-demand toggle button and drawer for any card or question
+ */
+export function ArabicExplanationDrawer({ 
+  titleAr = "الشرح والتفسير الهندسي بالعربي", 
+  titleEn,
+  contentAr, 
+  points = [], 
+  examTip = "",
+  className = ""
+}) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className={`space-y-2 ${className}`}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={`px-3 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 border ${
+          isOpen
+            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
+            : 'bg-slate-900/90 hover:bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700/80 hover:border-amber-500/40'
+        }`}
+      >
+        <Lightbulb className={`w-3.5 h-3.5 ${isOpen ? 'text-amber-300' : 'text-amber-400'}`} />
+        <span>{isOpen ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+        <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
+          {isOpen ? '▲' : '▼'}
+        </span>
+      </button>
+
+      {isOpen && (
+        <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/30 to-slate-900/90 border border-amber-500/30 space-y-2 text-right animate-in fade-in duration-200 font-arabic text-xs" dir="rtl">
+          <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
+            <span className="font-black text-amber-300">{titleAr}</span>
+            {titleEn && (
+              <span className="text-[10px] text-cyan-300 font-mono font-bold bg-slate-950 px-2 py-0.5 rounded border border-slate-800" dir="ltr">
+                {titleEn}
+              </span>
+            )}
+          </div>
+
+          {contentAr && (
+            <p className="text-slate-200 leading-relaxed font-medium whitespace-pre-line">
+              {contentAr}
+            </p>
+          )}
+
+          {points.length > 0 && (
+            <ul className="space-y-1.5 pt-1">
+              {points.map((pt, idx) => (
+                <li key={idx} className="flex items-start gap-2 text-slate-200">
+                  <span className="text-amber-400 font-bold shrink-0">•</span>
+                  <span>{pt}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {examTip && (
+            <div className="mt-2 text-[11px] text-amber-200/90 bg-amber-950/50 p-2.5 rounded-xl border border-amber-800/40 flex items-start gap-2">
+              <span className="shrink-0">🎯</span>
+              <div>
+                <strong>سر الامتحان:</strong> {examTip}
               </div>
             </div>
           )}

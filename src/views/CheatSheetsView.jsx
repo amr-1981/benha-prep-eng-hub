@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap } from 'lucide-react';
+import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap, Lightbulb } from 'lucide-react';
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
@@ -33,6 +33,16 @@ function SafeBiDiText({ text, className = "" }) {
 export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
+  const [expandedArabicSheets, setExpandedArabicSheets] = useState(new Set());
+
+  const toggleArabicSheet = (id) => {
+    setExpandedArabicSheets(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   const filteredSheets = CHEAT_SHEETS_DATA.filter((s) => {
     const matchCategory = activeCategory === 'all' || s.category === activeCategory;
@@ -138,51 +148,95 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
 
       {/* Sheets Cards Grid (Hidden on Print) */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 no-print">
-        {filteredSheets.map((sheet) => (
-          <div
-            key={sheet.id}
-            className="bg-slate-800/90 rounded-3xl p-6 border-2 border-slate-700 hover:border-emerald-400/60 transition-all shadow-md flex flex-col justify-between"
-          >
-            <div>
-              <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                <div className="flex items-center gap-1.5">
-                  <span className="text-[10px] font-black text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800">
-                    ورقة عمل {sheet.paperSize} • {sheet.pagesCount} صفحة
-                  </span>
-                  <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
-                    sheet.division === 'thermal'
-                      ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
-                      : sheet.division === 'electro'
-                      ? 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
-                      : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/60'
-                  }`}>
-                    {sheet.division === 'thermal' ? '🔥 حرارية (د. هناء)' : sheet.division === 'electro' ? '⚡ كهربية (د. سمر)' : '🏛️ شامل الفاينال'}
-                  </span>
-                </div>
-                <span className="text-xs text-slate-400 font-bold">جاهز للطباعة 🖨️</span>
-              </div>
-              <h3 className="text-lg font-black text-white">{sheet.title}</h3>
-              <p className="text-xs text-slate-300 mt-1 font-bold">{sheet.subtitle}</p>
-            </div>
+        {filteredSheets.map((sheet) => {
+          const isArabicExpanded = expandedArabicSheets.has(sheet.id);
 
-            <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700">
-              <button
-                onClick={() => setPreviewSheet(sheet)}
-                className="flex-1 py-2.5 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
-              >
-                <Eye className="w-3.5 h-3.5" />
-                <span>معاينة الشيت</span>
-              </button>
-              <button
-                onClick={() => handlePrint(sheet)}
-                className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow transition"
-              >
-                <Printer className="w-3.5 h-3.5" />
-                <span>طباعة الشيت 🖨️</span>
-              </button>
+          return (
+            <div
+              key={sheet.id}
+              className="bg-slate-800/90 rounded-3xl p-6 border-2 border-slate-700 hover:border-emerald-400/60 transition-all shadow-md flex flex-col justify-between"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[10px] font-black text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800 font-mono">
+                      {sheet.paperSize} Sheet • {sheet.pagesCount} Page{sheet.pagesCount > 1 ? 's' : ''}
+                    </span>
+                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
+                      sheet.division === 'thermal'
+                        ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
+                        : sheet.division === 'electro'
+                        ? 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
+                        : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/60'
+                    }`}>
+                      {sheet.division === 'thermal' ? '🔥 Thermal (د. هناء)' : sheet.division === 'electro' ? '⚡ Electro (د. سمر)' : '🏛️ Final Exam Scope'}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-slate-400 font-bold font-mono">Ready to Print 🖨️</span>
+                </div>
+
+                {/* Primary English Title */}
+                <h3 className="text-base sm:text-lg font-black text-white font-mono tracking-tight text-left leading-snug" dir="ltr">
+                  {sheet.titleEn || sheet.title}
+                </h3>
+                <p className="text-xs font-mono text-slate-300 mt-1 text-left leading-relaxed" dir="ltr">
+                  {sheet.subtitleEn || sheet.subtitle}
+                </p>
+
+                {/* Small Button for On-Demand Arabic Explanation */}
+                <div className="pt-2">
+                  <button
+                    onClick={() => toggleArabicSheet(sheet.id)}
+                    className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 border ${
+                      isArabicExpanded 
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
+                        : 'bg-slate-900/90 hover:bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700/80 hover:border-amber-500/40'
+                    }`}
+                  >
+                    <Lightbulb className={`w-3.5 h-3.5 ${isArabicExpanded ? 'text-amber-300' : 'text-amber-400'}`} />
+                    <span>{isArabicExpanded ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+                    <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
+                      {isArabicExpanded ? '▲' : '▼'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Expandable Arabic Drawer */}
+                {isArabicExpanded && (
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 space-y-2 text-right animate-in fade-in duration-200 mt-2" dir="rtl">
+                    <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
+                      <span className="text-xs font-black text-amber-300">{sheet.title}</span>
+                      <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">تفسير بالعربي</span>
+                    </div>
+                    <p className="text-xs font-medium text-slate-200 leading-relaxed">
+                      {sheet.subtitle}
+                    </p>
+                    <div className="text-[11px] text-amber-200/90 bg-amber-950/50 p-2 rounded-xl border border-amber-800/40">
+                      🎯 <strong>محتوى الشيت:</strong> يغطي {sheet.sections?.length || 0} أقسام وجداول مراجعة معتمدة لاختبارات كلية الهندسة بشبرا.
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700">
+                <button
+                  onClick={() => setPreviewSheet(sheet)}
+                  className="flex-1 py-2.5 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                >
+                  <Eye className="w-3.5 h-3.5" />
+                  <span>معاينة الشيت (Preview)</span>
+                </button>
+                <button
+                  onClick={() => handlePrint(sheet)}
+                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow transition"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>طباعة الشيت 🖨️</span>
+                </button>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Sheet Preview Modal / Dedicated Print Area */}

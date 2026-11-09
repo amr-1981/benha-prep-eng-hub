@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, Sparkles, Filter, Flame, Zap } from 'lucide-react';
+import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, Sparkles, Filter, Flame, Zap, Lightbulb } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { QUIZ_QUESTIONS } from '../data/quizBankData';
 
@@ -9,6 +9,7 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
   const [selectedOption, setSelectedOption] = useState(null);
   const [score, setScore] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [showArabicHelper, setShowArabicHelper] = useState(false);
 
   const filteredQuestions = QUIZ_QUESTIONS.filter((q) => {
     const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
@@ -33,6 +34,7 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
     if (currentIdx + 1 < filteredQuestions.length) {
       setCurrentIdx(currentIdx + 1);
       setSelectedOption(null);
+      setShowArabicHelper(false);
     } else {
       setIsFinished(true);
       confetti({ particleCount: 100, spread: 80 });
@@ -44,6 +46,7 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
     setSelectedOption(null);
     setScore(0);
     setIsFinished(false);
+    setShowArabicHelper(false);
   };
 
   return (
@@ -189,21 +192,53 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
         <div className="bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl space-y-6">
           
           <div className="flex items-center justify-between border-b border-slate-700 pb-3">
-            <span className="text-xs font-black text-purple-300 bg-purple-950 px-3 py-1 rounded-full border border-purple-800">
-              السؤال {currentIdx + 1} من {filteredQuestions.length}
-            </span>
-            <span className="text-xs text-slate-400 font-bold">{currentQ.topic}</span>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-black text-purple-300 bg-purple-950 px-3 py-1 rounded-full border border-purple-800 font-mono">
+                Question {currentIdx + 1} of {filteredQuestions.length}
+              </span>
+              <span className="text-xs text-slate-400 font-bold font-mono">{currentQ.id.toUpperCase()}</span>
+            </div>
+
+            {/* Small Button for On-Demand Arabic Translation */}
+            <button
+              onClick={() => setShowArabicHelper(prev => !prev)}
+              className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                showArabicHelper 
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40' 
+                  : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+              }`}
+            >
+              <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+              <span>{showArabicHelper ? 'إخفاء الترجمة بالعربي' : '💡 ترجمة السؤال بالعربي'}</span>
+            </button>
           </div>
 
-          <h3 className="text-base sm:text-lg font-black text-white leading-relaxed">
-            {currentQ.question}
+          {/* Primary Question in Academic English */}
+          <h3 className="text-base sm:text-lg font-black text-white leading-relaxed font-mono text-left" dir="ltr">
+            {currentQ.questionEn || currentQ.question}
           </h3>
 
-          {/* Options */}
+          {/* On-Demand Arabic Question Translation Drawer */}
+          {showArabicHelper && (
+            <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+              <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
+                <span className="text-xs font-black text-amber-300">ترجمة السؤال وسياق المنهج:</span>
+                <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">
+                  {currentQ.topic}
+                </span>
+              </div>
+              <p className="text-xs font-medium text-slate-200 leading-relaxed">
+                {currentQ.question}
+              </p>
+            </div>
+          )}
+
+          {/* Options in Academic English */}
           <div className="space-y-3">
             {currentQ.options.map((opt, idx) => {
               const isSelected = selectedOption === idx;
               const isCorrect = idx === currentQ.correctIndex;
+              const optEn = currentQ.optionsEn ? currentQ.optionsEn[idx] : opt;
 
               let style = 'bg-slate-900/60 hover:bg-slate-700/60 border-slate-700 text-slate-200';
               if (selectedOption !== null) {
@@ -221,17 +256,26 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
                   key={idx}
                   onClick={() => handleSelectOption(idx)}
                   disabled={selectedOption !== null}
-                  className={`w-full p-4 rounded-2xl border-2 text-right transition-all text-xs font-bold flex items-center justify-between ${style}`}
+                  className={`w-full p-4 rounded-2xl border-2 text-left transition-all text-xs font-bold flex items-center justify-between ${style}`}
                 >
                   <div className="flex items-center gap-3">
                     <span className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-xs font-mono font-bold shrink-0">
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <span className="leading-relaxed">{opt}</span>
+                    <div className="space-y-0.5 text-left" dir="ltr">
+                      <span className="leading-relaxed font-mono font-bold text-xs block text-slate-100">
+                        {optEn}
+                      </span>
+                      {showArabicHelper && (
+                        <span className="text-[11px] text-slate-400 font-sans block text-right" dir="rtl">
+                          {opt}
+                        </span>
+                      )}
+                    </div>
                   </div>
 
                   {selectedOption !== null && (
-                    <div>
+                    <div className="shrink-0 mr-2">
                       {isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
                       {isSelected && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
                     </div>
@@ -243,21 +287,56 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
 
           {/* Explanation Banner (Visible after answering) */}
           {selectedOption !== null && (
-            <div className="p-4 rounded-2xl bg-slate-900 border border-slate-700 space-y-2 animate-in fade-in">
-              <div className="flex items-center gap-2 text-xs font-black text-cyan-300">
-                <HelpCircle className="w-4 h-4 text-cyan-400" />
-                <span>تفسير الإجابة العلمية (Scientific Explanation):</span>
+            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-700 space-y-3 animate-in fade-in">
+              <div className="flex items-center justify-between border-b border-slate-800 pb-2">
+                <div className="flex items-center gap-2 text-xs font-black text-cyan-300">
+                  <HelpCircle className="w-4 h-4 text-cyan-400" />
+                  <span>Scientific Explanation & Exam Rationale:</span>
+                </div>
+                <span className={`text-[10px] font-bold px-2 py-0.5 rounded font-mono ${
+                  selectedOption === currentQ.correctIndex 
+                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' 
+                    : 'bg-rose-950 text-rose-300 border border-rose-800'
+                }`}>
+                  {selectedOption === currentQ.correctIndex ? 'Correct (+1 Point)' : 'Incorrect'}
+                </span>
               </div>
-              <p className="text-xs text-slate-300 font-bold leading-relaxed">
-                {currentQ.explanation}
-              </p>
-              <div className="pt-2 flex justify-end">
+
+              {/* Primary English Explanation */}
+              {currentQ.explanationEn && (
+                <div className="text-left font-mono text-xs text-slate-300 leading-relaxed" dir="ltr">
+                  {currentQ.explanationEn}
+                </div>
+              )}
+
+              {/* Small Button to toggle Arabic explanation */}
+              <div className="pt-1">
+                <button
+                  onClick={() => setShowArabicHelper(prev => !prev)}
+                  className="px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 bg-amber-950/40 text-amber-300 hover:bg-amber-900/60 border border-amber-600/40"
+                >
+                  <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                  <span>{showArabicHelper ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+                </button>
+              </div>
+
+              {/* Arabic Explanation Drawer */}
+              {showArabicHelper && (
+                <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-right space-y-1 text-xs" dir="rtl">
+                  <span className="text-[11px] font-black text-amber-300 block">💡 التفسير الهندسي بالعربي:</span>
+                  <p className="text-slate-200 leading-relaxed font-medium">
+                    {currentQ.explanation}
+                  </p>
+                </div>
+              )}
+
+              <div className="pt-2 flex justify-end border-t border-slate-800/80">
                 <button
                   onClick={handleNext}
-                  className="px-5 py-2.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs flex items-center gap-2 shadow-md transition active:scale-95"
+                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs flex items-center gap-2 shadow-md transition active:scale-95"
                 >
-                  <span>السؤال التالي</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <span>{currentIdx + 1 === filteredQuestions.length ? 'إنهاء وحساب النتيجة 🏁' : 'السؤال التالي (Next) ←'}</span>
+                  <ArrowRight className="w-4 h-4 rotate-180" />
                 </button>
               </div>
             </div>

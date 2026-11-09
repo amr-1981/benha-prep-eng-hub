@@ -186,8 +186,8 @@ export default function VirtualLabView({ activeDivision = 'all', setActiveDivisi
                 {exp.division === 'thermal' ? '🔥 حرارية (د. هناء)' : '⚡ كهربية (د. سمر)'}
               </span>
             </div>
-            <h3 className="font-black text-xs text-white leading-snug line-clamp-2">{exp.titleAr}</h3>
-            <span className="text-[10px] text-slate-400 line-clamp-1 mt-1 font-mono">{exp.titleEn}</span>
+            <h3 className="font-mono font-black text-xs text-white leading-snug line-clamp-2 text-left" dir="ltr">{exp.titleEn}</h3>
+            <span className="text-[10px] text-slate-400 line-clamp-1 mt-1">{exp.titleAr}</span>
           </button>
         ))}
       </div>
@@ -286,8 +286,10 @@ export default function VirtualLabView({ activeDivision = 'all', setActiveDivisi
       <div className="bg-slate-800/90 rounded-3xl p-6 sm:p-8 border border-slate-700 shadow-xl space-y-6">
         
         <div>
-          <h2 className="text-xl sm:text-2xl font-black text-white">{selectedExp.titleAr}</h2>
-          <p className="text-xs font-mono text-slate-400 mt-0.5">{selectedExp.titleEn}</p>
+          <h2 className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight text-left leading-snug" dir="ltr">
+            {selectedExp.titleEn}
+          </h2>
+          <p className="text-xs font-bold text-amber-300 mt-1">{selectedExp.titleAr}</p>
         </div>
 
         {/* Theory & Principle */}

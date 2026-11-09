@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { 
   FolderArchive, Download, ExternalLink, Search, Filter, BookOpen, 
   FileText, Award, Sparkles, FileCode, CheckCircle2, FolderPlus, 
-  Share2, HardDrive, Send, AlertCircle, Info, ChevronRight, Flame, Zap
+  Share2, HardDrive, Send, AlertCircle, Info, ChevronRight, Flame, Zap, Lightbulb
 } from 'lucide-react';
 import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/materialsData';
 
@@ -10,6 +10,16 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
+  const [expandedArabicFiles, setExpandedArabicFiles] = useState(new Set());
+
+  const toggleArabicFile = (id) => {
+    setExpandedArabicFiles(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
 
   // Filter materials
   const filteredFiles = MATERIAL_FILES.filter((file) => {
@@ -284,15 +294,46 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
                   )}
                 </div>
 
-                {/* File Title */}
-                <h3 className="text-base font-black text-white leading-snug">
-                  {file.title}
+                {/* Primary English File Title */}
+                <h3 className="text-base font-black text-white font-mono text-left leading-snug" dir="ltr">
+                  {file.titleEn || file.title}
                 </h3>
 
-                {/* Description */}
-                <p className="text-xs text-slate-300 leading-relaxed font-medium">
-                  {file.description}
+                {/* Primary English Description */}
+                <p className="text-xs font-mono text-slate-300 leading-relaxed text-left font-normal" dir="ltr">
+                  {file.descriptionEn || file.description}
                 </p>
+
+                {/* Small Button for On-Demand Arabic Explanation */}
+                <div className="pt-1">
+                  <button
+                    onClick={() => toggleArabicFile(file.id)}
+                    className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 border ${
+                      expandedArabicFiles.has(file.id)
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
+                        : 'bg-slate-900/90 hover:bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700/80 hover:border-amber-500/40'
+                    }`}
+                  >
+                    <Lightbulb className={`w-3.5 h-3.5 ${expandedArabicFiles.has(file.id) ? 'text-amber-300' : 'text-amber-400'}`} />
+                    <span>{expandedArabicFiles.has(file.id) ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Summary)'}</span>
+                    <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
+                      {expandedArabicFiles.has(file.id) ? '▲' : '▼'}
+                    </span>
+                  </button>
+                </div>
+
+                {/* Expandable Arabic Drawer */}
+                {expandedArabicFiles.has(file.id) && (
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 space-y-2 text-right animate-in fade-in duration-200 mt-2" dir="rtl">
+                    <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
+                      <span className="text-xs font-black text-amber-300">{file.title}</span>
+                      <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">توصيف الماتريال</span>
+                    </div>
+                    <p className="text-xs font-medium text-slate-200 leading-relaxed">
+                      {file.description}
+                    </p>
+                  </div>
+                )}
 
                 {/* Tags */}
                 <div className="flex flex-wrap gap-1.5 pt-1">

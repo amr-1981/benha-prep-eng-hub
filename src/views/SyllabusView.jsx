@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { BookOpen, Droplets, Flame, ShieldAlert, Building2, Layers, Zap, CheckCircle2, AlertTriangle, ArrowRight, Sparkles } from 'lucide-react';
+import { BookOpen, Droplets, Flame, ShieldAlert, Building2, Layers, Zap, CheckCircle2, AlertTriangle, ArrowRight, Sparkles, Lightbulb } from 'lucide-react';
 import { CHEMISTRY_MODULES, CHEMISTRY_DIVISIONS, BENHA_EXAM_TIPS } from '../data/chemistryCurriculumData';
 import { ConceptAccordion, TermBadge } from '../components/BilingualExplainer';
 
 export default function SyllabusView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
+  const [showObjectivesAr, setShowObjectivesAr] = useState(false);
   const iconMap = {
     Droplets: Droplets,
     Flame: Flame,
@@ -202,9 +203,9 @@ export default function SyllabusView({ activeDivision = 'all', setActiveDivision
                 </span>
               </div>
               <div>
-                <span className="text-[10px] font-mono font-bold text-slate-400 block mb-0.5">الوحدة {mod.number}</span>
-                <h3 className="font-black text-xs text-white line-clamp-1">{mod.titleAr}</h3>
-                <span className="text-[10px] text-slate-400 line-clamp-1 font-mono">{mod.titleEn}</span>
+                <span className="text-[10px] font-mono font-bold text-cyan-400 block mb-0.5">MODULE 0{mod.number}</span>
+                <h3 className="font-mono font-black text-xs text-white line-clamp-1 text-left" dir="ltr">{mod.titleEn}</h3>
+                <span className="text-[10px] text-slate-400 line-clamp-1">{mod.titleAr}</span>
               </div>
             </button>
           );
@@ -225,26 +226,44 @@ export default function SyllabusView({ activeDivision = 'all', setActiveDivision
               }`}>
                 {selectedModule.divisionBadge}
               </span>
-              <span className="text-xs font-bold text-slate-400">
+              <span className="text-xs font-bold text-slate-400 font-mono">
                 {selectedModule.badge}
               </span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white mt-2">
-              {selectedModule.titleAr}
+            {/* Primary English Module Title */}
+            <h2 className="text-xl sm:text-2xl font-black text-white font-mono tracking-tight text-left mt-2 leading-snug" dir="ltr">
+              {selectedModule.titleEn}
             </h2>
-            <p className="text-xs font-mono text-slate-400 mt-0.5">{selectedModule.titleEn}</p>
+            <p className="text-xs font-bold text-amber-300 mt-1">{selectedModule.titleAr}</p>
           </div>
-          <p className="text-xs text-slate-300 max-w-xl font-medium leading-relaxed bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/60">
-            {selectedModule.summary}
-          </p>
+          <div className="space-y-2 max-w-xl">
+            <p className="text-xs text-slate-300 font-medium leading-relaxed bg-slate-900/60 p-3.5 rounded-2xl border border-slate-700/60">
+              {selectedModule.summary}
+            </p>
+          </div>
         </div>
 
         {/* Learning Objectives */}
         <div className="space-y-3">
-          <h3 className="text-sm font-black text-cyan-300 flex items-center gap-2">
-            <CheckCircle2 className="w-4 h-4 text-cyan-400" />
-            <span>نواتج التعلم والمفاهيم الأساسية المقررة (Learning Objectives):</span>
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-sm font-black text-cyan-300 flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-cyan-400" />
+              <span>Core Learning Objectives & Concepts:</span>
+            </h3>
+
+            <button
+              onClick={() => setShowObjectivesAr(prev => !prev)}
+              className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                showObjectivesAr
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                  : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+              }`}
+            >
+              <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+              <span>{showObjectivesAr ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+            </button>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {selectedModule.learningObjectives.map((obj, i) => (
               <div key={i} className="flex items-start gap-2.5 p-3 rounded-xl bg-slate-900/50 border border-slate-700/60 text-xs font-bold text-slate-200">
