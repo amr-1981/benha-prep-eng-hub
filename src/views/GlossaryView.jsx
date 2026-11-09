@@ -18,6 +18,10 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
   const [isRevealed, setIsRevealed] = useState(false);
   const [masteredIds, setMasteredIds] = useState(new Set());
   const [copiedId, setCopiedId] = useState(null);
+  
+  // On-demand Arabic explanation expansion state
+  const [expandedArabicIds, setExpandedArabicIds] = useState(new Set());
+  const [flashcardArabicOpen, setFlashcardArabicOpen] = useState(false);
 
   // Filter items
   const filteredItems = useMemo(() => {
@@ -35,6 +39,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
         item.termAr.toLowerCase().includes(query) ||
         item.termEn.toLowerCase().includes(query) ||
         item.definitionAr.toLowerCase().includes(query) ||
+        (item.definitionEn && item.definitionEn.toLowerCase().includes(query)) ||
         (item.keywords && item.keywords.some(k => k.toLowerCase().includes(query)));
 
       return matchDivision && matchModule && matchType && matchSearch;
@@ -43,9 +48,31 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 
+  // Handle Arabic toggle per card
+  const toggleArabic = (id) => {
+    setExpandedArabicIds(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) {
+        next.delete(id);
+      } else {
+        next.add(id);
+      }
+      return next;
+    });
+  };
+
+  const toggleAllArabic = () => {
+    if (expandedArabicIds.size === filteredItems.length && filteredItems.length > 0) {
+      setExpandedArabicIds(new Set());
+    } else {
+      setExpandedArabicIds(new Set(filteredItems.map(i => i.id)));
+    }
+  };
+
   // Handle flashcard actions
   const handleNextCard = () => {
     setIsRevealed(false);
+    setFlashcardArabicOpen(false);
     if (flashcardIdx + 1 < filteredItems.length) {
       setFlashcardIdx(prev => prev + 1);
     } else {
@@ -55,6 +82,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
 
   const handlePrevCard = () => {
     setIsRevealed(false);
+    setFlashcardArabicOpen(false);
     if (flashcardIdx - 1 >= 0) {
       setFlashcardIdx(prev => prev - 1);
     } else {
@@ -75,7 +103,8 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
   };
 
   const handleCopy = (item) => {
-    const textToCopy = `${item.termAr} (${item.termEn}):\n${item.definitionAr}${item.formula ? `\nالقانون: ${item.formula}` : ''}`;
+    const defEn = item.definitionEn || ENGINEERING_TERMS[item.termEn]?.definitionEn || '';
+    const textToCopy = `${item.termEn} (${item.termAr}):\n${defEn}\n\n[Arabic Explanation]:\n${item.definitionAr}${item.formula ? `\nFormula: ${item.formula}` : ''}`;
     navigator.clipboard.writeText(textToCopy);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2000);
@@ -188,6 +217,24 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
               />
               <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
             </div>
+
+            <button
+              onClick={toggleAllArabic}
+              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition border shrink-0 ${
+                expandedArabicIds.size === filteredItems.length && filteredItems.length > 0
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 hover:bg-amber-500/30'
+                  : 'bg-slate-700/60 hover:bg-slate-700 text-amber-300 hover:text-white border-slate-600'
+              }`}
+              title="إظهار أو إخفاء الشرح بالعربي لجميع البطاقات دفعة واحدة"
+            >
+              <Lightbulb className="w-4 h-4 text-amber-400" />
+              <span className="hidden sm:inline">
+                {expandedArabicIds.size === filteredItems.length && filteredItems.length > 0 ? 'إخفاء الشرح العربي للكل' : 'إظهار الشرح العربي للكل'}
+              </span>
+              <span className="sm:hidden">
+                {expandedArabicIds.size === filteredItems.length && filteredItems.length > 0 ? 'إخفاء العربي' : 'عربي للكل'}
+              </span>
+            </button>
 
             <button
               onClick={handlePrint}
@@ -340,12 +387,21 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                 {/* Front of Card (Term & English Code) */}
                 <div className="space-y-3">
                   <div className="flex items-start justify-between gap-4">
-                    <span 
-                      dir="ltr" 
-                      className="font-mono font-bold text-xs sm:text-sm text-cyan-300 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800 shrink-0"
-                    >
-                      {currentFlashcard.termEn}
-                    </span>
+                    <div className="flex items-center gap-1.5">
+                      <span 
+                        dir="ltr" 
+                        className="font-mono font-bold text-xs sm:text-sm text-cyan-300 bg-slate-950 px-3 py-1 rounded-xl border border-slate-800 shrink-0"
+                      >
+                        {currentFlashcard.id}
+                      </span>
+                      <span className={`text-[10px] font-bold px-2.5 py-1 rounded-xl ${
+                        currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-')
+                          ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                          : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                      }`}>
+                        {currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-') ? '⚡ Electro' : '🔥 Thermal'}
+                      </span>
+                    </div>
 
                     <button
                       onClick={() => toggleMastered(currentFlashcard.id)}
@@ -360,9 +416,14 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                     </button>
                   </div>
 
-                  <h2 className="text-xl sm:text-2xl font-black text-white mt-2">
-                    {currentFlashcard.termAr}
+                  {/* Primary English Term */}
+                  <h2 className="text-xl sm:text-2xl font-black text-white font-mono text-left leading-snug mt-2" dir="ltr">
+                    {currentFlashcard.termEn}
                   </h2>
+
+                  <p className="text-xs font-bold text-slate-400 text-right">
+                    المصطلح: {currentFlashcard.termAr}
+                  </p>
 
                   {/* Keywords pills */}
                   {currentFlashcard.keywords && (
@@ -381,23 +442,13 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                   {isRevealed ? (
                     <div className="space-y-4 animate-in fade-in duration-300">
                       {/* Academic English Definition */}
-                      {ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn && (
+                      {(currentFlashcard.definitionEn || ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn) && (
                         <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-left font-mono" dir="ltr">
-                          <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1">
+                          <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1 uppercase tracking-wider">
                             Academic English Definition (for Exam Answer Sheet):
                           </span>
-                          <p className="text-xs text-slate-200 leading-relaxed font-bold">
-                            {ENGINEERING_TERMS[currentFlashcard.termEn].definitionEn}
-                          </p>
-                        </div>
-                      )}
-
-                      {/* Arabic Meaning & Conceptual Intuition */}
-                      {studyMode !== 'english_only' && (
-                        <div>
-                          <span className="text-[11px] font-bold text-amber-300 block mb-1">💡 الفهم والتفسير الهندسي بالعربي:</span>
-                          <p className="text-sm font-medium text-slate-200 leading-relaxed bg-slate-950/70 p-4 rounded-2xl border border-slate-800">
-                            {currentFlashcard.definitionAr}
+                          <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
+                            {currentFlashcard.definitionEn || ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn}
                           </p>
                         </div>
                       )}
@@ -405,7 +456,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       {/* Formula if exists */}
                       {currentFlashcard.formula && (
                         <div>
-                          <span className="text-[11px] font-bold text-amber-300 block mb-1">صيغة القانون الرياضية:</span>
+                          <span className="text-[11px] font-bold text-cyan-300 block mb-1 text-left font-mono">Mathematical Formula:</span>
                           <div 
                             className="p-3 bg-slate-950 rounded-xl font-mono text-xs sm:text-sm font-bold text-cyan-300 border border-slate-800 text-left overflow-x-auto" 
                             dir="ltr"
@@ -415,11 +466,40 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                         </div>
                       )}
 
-                      {/* Exam Tip */}
-                      {currentFlashcard.examTip && (
-                        <div className="text-[11px] text-amber-300/90 bg-amber-950/40 p-2.5 rounded-xl border border-amber-800/40 flex items-center gap-2">
-                          <span>💡</span>
-                          <span><strong>تنبيه الامتحان:</strong> {currentFlashcard.examTip}</span>
+                      {/* Small Button to toggle Arabic explanation */}
+                      <div className="pt-1">
+                        <button
+                          onClick={() => setFlashcardArabicOpen(prev => !prev)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1.5 border ${
+                            flashcardArabicOpen
+                              ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                              : 'bg-slate-950 text-amber-400 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+                          }`}
+                        >
+                          <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                          <span>{flashcardArabicOpen ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+                          <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
+                            {flashcardArabicOpen ? '▲' : '▼'}
+                          </span>
+                        </button>
+                      </div>
+
+                      {/* Arabic Meaning & Conceptual Intuition (Drawer) */}
+                      {flashcardArabicOpen && (
+                        <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/30 to-slate-900/90 border border-amber-500/30 text-right space-y-2 animate-in fade-in duration-200" dir="rtl">
+                          <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
+                            <span className="text-xs font-black text-amber-300">{currentFlashcard.termAr}</span>
+                            <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">تفسير باللغة العربية</span>
+                          </div>
+                          <p className="text-xs font-medium text-slate-200 leading-relaxed whitespace-pre-line">
+                            {currentFlashcard.definitionAr}
+                          </p>
+                          {currentFlashcard.examTip && (
+                            <div className="text-[11px] text-amber-200/90 bg-amber-950/50 p-2.5 rounded-xl border border-amber-800/40 flex items-center gap-2">
+                              <span>💡</span>
+                              <span><strong>تنبيه الامتحان:</strong> {currentFlashcard.examTip}</span>
+                            </div>
+                          )}
                         </div>
                       )}
                     </div>
@@ -429,8 +509,8 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       className="w-full py-6 rounded-2xl bg-indigo-950/40 hover:bg-indigo-950/60 border-2 border-dashed border-indigo-500/40 text-indigo-300 hover:text-white flex flex-col items-center justify-center gap-2 transition group"
                     >
                       <Eye className="w-6 h-6 group-hover:scale-110 transition-transform text-cyan-400" />
-                      <span className="text-xs font-black">اضغط هنا لإظهار التعريف والإجابة النموذجية</span>
-                      <span className="text-[10px] text-slate-400">اختبر استحضارك للتعريف قبل الكشف!</span>
+                      <span className="text-xs font-black">اضغط هنا لإظهار التعريف والإجابة النموذجية بالإنجليزية</span>
+                      <span className="text-[10px] text-slate-400">اختبر استحضارك للمصطلح قبل الكشف!</span>
                     </button>
                   )}
                 </div>
@@ -482,8 +562,8 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredItems.map((item) => {
               const isMastered = masteredIds.has(item.id);
-              const isLaw = item.type === 'law';
-              const isWhy = item.type === 'reasoning';
+              const isArabicExpanded = expandedArabicIds.has(item.id);
+              const defEn = item.definitionEn || ENGINEERING_TERMS[item.termEn]?.definitionEn;
 
               return (
                 <div
@@ -494,23 +574,20 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       : 'border-slate-700/80 hover:border-indigo-400/60'
                   }`}
                 >
-                  <div className="space-y-3">
+                  <div className="space-y-3.5">
                     
-                    {/* Header: English Term + Actions */}
+                    {/* Header: English Term Pill + Division Pill + Actions */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-1.5 flex-wrap">
-                        <span 
-                          dir="ltr" 
-                          className="font-mono font-bold text-xs text-cyan-300 bg-slate-900 px-2.5 py-0.5 rounded-lg border border-slate-700"
-                        >
-                          {item.termEn}
-                        </span>
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
                           item.module === 'corrosion' || item.id.startsWith('c-')
                             ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
                             : 'bg-amber-950 text-amber-300 border border-amber-800/60'
                         }`}>
-                          {item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ كهربية (د. سمر)' : '🔥 حرارية (د. هناء)'}
+                          {item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ Electro (د. سمر)' : '🔥 Thermal (د. هناء)'}
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">
+                          {item.type === 'definition' ? '📖 Definition' : item.type === 'law' ? '📐 Law & Formula' : '❓ Reasoning (Why)'}
                         </span>
                       </div>
 
@@ -518,7 +595,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                         <button
                           onClick={() => handleCopy(item)}
                           className="p-1.5 rounded-lg bg-slate-900 hover:bg-slate-700 text-slate-400 hover:text-white transition"
-                          title="نسخ التعريف"
+                          title="نسخ المصطلح والتعريف بالإنجليزية"
                         >
                           {copiedId === item.id ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                         </button>
@@ -535,36 +612,26 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       </div>
                     </div>
 
-                    {/* Arabic Title */}
-                    <h3 className="text-base font-black text-white leading-snug">
-                      {item.termAr}
+                    {/* Primary English Term Title */}
+                    <h3 className="text-base sm:text-lg font-black text-white font-mono tracking-tight text-left leading-snug" dir="ltr">
+                      {item.termEn}
                     </h3>
 
-                    {/* Academic English Definition (if available in Shoubra dictionary) */}
-                    {ENGINEERING_TERMS[item.termEn]?.definitionEn && (
-                      <div className="p-3 rounded-xl bg-slate-950 border border-slate-800 text-left font-mono text-xs text-slate-200" dir="ltr">
-                        <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1">
-                          Academic English Definition (for Exam Answer Sheet):
+                    {/* Primary Academic English Definition */}
+                    {defEn && (
+                      <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800/90 text-left font-mono text-xs text-slate-200 leading-relaxed space-y-1" dir="ltr">
+                        <span className="text-[10px] font-bold text-cyan-400 block font-sans uppercase tracking-wider">
+                          Academic English Definition:
                         </span>
-                        {ENGINEERING_TERMS[item.termEn].definitionEn}
-                      </div>
-                    )}
-
-                    {/* Arabic Explanation & Intuition */}
-                    {studyMode !== 'english_only' && (
-                      <div className="space-y-1">
-                        <span className="text-[11px] font-bold text-amber-300 block">
-                          💡 الفهم والتفسير الهندسي بالعربي:
-                        </span>
-                        <p className="text-xs font-medium text-slate-300 leading-relaxed text-right whitespace-pre-line">
-                          {item.definitionAr}
+                        <p className="font-normal text-slate-300 text-xs leading-relaxed">
+                          {defEn}
                         </p>
                       </div>
                     )}
 
                     {/* Formula Block (if law) */}
                     {item.formula && (
-                      <div className="space-y-1.5 pt-1">
+                      <div className="space-y-1.5 pt-0.5">
                         <div 
                           className="p-2.5 bg-slate-950 rounded-xl font-mono text-xs font-bold text-cyan-300 border border-slate-800 text-left overflow-x-auto shadow-inner" 
                           dir="ltr"
@@ -572,11 +639,11 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                           {item.formula}
                         </div>
                         {item.variables && (
-                          <div className="space-y-1 text-[10px] text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800">
+                          <div className="space-y-1 text-[10px] text-slate-400 bg-slate-900/60 p-2.5 rounded-xl border border-slate-800" dir="ltr">
                             {item.variables.map((v, vi) => (
                               <div key={vi} className="flex items-baseline gap-2">
-                                <span dir="ltr" className="font-mono text-amber-300 font-bold shrink-0">{v.sym}:</span>
-                                <span>{v.desc}</span>
+                                <span className="font-mono text-amber-300 font-bold shrink-0">{v.sym}:</span>
+                                <span className="text-slate-300">{v.desc}</span>
                               </div>
                             ))}
                           </div>
@@ -587,10 +654,49 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                     {/* Formula Display (if definition has a reaction) */}
                     {item.formulaDisplay && (
                       <div 
-                        className="p-2 bg-slate-950 rounded-lg font-mono text-[11px] font-bold text-amber-300 border border-slate-800 text-left overflow-x-auto" 
+                        className="p-2.5 bg-slate-950 rounded-lg font-mono text-[11px] font-bold text-amber-300 border border-slate-800 text-left overflow-x-auto" 
                         dir="ltr"
                       >
                         {item.formulaDisplay}
+                      </div>
+                    )}
+
+                    {/* Small Button for On-Demand Arabic Explanation */}
+                    <div className="pt-1">
+                      <button
+                        onClick={() => toggleArabic(item.id)}
+                        className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 border ${
+                          isArabicExpanded 
+                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm'
+                            : 'bg-slate-900/90 hover:bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700/80 hover:border-amber-500/40'
+                        }`}
+                      >
+                        <Lightbulb className={`w-3.5 h-3.5 ${isArabicExpanded ? 'text-amber-300' : 'text-amber-400'}`} />
+                        <span>{isArabicExpanded ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+                        <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
+                          {isArabicExpanded ? '▲' : '▼'}
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* Expandable Arabic Explanation Drawer */}
+                    {isArabicExpanded && (
+                      <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 space-y-2 text-right animate-in fade-in duration-200" dir="rtl">
+                        <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
+                          <span className="text-xs font-black text-amber-300">{item.termAr}</span>
+                          <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">تفسير باللغة العربية</span>
+                        </div>
+                        <p className="text-xs font-medium text-slate-200 leading-relaxed whitespace-pre-line">
+                          {item.definitionAr}
+                        </p>
+                        {item.examTip && (
+                          <div className="text-[11px] text-amber-200/90 bg-amber-950/50 p-2 rounded-xl border border-amber-800/40 flex items-start gap-1.5">
+                            <span className="shrink-0">🎯</span>
+                            <div>
+                              <strong>سر الامتحان:</strong> {item.examTip}
+                            </div>
+                          </div>
+                        )}
                       </div>
                     )}
 
@@ -599,10 +705,10 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                   {/* Footer / Tip */}
                   <div className="pt-2 border-t border-slate-700/60 flex items-center justify-between text-[11px] text-slate-400">
                     <span className="font-bold text-cyan-400/90 text-[10px]">
-                      {item.examTip ? `💡 ${item.examTip}` : 'مقرر إعدادي هندسة شبرا'}
+                      {item.examTip && !isArabicExpanded ? `💡 ${item.examTip}` : 'Faculty of Engineering at Shoubra (FES)'}
                     </span>
-                    <span className="text-[10px] font-bold bg-slate-900 px-2 py-0.5 rounded text-slate-400 shrink-0">
-                      {item.type === 'definition' ? 'تعريف' : item.type === 'law' ? 'قانون' : 'علل'}
+                    <span className="text-[10px] font-bold bg-slate-900 px-2 py-0.5 rounded text-slate-400 shrink-0 font-mono">
+                      {item.id}
                     </span>
                   </div>
 
