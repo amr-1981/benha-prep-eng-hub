@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap, Lightbulb } from 'lucide-react';
+import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap, Lightbulb, Calculator, Grid, Layers } from 'lucide-react';
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
+import { MATH_CHEAT_SHEETS_CATEGORIES, MATH_CHEAT_SHEETS_DATA } from '../data/mathCheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
-// BiDi Isolation Helper: Guarantees English formulas, brackets, and chemical notations inside Arabic text never flip backwards
+// BiDi Isolation Helper: Guarantees English formulas, brackets, and notations inside Arabic text never flip backwards
 function SafeBiDiText({ text, className = "" }) {
   if (!text) return null;
   const parts = text.split(/(\[[^\]]+\]|\([A-Za-z0-9_\-\+\*\/\.\s=°%]+\)|[A-Za-z0-9_\-°%]{2,}(?:\s*=\s*[A-Za-z0-9_\-°%\/\.]+)?)/g);
@@ -30,7 +31,16 @@ function SafeBiDiText({ text, className = "" }) {
   );
 }
 
-export default function CheatSheetsView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
+export default function CheatSheetsView({ 
+  activeDivision = 'all', 
+  setActiveDivision, 
+  studyMode = 'bilingual',
+  activeSubject = 'math'
+}) {
+  const isMath = activeSubject === 'math';
+  const categoriesList = isMath ? MATH_CHEAT_SHEETS_CATEGORIES : CHEAT_SHEETS_CATEGORIES;
+  const rawSheetsList = isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
+
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
   const [expandedArabicSheets, setExpandedArabicSheets] = useState(new Set());
@@ -44,7 +54,7 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
     });
   };
 
-  const filteredSheets = CHEAT_SHEETS_DATA.filter((s) => {
+  const filteredSheets = rawSheetsList.filter((s) => {
     const matchCategory = activeCategory === 'all' || s.category === activeCategory;
     const matchDivision = !activeDivision || activeDivision === 'all' || s.division === 'all' || s.division === activeDivision;
     return matchCategory && matchDivision;
@@ -58,27 +68,37 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
   };
 
   return (
-    <div className="space-y-8 pb-16">
+    <div className="space-y-8 pb-16 font-arabic">
       
       {/* Top Banner (Hidden on Print) */}
-      <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-emerald-500/40 shadow-xl no-print">
+      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
+        isMath
+          ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+          : 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+      }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold border border-emerald-400/30 mb-2">
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-2 ${
+              isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+            }`}>
               <Printer className="w-3.5 h-3.5" />
               <span>مكتبة الملخصات الهندسية الجاهزة للطباعة (A4) • هندسة شبرا</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ
+              {isMath ? 'شِيتَاتُ قَوَانِينِ الرِّيَاضِيَّاتِ 1 وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ' : 'شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: <strong>الكيمياء الحرارية (د. هناء)</strong> و <strong>الكيمياء الكهربية (د. سمر)</strong>.
+              {isMath 
+                ? 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: قسم حساب التفاضل والتطبيقات (Calculus) وقسم الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
+                : 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: الكيمياء الحرارية (د. هناء) و الكيمياء الكهربية (د. سمر).'}
             </p>
           </div>
 
           <button
             onClick={() => window.print()}
-            className="flex items-center gap-2 px-5 py-3 rounded-2xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs shadow-lg transition active:scale-95 shrink-0"
+            className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-black text-xs shadow-lg transition active:scale-95 shrink-0 ${
+              isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
+            }`}
           >
             <Printer className="w-4 h-4" />
             <span>طباعة الصفحة الحالية 🖨️</span>
@@ -89,8 +109,8 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
       {/* Two-Branch Academic Division Switcher */}
       <div className="flex items-center gap-2 overflow-x-auto pb-1 no-print">
         <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-xs">
-          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-          <span>قسم الكيمياء:</span>
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <span>{isMath ? 'فرع الرياضيات:' : 'قسم الكيمياء:'}</span>
         </span>
 
         <button
@@ -101,43 +121,73 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
               : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
           }`}
         >
-          جميع الشيتات (القسمان)
+          {isMath ? 'جميع شيتات الرياضيات (الفرعان)' : 'جميع الشيتات (القسمان)'}
         </button>
 
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('thermal')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'thermal'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-300" />
-          <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-        </button>
+        {isMath ? (
+          <>
+            <button
+              onClick={() => setActiveDivision && setActiveDivision('calculus')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'calculus'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Calculator className="w-3.5 h-3.5 text-cyan-300" />
+              <span>قسم حساب التفاضل والتطبيقات (Calculus)</span>
+            </button>
 
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('electro')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'electro'
-              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-cyan-300" />
-          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-        </button>
+            <button
+              onClick={() => setActiveDivision && setActiveDivision('algebra')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'algebra'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Grid className="w-3.5 h-3.5 text-purple-300" />
+              <span>قسم الجبر والهندسة الفراغية (Algebra & 3D)</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => setActiveDivision && setActiveDivision('thermal')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'thermal'
+                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Flame className="w-3.5 h-3.5 text-amber-300" />
+              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
+            </button>
+
+            <button
+              onClick={() => setActiveDivision && setActiveDivision('electro')}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'electro'
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5 text-cyan-300" />
+              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+            </button>
+          </>
+        )}
       </div>
 
       {/* Category Filters (Hidden on Print) */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2 no-print">
-        {CHEAT_SHEETS_CATEGORIES.map((cat) => (
+        {categoriesList.map((cat) => (
           <button
             key={cat.id}
             onClick={() => setActiveCategory(cat.id)}
             className={`px-4 py-2 rounded-xl text-xs font-extrabold whitespace-nowrap transition-all flex items-center gap-1.5 ${
               activeCategory === cat.id
-                ? 'bg-emerald-600 text-white shadow-md'
+                ? (isMath ? 'bg-indigo-600 text-white shadow-md' : 'bg-emerald-600 text-white shadow-md')
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
             }`}
           >
@@ -154,84 +204,107 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
           return (
             <div
               key={sheet.id}
-              className="bg-slate-800/90 rounded-3xl p-6 border-2 border-slate-700 hover:border-emerald-400/60 transition-all shadow-md flex flex-col justify-between"
+              className="bg-slate-800/90 rounded-3xl p-6 border-2 border-slate-700 hover:border-indigo-400/60 transition-all shadow-md flex flex-col justify-between"
             >
               <div>
                 <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-[10px] font-black text-emerald-400 bg-emerald-950 px-2.5 py-1 rounded-full border border-emerald-800 font-mono">
-                      {sheet.paperSize} Sheet • {sheet.pagesCount} Page{sheet.pagesCount > 1 ? 's' : ''}
+                  <div className="flex items-center gap-2">
+                    <span className="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 font-mono text-[11px] font-bold text-cyan-400">
+                      📄 {sheet.paperSize} ({sheet.pagesCount} Page)
                     </span>
-                    <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
-                      sheet.division === 'thermal'
-                        ? 'text-amber-300 bg-amber-950/80 border-amber-800/60'
-                        : sheet.division === 'electro'
-                        ? 'text-cyan-300 bg-cyan-950/80 border-cyan-800/60'
-                        : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/60'
+                    <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
+                      isMath
+                        ? sheet.division === 'calculus'
+                          ? 'text-cyan-300 bg-blue-950/80 border-blue-800/50'
+                          : 'text-purple-300 bg-purple-950/80 border-purple-800/50'
+                        : sheet.division === 'thermal'
+                          ? 'text-amber-300 bg-amber-950/80 border-amber-800/50'
+                          : 'text-cyan-300 bg-cyan-950/80 border-cyan-800/50'
                     }`}>
-                      {sheet.division === 'thermal' ? '🔥 Thermal (د. هناء)' : sheet.division === 'electro' ? '⚡ Electro (د. سمر)' : '🏛️ Final Exam Scope'}
+                      {isMath
+                        ? (sheet.division === 'calculus' ? '📐 تفاضل (Calculus)' : '⚡ جبر (Algebra)')
+                        : (sheet.division === 'thermal' ? '🔥 حرارية (د. هناء)' : '⚡ كهربية (د. سمر)')}
                     </span>
                   </div>
-                  <span className="text-[11px] text-slate-400 font-bold font-mono">Ready to Print 🖨️</span>
+
+                  <span className="text-[11px] text-slate-400 font-bold">
+                    {sheet.professor}
+                  </span>
                 </div>
 
-                {/* Primary English Title */}
-                <h3 className="text-base sm:text-lg font-black text-white font-mono tracking-tight text-left leading-snug" dir="ltr">
-                  {sheet.titleEn || sheet.title}
+                {/* Primary Academic English Title */}
+                <h3 className="text-base sm:text-lg font-black text-white font-mono tracking-tight text-left leading-snug mb-1" dir="ltr">
+                  {sheet.titleEn}
                 </h3>
-                <p className="text-xs font-mono text-slate-300 mt-1 text-left leading-relaxed" dir="ltr">
-                  {sheet.subtitleEn || sheet.subtitle}
+
+                <p className="text-xs text-slate-300 font-mono text-left mb-3" dir="ltr">
+                  {sheet.subtitleEn}
                 </p>
 
                 {/* Small Button for On-Demand Arabic Explanation */}
-                <div className="pt-2">
+                <div className="pt-1 mb-3">
                   <button
                     onClick={() => toggleArabicSheet(sheet.id)}
                     className={`px-2.5 py-1.5 rounded-xl text-[11px] font-bold transition-all flex items-center gap-1.5 border ${
                       isArabicExpanded 
-                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-xs'
+                        ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 shadow-sm' 
                         : 'bg-slate-900/90 hover:bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700/80 hover:border-amber-500/40'
                     }`}
                   >
                     <Lightbulb className={`w-3.5 h-3.5 ${isArabicExpanded ? 'text-amber-300' : 'text-amber-400'}`} />
-                    <span>{isArabicExpanded ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
+                    <span>{isArabicExpanded ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Context)'}</span>
                     <span className="text-[9px] opacity-70 px-1 rounded bg-black/30 font-mono">
                       {isArabicExpanded ? '▲' : '▼'}
                     </span>
                   </button>
                 </div>
 
-                {/* Expandable Arabic Drawer */}
+                {/* Expandable Arabic Explanation Drawer */}
                 {isArabicExpanded && (
-                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 space-y-2 text-right animate-in fade-in duration-200 mt-2" dir="rtl">
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/90 border border-amber-500/30 space-y-1.5 text-right animate-in fade-in duration-200 mb-3" dir="rtl">
                     <div className="flex items-center justify-between border-b border-amber-500/20 pb-1">
                       <span className="text-xs font-black text-amber-300">{sheet.title}</span>
-                      <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">تفسير بالعربي</span>
+                      <span className="text-[10px] text-amber-400/80 font-bold bg-amber-950/60 px-2 py-0.5 rounded border border-amber-700/40">توضيح المحتوى بالعربي</span>
                     </div>
-                    <p className="text-xs font-medium text-slate-200 leading-relaxed">
+                    <p className="text-xs text-slate-300 leading-relaxed font-medium">
                       {sheet.subtitle}
                     </p>
-                    <div className="text-[11px] text-amber-200/90 bg-amber-950/50 p-2 rounded-xl border border-amber-800/40">
-                      🎯 <strong>محتوى الشيت:</strong> يغطي {sheet.sections?.length || 0} أقسام وجداول مراجعة معتمدة لاختبارات كلية الهندسة بشبرا.
-                    </div>
                   </div>
                 )}
+
+                {/* Sections preview tags */}
+                <div className="space-y-1.5 pt-2 border-t border-slate-700/60">
+                  <span className="text-[11px] font-bold text-slate-400 block">أقسام ومحتويات ورقة القوانين:</span>
+                  <div className="flex flex-wrap gap-1">
+                    {sheet.sections.map((sec, i) => (
+                      <span
+                        key={i}
+                        className="px-2 py-1 rounded bg-slate-900 text-[10px] font-mono text-slate-300 border border-slate-700/60"
+                        dir="ltr"
+                      >
+                        {sec.title}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center gap-2 mt-6 pt-4 border-t border-slate-700">
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-5 mt-4 border-t border-slate-700">
                 <button
                   onClick={() => setPreviewSheet(sheet)}
-                  className="flex-1 py-2.5 rounded-xl bg-slate-700/80 hover:bg-slate-700 text-white text-xs font-bold flex items-center justify-center gap-1.5 transition"
+                  className="flex-1 py-2.5 rounded-xl bg-slate-700 hover:bg-slate-600 text-white font-black text-xs transition flex items-center justify-center gap-1.5 shadow"
                 >
-                  <Eye className="w-3.5 h-3.5" />
-                  <span>معاينة الشيت (Preview)</span>
+                  <Eye className="w-3.5 h-3.5 text-cyan-400" />
+                  <span>معاينة الشيت A4</span>
                 </button>
+
                 <button
                   onClick={() => handlePrint(sheet)}
-                  className="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-black flex items-center justify-center gap-1.5 shadow transition"
+                  className="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-500 hover:to-blue-500 text-white font-black text-xs transition flex items-center justify-center gap-1.5 shadow-md shadow-blue-900/40"
                 >
                   <Printer className="w-3.5 h-3.5" />
-                  <span>طباعة الشيت 🖨️</span>
+                  <span>طباعة A4 مباشر</span>
                 </button>
               </div>
             </div>
@@ -239,214 +312,123 @@ export default function CheatSheetsView({ activeDivision = 'all', setActiveDivis
         })}
       </div>
 
-      {/* Sheet Preview Modal / Dedicated Print Area */}
+      {/* ================= MODAL: PRINT PREVIEW (Interactive & Printable) ================= */}
       {previewSheet && (
-        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-white text-slate-900 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-10 shadow-2xl relative border-4 border-emerald-500 print-card font-arabic">
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4 no-print overflow-y-auto">
+          <div className="bg-slate-900 border-2 border-slate-700 rounded-3xl max-w-4xl w-full max-h-[90vh] flex flex-col shadow-2xl">
             
-            {/* Modal Actions (Hidden on Print) */}
-            <div className="flex items-center justify-between pb-4 mb-6 border-b border-slate-200 no-print">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-black bg-emerald-100 text-emerald-900 px-3 py-1 rounded-full">
-                  معاينة الطباعة بمقاس {previewSheet.paperSize} • كلية الهندسة بشبرا
-                </span>
-                <span className="text-xs text-slate-500 font-bold">جاهز للإرسال للطابعة المنزلية أو المكتبية</span>
+            {/* Modal Header */}
+            <div className="p-4 sm:p-6 border-b border-slate-800 flex items-center justify-between">
+              <div>
+                <span className="text-xs font-mono font-bold text-cyan-400 block">PRINT PREVIEW • {previewSheet.paperSize}</span>
+                <h3 className="text-base sm:text-lg font-black text-white font-mono" dir="ltr">{previewSheet.titleEn}</h3>
               </div>
+
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => window.print()}
-                  className="px-4 py-2 rounded-xl bg-emerald-700 text-white font-black text-xs flex items-center gap-1.5 shadow"
+                  onClick={() => handlePrint(previewSheet)}
+                  className="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs transition flex items-center gap-1.5 shadow"
                 >
-                  <Printer className="w-4 h-4" />
+                  <Printer className="w-3.5 h-3.5" />
                   <span>طباعة الآن</span>
                 </button>
+
                 <button
                   onClick={() => setPreviewSheet(null)}
-                  className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition"
+                  className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
             </div>
 
-            {/* Official Print Header */}
-            <div className="border-b-2 border-slate-800 pb-4 mb-6 flex items-center justify-between">
-              <div>
-                <h4 className="text-xs font-black text-slate-700">جامعة بنها • كلية الهندسة بشبرا (FES)</h4>
-                <h2 className="text-xl sm:text-2xl font-black text-slate-950 mt-1">{previewSheet.title}</h2>
-                <p className="text-xs font-bold text-slate-600 mt-0.5">{previewSheet.subtitle}</p>
-              </div>
-              <div className="text-left text-xs font-mono font-bold text-slate-600">
-                <div>CHM 001 - Term 1</div>
-                <div>Shoubra A4 Edition</div>
-              </div>
-            </div>
-
-            {/* Print Content Sections */}
-            <div className="space-y-6 text-xs text-slate-800 font-normal">
-              {previewSheet.sections.map((sec, i) => (
-                <div key={i} className="space-y-3">
-                  <h3 className="font-black text-sm text-slate-900 border-r-4 border-emerald-600 pr-2">
-                    {sec.title}
-                  </h3>
-
-                  {/* 1. TABLE TYPE */}
-                  {sec.type === 'table' && (
-                    <div className="overflow-x-auto border border-slate-300 rounded-xl shadow-sm">
-                      <table className="w-full text-right text-xs">
-                        <thead className="bg-slate-100 text-slate-900 font-black">
-                          <tr>
-                            {sec.headers.map((h, hi) => (
-                              <th key={hi} className="p-2.5 border-b border-slate-300">{h}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-slate-200 font-medium">
-                          {sec.rows.map((row, ri) => (
-                            <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
-                              {row.map((cell, ci) => {
-                                // If cell contains English formulas or math, format as LTR monospace
-                                const isFormulaOrMath = ci > 0 && /[A-Za-z0-9=²⁺·]/.test(cell);
-                                return (
-                                  <td 
-                                    key={ci} 
-                                    className={`p-2.5 ${isFormulaOrMath ? 'font-mono font-bold text-slate-900 text-left' : 'font-arabic font-bold text-slate-800'}`}
-                                    dir={isFormulaOrMath ? 'ltr' : 'rtl'}
-                                  >
-                                    {cell}
-                                  </td>
-                                );
-                              })}
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                    </div>
-                  )}
-
-                  {/* 2. REACTIONS TYPE */}
-                  {sec.type === 'reactions' && (
-                    <div className="space-y-2">
-                      {sec.items.map((item, ii) => (
-                        <div 
-                          key={ii} 
-                          className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-xl bg-slate-50 border border-slate-200"
-                        >
-                          <div 
-                            className="font-mono text-xs font-bold text-blue-950 bg-blue-50/80 px-3 py-1.5 rounded-lg border border-blue-200 text-left shrink-0" 
-                            dir="ltr"
-                          >
-                            {item.equation}
-                          </div>
-                          <div className="font-arabic text-xs font-bold text-slate-700 text-right leading-relaxed" dir="rtl">
-                            {item.note}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 3. BULLETS TYPE */}
-                  {sec.type === 'bullets' && (
-                    <ul className="space-y-2 list-disc list-inside font-bold text-slate-700 bg-slate-50 p-4 rounded-xl border border-slate-200" dir="rtl">
-                      {sec.items.map((item, ii) => (
-                        <li key={ii} className="leading-relaxed font-arabic text-xs">{item}</li>
-                      ))}
-                    </ul>
-                  )}
-
-                  {/* 4. FORMULAS TYPE - COMPLETELY SOLVED BiDi */}
-                  {sec.type === 'formulas' && (
-                    <div className="space-y-3">
-                      {sec.items.map((fItem, fi) => (
-                        <div key={fi} className="p-4 bg-slate-50 rounded-2xl border border-slate-300 space-y-2">
-                          {/* Arabic Title */}
-                          <div className="font-arabic font-black text-xs text-slate-900 text-right" dir="rtl">
-                            {fItem.title}
-                          </div>
-
-                          {/* Pure LTR Monospace Formula Block */}
-                          <div 
-                            className="p-3 bg-white rounded-xl font-mono text-xs font-bold text-blue-950 border border-slate-300 text-left overflow-x-auto shadow-sm" 
-                            dir="ltr"
-                          >
-                            {fItem.formula}
-                          </div>
-
-                          {/* Arabic Note (Strictly Isolated from English formulas to prevent detached letters or BiDi flipped brackets) */}
-                          {fItem.noteText && (
-                            <div 
-                              className="font-arabic text-[11px] font-bold text-amber-950 bg-amber-50/90 p-2.5 rounded-lg border border-amber-200 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2" 
-                              dir="rtl"
-                            >
-                              <div className="flex items-center gap-2">
-                                <span className="text-amber-800 font-black">💡 ملاحظة:</span>
-                                <span>{fItem.noteText}</span>
-                              </div>
-                              {fItem.noteFormula && (
-                                <span 
-                                  dir="ltr" 
-                                  className="font-mono font-black text-rose-700 bg-white px-2.5 py-0.5 rounded-md border border-amber-300 shrink-0 text-xs shadow-sm"
-                                >
-                                  {fItem.noteFormula}
-                                </span>
-                              )}
-                            </div>
-                          )}
-
-                          {fItem.note && !fItem.noteText && (
-                            <div 
-                              className="font-arabic text-[11px] font-bold text-amber-950 bg-amber-50/90 p-2.5 rounded-lg border border-amber-200 text-right leading-relaxed flex items-center gap-1.5" 
-                              dir="rtl"
-                            >
-                              <span className="text-amber-800 font-black shrink-0">💡 ملاحظة:</span>
-                              <SafeBiDiText text={fItem.note} />
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* 5. EXAM PROBLEM TYPE */}
-                  {sec.type === 'examProblem' && (
-                    <div className="p-4 rounded-2xl bg-slate-50 border border-slate-300 space-y-3">
-                      <div className="font-arabic font-bold text-slate-900 bg-amber-100/80 p-3 rounded-xl border border-amber-300 leading-relaxed text-right" dir="rtl">
-                        <SafeBiDiText text={sec.question} />
-                      </div>
-
-                      <div className="space-y-3 font-arabic text-slate-800 text-right" dir="rtl">
-                        <div className="text-emerald-800 font-black text-xs">خطوات وتفاصيل الحل النموذجي:</div>
-                        {(sec.solutionSteps || []).map((step, si) => (
-                          <div key={si} className="bg-white p-3 rounded-xl border border-slate-200 space-y-1.5">
-                            <div className="text-xs font-bold text-slate-700 leading-relaxed">
-                              <SafeBiDiText text={step.desc} />
-                            </div>
-                            <div className="space-y-1">
-                              {(step.calcs || []).map((calc, ci) => (
-                                <div 
-                                  key={ci} 
-                                  className="font-mono text-[11px] font-bold text-blue-950 bg-slate-50 p-2 rounded border border-slate-200 text-left overflow-x-auto" 
-                                  dir="ltr"
-                                >
-                                  {calc}
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
+            {/* Modal Body: A4 Sheet Paper Simulation */}
+            <div className="p-4 sm:p-8 overflow-y-auto bg-slate-950 flex justify-center">
+              <div className="bg-white text-slate-900 rounded-lg p-6 sm:p-8 shadow-2xl max-w-2xl w-full space-y-4 border border-slate-300">
+                
+                {/* A4 Paper Header */}
+                <div className="border-b-2 border-slate-900 pb-3 flex items-start justify-between">
+                  <div>
+                    <h2 className="text-xs font-black text-blue-900 uppercase tracking-wider font-mono">
+                      Faculty of Engineering at Shoubra (Benha University)
+                    </h2>
+                    <h1 className="text-sm font-black text-slate-900 font-mono mt-0.5" dir="ltr">
+                      {previewSheet.titleEn}
+                    </h1>
+                    <p className="text-[10px] text-slate-600 font-mono" dir="ltr">{previewSheet.subtitleEn}</p>
+                  </div>
+                  <div className="text-right text-[10px] font-bold text-slate-700">
+                    <div>{isMath ? 'MTH 001' : 'CHM 001'}</div>
+                    <div className="font-mono">Page 1 of {previewSheet.pagesCount}</div>
+                  </div>
                 </div>
-              ))}
-            </div>
 
-            {/* Official Print Footer */}
-            <div className="mt-8 pt-4 border-t-2 border-slate-300 flex items-center justify-between text-[11px] text-slate-500 font-bold">
-              <span>كلية الهندسة بشبرا (جامعة بنها) • قسم الكيمياء الهندسية - الفرقة الإعدادية</span>
-              <span>الصفحة 1 من {previewSheet.pagesCount}</span>
+                {/* Sections Rendering inside Sheet */}
+                <div className="space-y-4">
+                  {previewSheet.sections.map((sec, idx) => (
+                    <div key={idx} className="space-y-2">
+                      <h4 className="text-xs font-black text-blue-950 font-mono border-b border-slate-300 pb-1" dir="ltr">
+                        {sec.title}
+                      </h4>
+
+                      {/* Table type */}
+                      {sec.type === 'table' && (
+                        <div className="overflow-x-auto">
+                          <table className="w-full text-[10px] border-collapse border border-slate-300">
+                            <thead>
+                              <tr className="bg-slate-100 text-slate-800 font-bold font-mono" dir="ltr">
+                                {sec.headers.map((h, hi) => (
+                                  <th key={hi} className="border border-slate-300 p-1.5 text-left">{h}</th>
+                                ))}
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {sec.rows.map((row, ri) => (
+                                <tr key={ri} className={ri % 2 === 0 ? 'bg-white' : 'bg-slate-50'}>
+                                  {row.map((cell, ci) => (
+                                    <td key={ci} className="border border-slate-300 p-1.5 font-mono text-slate-800" dir="ltr">
+                                      {cell}
+                                    </td>
+                                  ))}
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      )}
+
+                      {/* Reactions / Formulas type */}
+                      {sec.type === 'reactions' && (
+                        <div className="space-y-1.5">
+                          {sec.items.map((item, ii) => (
+                            <div key={ii} className="p-2 rounded bg-slate-50 border border-slate-200 text-left font-mono" dir="ltr">
+                              <div className="text-xs font-black text-blue-900">{item.equation}</div>
+                              {item.label && <div className="text-[9px] font-bold text-slate-700 mt-0.5">{item.label}</div>}
+                              {item.desc && <div className="text-[9px] text-slate-600 mt-0.5">{item.desc}</div>}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+
+                      {/* Notes type */}
+                      {sec.type === 'notes' && (
+                        <ul className="list-disc list-inside text-[10px] text-slate-700 space-y-1 text-left font-mono" dir="ltr">
+                          {sec.items.map((note, ni) => (
+                            <li key={ni}>{note}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+
+                {/* A4 Paper Footer */}
+                <div className="border-t border-slate-300 pt-2 flex items-center justify-between text-[9px] text-slate-500 font-mono" dir="ltr">
+                  <span>Prepared for Shoubra Engineering Students</span>
+                  <span>Benha University • Academic Year 2024-2025</span>
+                </div>
+
+              </div>
             </div>
 
           </div>

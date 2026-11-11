@@ -1,9 +1,21 @@
 import React, { useState } from 'react';
-import { Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, Sparkles, Filter, Flame, Zap, Lightbulb } from 'lucide-react';
+import { 
+  Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, 
+  Sparkles, Filter, Flame, Zap, Lightbulb, Calculator, Grid, Layers 
+} from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { QUIZ_QUESTIONS } from '../data/quizBankData';
+import { MATH_QUIZ_QUESTIONS } from '../data/mathQuizBankData';
 
-export default function QuizArenaView({ activeDivision = 'all', setActiveDivision }) {
+export default function QuizArenaView({ 
+  activeDivision = 'all', 
+  setActiveDivision,
+  studyMode = 'bilingual',
+  activeSubject = 'math'
+}) {
+  const isMath = activeSubject === 'math';
+  const questionsList = isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
+
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
   const [selectedOption, setSelectedOption] = useState(null);
@@ -11,9 +23,16 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
   const [isFinished, setIsFinished] = useState(false);
   const [showArabicHelper, setShowArabicHelper] = useState(false);
 
-  const filteredQuestions = QUIZ_QUESTIONS.filter((q) => {
-    const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
-    const matchDivision = !activeDivision || activeDivision === 'all' || (activeDivision === 'electro' ? isElectro : !isElectro);
+  const filteredQuestions = questionsList.filter((q) => {
+    let matchDivision = true;
+    if (activeDivision && activeDivision !== 'all') {
+      if (isMath) {
+        matchDivision = q.division === activeDivision || q.division === 'all';
+      } else {
+        const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
+        matchDivision = (activeDivision === 'electro' ? isElectro : !isElectro);
+      }
+    }
     const matchFilter = activeFilter === 'all' || q.module === activeFilter;
     return matchDivision && matchFilter;
   });
@@ -49,96 +68,154 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
     setShowArabicHelper(false);
   };
 
+  const mathFilters = [
+    { id: 'all', label: 'جميع الأسئلة (12)' },
+    { id: 'math-mod-limits', label: 'النهايات ولوبيتال' },
+    { id: 'math-mod-leibniz', label: 'نظرية لايبنتز' },
+    { id: 'math-mod-series', label: 'متسلسلات تايلور' },
+    { id: 'math-mod-curve', label: 'رسم المنحنيات والانحناء' },
+    { id: 'math-mod-partial', label: 'الاشتقاق الجزئي' },
+    { id: 'math-mod-matrices', label: 'المصفوفات والرتبة' },
+    { id: 'math-mod-complex', label: 'الأعداد المركبة' },
+    { id: 'math-mod-geometry3d', label: 'الهندسة الفراغية' }
+  ];
+
+  const chemFilters = [
+    { id: 'all', label: 'جميع الأسئلة (12)' },
+    { id: 'water-treatment', label: 'المياه والعسر (3)' },
+    { id: 'fuels-combustion', label: 'الوقود والاحتراق (2)' },
+    { id: 'corrosion-control', label: 'التآكل والصدأ (2)' },
+    { id: 'building-materials', label: 'الأسمنت وبوج (2)' },
+    { id: 'polymers-lubricants', label: 'البوليمرات والزيوت (3)' }
+  ];
+
   return (
-    <div className="max-w-4xl mx-auto space-y-6 pb-16">
+    <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
       
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-purple-500/40 shadow-xl">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-400/30 mb-2">
+      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
+        isMath
+          ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+          : 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
+      }`}>
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="space-y-2 text-center md:text-right">
+            <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
+              isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-purple-500/20 text-purple-300 border-purple-400/30'
+            }`}>
               <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>بنك الأسئلة والامتحانات التفاعلية • Exam MCQ Arena</span>
+              <span>بنك الأسئلة والامتحانات التفاعلي • {isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-black text-white">
-              تحديات واختبارات الكيمياء الهندسية
+            <h1 className="text-2xl sm:text-4xl font-black text-white">
+              {isMath ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الرِّيَاضِيَّاتِ 1' : 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
-            <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              أسئلة امتحانات هندسة شبرا السابقة بنظام الاختيار من متعدد مع التصحيح والتفسير الفوري
+            <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
+              {isMath
+                ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرري التفاضل والجبر بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                : 'نظام تدريب ذكي وتصحيح فوري لأسئلة الميدتيرم والفاينال المقررة في هندسة شبرا مقسمة بين: الكيمياء الحرارية والكيمياء الكهربية.'}
             </p>
           </div>
 
-          <div className="bg-slate-800/80 px-4 py-2.5 rounded-2xl border border-slate-700 text-center shrink-0">
-            <span className="text-xs text-slate-400 font-bold">النتيجة الحالية:</span>
-            <div className="text-2xl font-black text-amber-400 font-mono">
-              {score} / {filteredQuestions.length}
+          <div className="bg-slate-800/90 p-4 rounded-2xl border border-slate-700/80 text-center shrink-0 min-w-[150px] shadow-md">
+            <span className="text-[11px] font-bold text-slate-400 block mb-1">النتيجة الحالية:</span>
+            <div className="text-3xl font-black text-amber-400 font-mono">
+              {score} <span className="text-sm text-slate-400 font-sans">/ {filteredQuestions.length}</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* Two-Branch Academic Division Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
-          <Sparkles className="w-3.5 h-3.5 text-purple-400" />
-          <span>قسم الاختبار:</span>
+      <div className="flex items-center gap-2 overflow-x-auto pb-1">
+        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-xs">
+          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+          <span>{isMath ? 'فرع الرياضيات:' : 'قسم الكيمياء:'}</span>
         </span>
+
         <button
           onClick={() => {
             setActiveDivision && setActiveDivision('all');
-            setActiveFilter('all');
             handleRestart();
           }}
           className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
             activeDivision === 'all'
-              ? 'bg-purple-600 text-white shadow-md'
-              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
+              ? 'bg-blue-600 text-white shadow-md'
+              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
           }`}
         >
-          الامتحان الشامل (القسمان)
+          {isMath ? 'جميع الأسئلة (الفرعان)' : 'جميع الأسئلة (القسمان)'}
         </button>
-        <button
-          onClick={() => {
-            setActiveDivision && setActiveDivision('thermal');
-            setActiveFilter('all');
-            handleRestart();
-          }}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'thermal'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-300" />
-          <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-        </button>
-        <button
-          onClick={() => {
-            setActiveDivision && setActiveDivision('electro');
-            setActiveFilter('all');
-            handleRestart();
-          }}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'electro'
-              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-              : 'bg-slate-850 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-cyan-300" />
-          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-        </button>
+
+        {isMath ? (
+          <>
+            <button
+              onClick={() => {
+                setActiveDivision && setActiveDivision('calculus');
+                handleRestart();
+              }}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'calculus'
+                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Calculator className="w-3.5 h-3.5 text-cyan-300" />
+              <span>قسم حساب التفاضل (Calculus)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveDivision && setActiveDivision('algebra');
+                handleRestart();
+              }}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'algebra'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Grid className="w-3.5 h-3.5 text-purple-300" />
+              <span>قسم الجبر والهندسة الفراغية (Algebra & 3D)</span>
+            </button>
+          </>
+        ) : (
+          <>
+            <button
+              onClick={() => {
+                setActiveDivision && setActiveDivision('thermal');
+                handleRestart();
+              }}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'thermal'
+                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Flame className="w-3.5 h-3.5 text-amber-300" />
+              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveDivision && setActiveDivision('electro');
+                handleRestart();
+              }}
+              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
+                activeDivision === 'electro'
+                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
+                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+              }`}
+            >
+              <Zap className="w-3.5 h-3.5 text-cyan-300" />
+              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
+            </button>
+          </>
+        )}
       </div>
 
       {/* Module Filter Tabs */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {[
-          { id: 'all', label: 'جميع الأسئلة (12)' },
-          { id: 'water-treatment', label: 'المياه والعسر (3)' },
-          { id: 'fuels-combustion', label: 'الوقود والاحتراق (2)' },
-          { id: 'corrosion-control', label: 'التآكل والصدأ (2)' },
-          { id: 'building-materials', label: 'الأسمنت وبوج (2)' },
-          { id: 'polymers-lubricants', label: 'البوليمرات والزيوت (3)' }
-        ].map((tab) => (
+        {(isMath ? mathFilters : chemFilters).map((tab) => (
           <button
             key={tab.id}
             onClick={() => {
@@ -147,7 +224,7 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
             }}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
               activeFilter === tab.id
-                ? 'bg-purple-600 text-white shadow-md'
+                ? (isMath ? 'bg-indigo-600 text-white shadow-md' : 'bg-purple-600 text-white shadow-md')
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
             }`}
           >
@@ -171,20 +248,34 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
 
           <div className="p-4 rounded-2xl bg-slate-900 max-w-sm mx-auto border border-slate-700 text-xs font-bold text-slate-300">
             {score / filteredQuestions.length >= 0.85 ? (
-              <span className="text-emerald-400">ممتاز جداً! مستواك يؤهلك للحصول على تقدير امتياز (A+) في الكيمياء!</span>
+              <span className="text-emerald-400">ممتاز جداً! مستواك يؤهلك للحصول على تقدير امتياز (A+) في امتحانات شبرا!</span>
             ) : score / filteredQuestions.length >= 0.65 ? (
               <span className="text-cyan-400">مستوى جيد جداً، راجع شيت القوانين وركز على النقاط التي أخطأت بها!</span>
             ) : (
-              <span className="text-amber-400">تحتاج إلى مراجعة محاضرات المنهج والتدرب على الشيتات مرة أخرى!</span>
+              <span className="text-amber-400">تحتاج إلى مراجعة محاضرات المنهج والتدرب على الشيتات والحاسبات مرة أخرى!</span>
             )}
           </div>
 
           <button
             onClick={handleRestart}
-            className="px-6 py-3 rounded-2xl bg-purple-600 hover:bg-purple-500 text-white font-black text-xs inline-flex items-center gap-2 shadow-lg transition active:scale-95"
+            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-sm flex items-center gap-2 mx-auto shadow-lg transition"
           >
             <RotateCcw className="w-4 h-4" />
-            <span>إعادة الاختبار والبدء من جديد</span>
+            <span>إعادة الاختبار من البداية</span>
+          </button>
+        </div>
+      ) : filteredQuestions.length === 0 ? (
+        <div className="p-12 text-center bg-slate-800/80 rounded-3xl border border-slate-700 text-slate-400 space-y-3">
+          <HelpCircle className="w-12 h-12 text-cyan-400 mx-auto opacity-40" />
+          <p className="text-sm font-bold">لا توجد أسئلة تطابق معايير الفلترة الحالية.</p>
+          <button
+            onClick={() => {
+              setActiveFilter('all');
+              handleRestart();
+            }}
+            className="text-xs text-cyan-300 underline font-bold"
+          >
+            عرض جميع الأسئلة
           </button>
         </div>
       ) : (
@@ -193,7 +284,7 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
           
           <div className="flex items-center justify-between border-b border-slate-700 pb-3">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-black text-purple-300 bg-purple-950 px-3 py-1 rounded-full border border-purple-800 font-mono">
+              <span className="text-xs font-black text-indigo-300 bg-indigo-950 px-3 py-1 rounded-full border border-indigo-800 font-mono">
                 Question {currentIdx + 1} of {filteredQuestions.length}
               </span>
               <span className="text-xs text-slate-400 font-bold font-mono">{currentQ.id.toUpperCase()}</span>
@@ -258,26 +349,20 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
                   disabled={selectedOption !== null}
                   className={`w-full p-4 rounded-2xl border-2 text-left transition-all text-xs font-bold flex items-center justify-between ${style}`}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-xs font-mono font-bold shrink-0">
+                  <div className="flex items-center gap-3 font-mono" dir="ltr">
+                    <span className="w-6 h-6 rounded-lg bg-slate-800 text-slate-300 flex items-center justify-center text-xs font-bold shrink-0 border border-slate-700">
                       {String.fromCharCode(65 + idx)}
                     </span>
-                    <div className="space-y-0.5 text-left" dir="ltr">
-                      <span className="leading-relaxed font-mono font-bold text-xs block text-slate-100">
-                        {optEn}
-                      </span>
-                      {showArabicHelper && (
-                        <span className="text-[11px] text-slate-400 font-sans block text-right" dir="rtl">
-                          {opt}
-                        </span>
-                      )}
-                    </div>
+                    <span className="text-xs sm:text-sm font-semibold">{optEn}</span>
                   </div>
 
                   {selectedOption !== null && (
-                    <div className="shrink-0 mr-2">
-                      {isCorrect && <CheckCircle2 className="w-5 h-5 text-emerald-400 shrink-0" />}
-                      {isSelected && !isCorrect && <XCircle className="w-5 h-5 text-rose-400 shrink-0" />}
+                    <div className="shrink-0">
+                      {isCorrect ? (
+                        <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+                      ) : isSelected ? (
+                        <XCircle className="w-5 h-5 text-rose-400" />
+                      ) : null}
                     </div>
                   )}
                 </button>
@@ -285,60 +370,48 @@ export default function QuizArenaView({ activeDivision = 'all', setActiveDivisio
             })}
           </div>
 
-          {/* Explanation Banner (Visible after answering) */}
+          {/* Explanation Section (Revealed after selection) */}
           {selectedOption !== null && (
-            <div className="p-4 rounded-2xl bg-slate-950 border border-slate-700 space-y-3 animate-in fade-in">
+            <div className="p-4 rounded-2xl bg-slate-900/90 border border-slate-700 space-y-3 animate-in fade-in duration-300 text-left font-mono" dir="ltr">
               <div className="flex items-center justify-between border-b border-slate-800 pb-2">
-                <div className="flex items-center gap-2 text-xs font-black text-cyan-300">
-                  <HelpCircle className="w-4 h-4 text-cyan-400" />
-                  <span>Scientific Explanation & Exam Rationale:</span>
-                </div>
-                <span className={`text-[10px] font-bold px-2 py-0.5 rounded font-mono ${
-                  selectedOption === currentQ.correctIndex 
-                    ? 'bg-emerald-950 text-emerald-300 border border-emerald-800' 
-                    : 'bg-rose-950 text-rose-300 border border-rose-800'
+                <span className="text-xs font-bold text-cyan-400 font-sans uppercase tracking-wider">
+                  Mathematical Rationale & Solution Steps:
+                </span>
+                <span className={`text-xs font-black px-2.5 py-0.5 rounded-full font-sans ${
+                  selectedOption === currentQ.correctIndex ? 'bg-emerald-950 text-emerald-300' : 'bg-rose-950 text-rose-300'
                 }`}>
-                  {selectedOption === currentQ.correctIndex ? 'Correct (+1 Point)' : 'Incorrect'}
+                  {selectedOption === currentQ.correctIndex ? 'Correct Answer! ✅' : 'Incorrect Choice ❌'}
                 </span>
               </div>
 
-              {/* Primary English Explanation */}
-              {currentQ.explanationEn && (
-                <div className="text-left font-mono text-xs text-slate-300 leading-relaxed" dir="ltr">
-                  {currentQ.explanationEn}
-                </div>
-              )}
+              {/* Academic English Explanation */}
+              <p className="text-xs text-slate-300 leading-relaxed font-normal">
+                {currentQ.explanationEn || currentQ.explanation}
+              </p>
 
-              {/* Small Button to toggle Arabic explanation */}
-              <div className="pt-1">
-                <button
-                  onClick={() => setShowArabicHelper(prev => !prev)}
-                  className="px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 bg-amber-950/40 text-amber-300 hover:bg-amber-900/60 border border-amber-600/40"
-                >
+              {/* On-Demand Arabic Pedagogical Explanation */}
+              <div className="pt-2 border-t border-slate-800/80 text-right space-y-1 font-sans" dir="rtl">
+                <div className="flex items-center gap-1.5 text-amber-300 text-xs font-bold">
                   <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
-                  <span>{showArabicHelper ? 'إخفاء الشرح بالعربي' : '💡 الشرح بالعربي (Arabic Explanation)'}</span>
-                </button>
-              </div>
-
-              {/* Arabic Explanation Drawer */}
-              {showArabicHelper && (
-                <div className="p-3 rounded-xl bg-amber-950/20 border border-amber-500/30 text-right space-y-1 text-xs" dir="rtl">
-                  <span className="text-[11px] font-black text-amber-300 block">💡 التفسير الهندسي بالعربي:</span>
-                  <p className="text-slate-200 leading-relaxed font-medium">
-                    {currentQ.explanation}
-                  </p>
+                  <span>التفسير الهندسي بالعربي:</span>
                 </div>
-              )}
-
-              <div className="pt-2 flex justify-end border-t border-slate-800/80">
-                <button
-                  onClick={handleNext}
-                  className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-black text-xs flex items-center gap-2 shadow-md transition active:scale-95"
-                >
-                  <span>{currentIdx + 1 === filteredQuestions.length ? 'إنهاء وحساب النتيجة 🏁' : 'السؤال التالي (Next) ←'}</span>
-                  <ArrowRight className="w-4 h-4 rotate-180" />
-                </button>
+                <p className="text-xs text-slate-300 leading-relaxed font-medium">
+                  {currentQ.explanation}
+                </p>
               </div>
+            </div>
+          )}
+
+          {/* Next Button */}
+          {selectedOption !== null && (
+            <div className="pt-2 flex justify-end">
+              <button
+                onClick={handleNext}
+                className="px-6 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-500 text-white font-black text-xs transition flex items-center gap-2 shadow-lg shadow-indigo-900/40"
+              >
+                <span>{currentIdx + 1 < filteredQuestions.length ? 'السؤال التالي' : 'عرض النتيجة النهائية'}</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
             </div>
           )}
 

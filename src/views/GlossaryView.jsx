@@ -2,12 +2,23 @@ import React, { useState, useMemo } from 'react';
 import { 
   BookMarked, Search, Filter, Sparkles, CheckCircle2, RotateCcw, 
   HelpCircle, Eye, EyeOff, Copy, Check, Printer, BrainCircuit,
-  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap, Lightbulb
+  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap, Lightbulb, Grid
 } from 'lucide-react';
 import { GLOSSARY_ITEMS, GLOSSARY_MODULES, GLOSSARY_TYPES } from '../data/glossaryData';
+import { MATH_GLOSSARY_ITEMS, MATH_GLOSSARY_MODULES, MATH_GLOSSARY_TYPES } from '../data/mathGlossaryData';
 import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 
-export default function GlossaryView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
+export default function GlossaryView({ 
+  activeDivision = 'all', 
+  setActiveDivision, 
+  studyMode = 'bilingual',
+  activeSubject = 'math'
+}) {
+  const isMath = activeSubject === 'math';
+  const rawItems = isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
+  const rawModules = isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
+  const rawTypes = isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
+
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
   const [selectedType, setSelectedType] = useState('all');
@@ -25,11 +36,17 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
 
   // Filter items
   const filteredItems = useMemo(() => {
-    return GLOSSARY_ITEMS.filter((item) => {
+    return rawItems.filter((item) => {
       // Division filter
-      const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
-      const matchDivision = !activeDivision || activeDivision === 'all' ||
-        (activeDivision === 'electro' ? isElectro : !isElectro);
+      let matchDivision = true;
+      if (activeDivision && activeDivision !== 'all') {
+        if (isMath) {
+          matchDivision = item.division === activeDivision || item.division === 'all';
+        } else {
+          const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
+          matchDivision = (activeDivision === 'electro' ? isElectro : !isElectro);
+        }
+      }
 
       const matchModule = selectedModule === 'all' || item.module === selectedModule;
       const matchType = selectedType === 'all' || item.type === selectedType;
@@ -38,13 +55,13 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
       const matchSearch = query === '' || 
         item.termAr.toLowerCase().includes(query) ||
         item.termEn.toLowerCase().includes(query) ||
-        item.definitionAr.toLowerCase().includes(query) ||
+        (item.definitionAr && item.definitionAr.toLowerCase().includes(query)) ||
         (item.definitionEn && item.definitionEn.toLowerCase().includes(query)) ||
         (item.keywords && item.keywords.some(k => k.toLowerCase().includes(query)));
 
       return matchDivision && matchModule && matchType && matchSearch;
     });
-  }, [searchQuery, selectedModule, selectedType, activeDivision]);
+  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath]);
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 
@@ -103,22 +120,16 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
   };
 
   const handleCopy = (item) => {
-    const defEn = item.definitionEn || ENGINEERING_TERMS[item.termEn]?.definitionEn || '';
-    const textToCopy = `${item.termEn} (${item.termAr}):\n${defEn}\n\n[Arabic Explanation]:\n${item.definitionAr}${item.formula ? `\nFormula: ${item.formula}` : ''}`;
+    const textToCopy = `${item.termEn}\n\nDefinition:\n${item.definitionEn || ''}\n\n${item.formula ? `Formula: ${item.formula}` : ''}`;
     navigator.clipboard.writeText(textToCopy);
     setCopiedId(item.id);
     setTimeout(() => setCopiedId(null), 2000);
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
-
-  // Stats calculation
-  const totalItems = GLOSSARY_ITEMS.length;
-  const defCount = GLOSSARY_ITEMS.filter(i => i.type === 'definition').length;
-  const lawCount = GLOSSARY_ITEMS.filter(i => i.type === 'law').length;
-  const whyCount = GLOSSARY_ITEMS.filter(i => i.type === 'reasoning').length;
+  const totalItems = rawItems.length;
+  const defCount = rawItems.filter(i => i.type === 'definition').length;
+  const lawCount = rawItems.filter(i => i.type === 'law').length;
+  const whyCount = rawItems.filter(i => i.type === 'reasoning').length;
   const masteryPercentage = totalItems > 0 ? Math.round((masteredIds.size / totalItems) * 100) : 0;
 
   return (
@@ -130,13 +141,15 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
           <div className="space-y-2 text-center md:text-right">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-400/30">
               <BrainCircuit className="w-3.5 h-3.5 text-cyan-400" />
-              <span>معجم الحفظ والمراجعة السريعة • Glossary & Formulas Vault</span>
+              <span>معجم الحفظ والمراجعة السريعة • {isMath ? 'Math Formulas Vault' : 'Glossary & Formulas Vault'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              مَعْجَمُ المُصْطَلَحَاتِ والقَوَانِينِ وَبَنْكُ الحِفْظِ الهَنْدَسِي
+              {isMath ? 'مَعْجَمُ قَوَانِينِ وَنَظَرِيَّاتِ الرِّيَاضِيَّاتِ 1' : 'مَعْجَمُ المُصْطَلَحَاتِ والقَوَانِينِ وَبَنْكُ الحِفْظِ الهَنْدَسِي'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              بنك شامل ومبوب لجميع التعريفات العلمية، القوانين الرياضية، والتعليلات الامتحانية المقررة في هندسة شبرا لسهولة الحفظ والمراجعة ليلة الامتحان.
+              {isMath 
+                ? 'بنك شامل يضم أكثر من 29 قانوناً ونظرية وتعليلاً رياضياً لمقرري التفاضل والجبر مع الشرح بالعربي وأسرار الامتحان.'
+                : 'بنك شامل ومبوب لجميع التعريفات العلمية، القوانين الرياضية، والتعليلات الامتحانية المقررة في هندسة شبرا لسهولة الحفظ والمراجعة ليلة الامتحان.'}
             </p>
           </div>
 
@@ -146,7 +159,6 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
               <span className="text-xs font-bold text-slate-400">إتقان الحفظ:</span>
               <span className="text-xs font-mono font-black text-emerald-400">{masteredIds.size} / {totalItems} ({masteryPercentage}%)</span>
             </div>
-            {/* Progress bar */}
             <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
               <div 
                 className="bg-gradient-to-r from-blue-500 to-emerald-400 h-full transition-all duration-300"
@@ -164,7 +176,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
               </div>
               <div className="p-1 rounded bg-slate-900/60 text-rose-300">
                 <div>{whyCount}</div>
-                <div className="text-[9px] text-slate-400 font-normal">علل</div>
+                <div className="text-[9px] text-slate-400 font-normal">علل/نظرية</div>
               </div>
             </div>
           </div>
@@ -205,12 +217,12 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
             </button>
           </div>
 
-          {/* Search Input & Print */}
+          {/* Search Input & Controls */}
           <div className="flex items-center gap-2 w-full lg:w-auto">
             <div className="relative flex-1 sm:w-80">
               <input
                 type="text"
-                placeholder="ابحث بالاسم العربي أو الإنجليزي (مثل: Bogue, عسر, Dulong)..."
+                placeholder={isMath ? "ابحث بالقانون أو النظرية (مثل: Leibniz, Taylor, Gauss, De Moivre)..." : "ابحث بالاسم العربي أو الإنجليزي (مثل: Bogue, عسر, Dulong)..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="w-full bg-slate-900 border border-slate-700 rounded-xl pl-9 pr-4 py-2 text-xs font-bold text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
@@ -220,133 +232,65 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
 
             <button
               onClick={toggleAllArabic}
-              className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold transition border shrink-0 ${
-                expandedArabicIds.size === filteredItems.length && filteredItems.length > 0
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-500/50 hover:bg-amber-500/30'
-                  : 'bg-slate-700/60 hover:bg-slate-700 text-amber-300 hover:text-white border-slate-600'
-              }`}
-              title="إظهار أو إخفاء الشرح بالعربي لجميع البطاقات دفعة واحدة"
+              className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-750 text-amber-400 text-xs font-bold border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+              title="فتح أو طي كافة شروح اللغة العربية لجميع البطاقات دفعة واحدة"
             >
-              <Lightbulb className="w-4 h-4 text-amber-400" />
+              <Lightbulb className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">
-                {expandedArabicIds.size === filteredItems.length && filteredItems.length > 0 ? 'إخفاء الشرح العربي للكل' : 'إظهار الشرح العربي للكل'}
-              </span>
-              <span className="sm:hidden">
-                {expandedArabicIds.size === filteredItems.length && filteredItems.length > 0 ? 'إخفاء العربي' : 'عربي للكل'}
+                {expandedArabicIds.size === filteredItems.length && filteredItems.length > 0
+                  ? 'طي جميع الشروح'
+                  : '💡 فتح جميع الشروح'}
               </span>
             </button>
 
             <button
-              onClick={handlePrint}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-700/60 hover:bg-slate-700 text-xs font-bold text-slate-200 hover:text-white transition border border-slate-600 shrink-0"
-              title="طباعة المعجم للمذاكرة الورقية"
+              onClick={() => window.print()}
+              className="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-750 text-slate-300 hover:text-white text-xs font-bold border border-slate-700 transition flex items-center gap-1.5 shrink-0"
+              title="طباعة المعجم"
             >
-              <Printer className="w-4 h-4 text-cyan-400" />
-              <span className="hidden sm:inline">طباعة ملخص الحفظ</span>
+              <Printer className="w-3.5 h-3.5 text-cyan-400" />
+              <span className="hidden sm:inline">طباعة</span>
             </button>
           </div>
-
         </div>
 
-        {/* Filter Row 0: Academic Division Selector */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-            <span>القسم الأكاديمي:</span>
-          </span>
-          <button
-            onClick={() => {
-              setActiveDivision && setActiveDivision('all');
-              setFlashcardIdx(0);
-              setIsRevealed(false);
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-              activeDivision === 'all'
-                ? 'bg-blue-600 text-white shadow'
-                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
-            }`}
-          >
-            الكل (القسمان معاً)
-          </button>
-          <button
-            onClick={() => {
-              setActiveDivision && setActiveDivision('thermal');
-              setSelectedModule('all');
-              setFlashcardIdx(0);
-              setIsRevealed(false);
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 ${
-              activeDivision === 'thermal'
-                ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow'
-                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
-            }`}
-          >
-            <Flame className="w-3.5 h-3.5 text-amber-300" />
-            <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-          </button>
-          <button
-            onClick={() => {
-              setActiveDivision && setActiveDivision('electro');
-              setSelectedModule('all');
-              setFlashcardIdx(0);
-              setIsRevealed(false);
-            }}
-            className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1 ${
-              activeDivision === 'electro'
-                ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow'
-                : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
-            }`}
-          >
-            <Zap className="w-3.5 h-3.5 text-cyan-300" />
-            <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-          </button>
-        </div>
+        {/* Filters: Modules & Types */}
+        <div className="pt-3 border-t border-slate-700/80 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs">
+          {/* Module Pills */}
+          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+            <span className="text-slate-400 font-bold shrink-0 ml-1">الوحدات:</span>
+            {rawModules.map((m) => (
+              <button
+                key={m.id}
+                onClick={() => setSelectedModule(m.id)}
+                className={`px-3 py-1 rounded-xl whitespace-nowrap transition font-bold text-[11px] ${
+                  selectedModule === m.id
+                    ? 'bg-cyan-600 text-white shadow'
+                    : 'bg-slate-900 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {m.label}
+              </button>
+            ))}
+          </div>
 
-        {/* Filter Row 1: Module Selector */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
-            <Filter className="w-3.5 h-3.5 text-cyan-400" />
-            <span>الوحدة:</span>
-          </span>
-          {GLOSSARY_MODULES.map((mod) => (
-            <button
-              key={mod.id}
-              onClick={() => {
-                setSelectedModule(mod.id);
-                setFlashcardIdx(0);
-                setIsRevealed(false);
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 shrink-0 ${
-                selectedModule === mod.id
-                  ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-400/50'
-                  : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
-              }`}
-            >
-              <span>{mod.label}</span>
-            </button>
-          ))}
-        </div>
-
-        {/* Filter Row 2: Type Selector */}
-        <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-          <span className="text-slate-400 font-bold shrink-0 text-[11px]">التصنيف:</span>
-          {GLOSSARY_TYPES.map((t) => (
-            <button
-              key={t.id}
-              onClick={() => {
-                setSelectedType(t.id);
-                setFlashcardIdx(0);
-                setIsRevealed(false);
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
-                selectedType === t.id
-                  ? 'bg-indigo-500/20 text-indigo-300 border border-indigo-400/50'
-                  : 'bg-slate-900/50 text-slate-400 hover:text-slate-200 border border-slate-700/60'
-              }`}
-            >
-              {t.label}
-            </button>
-          ))}
+          {/* Type Pills */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            <span className="text-slate-400 font-bold ml-1">النوع:</span>
+            {rawTypes.map((t) => (
+              <button
+                key={t.id}
+                onClick={() => setSelectedType(t.id)}
+                className={`px-2.5 py-1 rounded-xl whitespace-nowrap transition font-bold text-[11px] ${
+                  selectedType === t.id
+                    ? 'bg-indigo-600 text-white shadow'
+                    : 'bg-slate-900 text-slate-300 hover:bg-slate-700'
+                }`}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
         </div>
 
       </div>
@@ -354,7 +298,6 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
       {/* ================= MODE 1: FLASHCARD MEMORIZATION ================= */}
       {viewMode === 'flashcard' && (
         <div className="max-w-2xl mx-auto space-y-6">
-          
           {filteredItems.length === 0 ? (
             <div className="p-12 text-center bg-slate-800/80 rounded-3xl border border-slate-700 text-slate-400 space-y-3">
               <HelpCircle className="w-12 h-12 text-cyan-400 mx-auto opacity-40" />
@@ -373,11 +316,10 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
           ) : (
             <div className="space-y-4">
               
-              {/* Flashcard Header Position */}
               <div className="flex items-center justify-between text-xs font-bold text-slate-400 px-2">
                 <span>بطاقة رقم {flashcardIdx + 1} من {filteredItems.length}</span>
                 <span className="px-2.5 py-0.5 rounded-full bg-slate-800 border border-slate-700 text-cyan-400">
-                  {currentFlashcard.type === 'definition' ? 'مصطلح علمي' : currentFlashcard.type === 'law' ? 'قانون رياضي' : 'سؤال علل'}
+                  {currentFlashcard.type === 'definition' ? 'مصطلح علمي' : currentFlashcard.type === 'law' ? 'قانون ونظرية' : 'سؤال علل ونظرية'}
                 </span>
               </div>
 
@@ -395,11 +337,17 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                         {currentFlashcard.id}
                       </span>
                       <span className={`text-[10px] font-bold px-2.5 py-1 rounded-xl ${
-                        currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-')
-                          ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
-                          : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                        isMath 
+                          ? currentFlashcard.division === 'calculus'
+                            ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
+                            : 'bg-purple-950 text-purple-300 border border-purple-800/60'
+                          : currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-')
+                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                            : 'bg-amber-950 text-amber-300 border border-amber-800/60'
                       }`}>
-                        {currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-') ? '⚡ Electro' : '🔥 Thermal'}
+                        {isMath 
+                          ? (currentFlashcard.division === 'calculus' ? '📐 Calculus' : '⚡ Algebra')
+                          : (currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-') ? '⚡ Electro' : '🔥 Thermal')}
                       </span>
                     </div>
 
@@ -442,31 +390,32 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                   {isRevealed ? (
                     <div className="space-y-4 animate-in fade-in duration-300">
                       {/* Academic English Definition */}
-                      {(currentFlashcard.definitionEn || ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn) && (
+                      {(currentFlashcard.definitionEn || (!isMath && ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn)) && (
                         <div className="p-3.5 rounded-2xl bg-slate-950 border border-slate-800 text-left font-mono" dir="ltr">
                           <span className="text-[10px] font-bold text-cyan-400 block font-sans mb-1 uppercase tracking-wider">
                             Academic English Definition (for Exam Answer Sheet):
                           </span>
                           <p className="text-xs sm:text-sm text-slate-200 leading-relaxed font-normal">
-                            {currentFlashcard.definitionEn || ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn}
+                            {currentFlashcard.definitionEn || (!isMath && ENGINEERING_TERMS[currentFlashcard.termEn]?.definitionEn)}
                           </p>
                         </div>
                       )}
 
-                      {/* Formula if exists */}
+                      {/* Formula if present */}
                       {currentFlashcard.formula && (
-                        <div>
-                          <span className="text-[11px] font-bold text-cyan-300 block mb-1 text-left font-mono">Mathematical Formula:</span>
-                          <div 
-                            className="p-3 bg-slate-950 rounded-xl font-mono text-xs sm:text-sm font-bold text-cyan-300 border border-slate-800 text-left overflow-x-auto" 
-                            dir="ltr"
-                          >
-                            {currentFlashcard.formula}
-                          </div>
+                        <div className="p-3 rounded-xl bg-slate-950 font-mono text-xs sm:text-sm font-bold text-cyan-300 border border-slate-800 text-left overflow-x-auto shadow-inner" dir="ltr">
+                          {currentFlashcard.formula}
                         </div>
                       )}
 
-                      {/* Small Button to toggle Arabic explanation */}
+                      {/* Formula Display if present */}
+                      {currentFlashcard.formulaDisplay && (
+                        <div className="p-2.5 rounded-xl bg-slate-950 font-mono text-xs font-bold text-amber-300 border border-slate-800 text-left overflow-x-auto" dir="ltr">
+                          {currentFlashcard.formulaDisplay}
+                        </div>
+                      )}
+
+                      {/* Small Button for On-Demand Arabic Explanation */}
                       <div className="pt-1">
                         <button
                           onClick={() => setFlashcardArabicOpen(prev => !prev)}
@@ -484,7 +433,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                         </button>
                       </div>
 
-                      {/* Arabic Meaning & Conceptual Intuition (Drawer) */}
+                      {/* Arabic Meaning Drawer */}
                       {flashcardArabicOpen && (
                         <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/30 to-slate-900/90 border border-amber-500/30 text-right space-y-2 animate-in fade-in duration-200" dir="rtl">
                           <div className="flex items-center justify-between border-b border-amber-500/20 pb-1.5">
@@ -496,7 +445,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                           </p>
                           {currentFlashcard.examTip && (
                             <div className="text-[11px] text-amber-200/90 bg-amber-950/50 p-2.5 rounded-xl border border-amber-800/40 flex items-center gap-2">
-                              <span>💡</span>
+                              <span>🎯</span>
                               <span><strong>تنبيه الامتحان:</strong> {currentFlashcard.examTip}</span>
                             </div>
                           )}
@@ -509,7 +458,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       className="w-full py-6 rounded-2xl bg-indigo-950/40 hover:bg-indigo-950/60 border-2 border-dashed border-indigo-500/40 text-indigo-300 hover:text-white flex flex-col items-center justify-center gap-2 transition group"
                     >
                       <Eye className="w-6 h-6 group-hover:scale-110 transition-transform text-cyan-400" />
-                      <span className="text-xs font-black">اضغط هنا لإظهار التعريف والإجابة النموذجية بالإنجليزية</span>
+                      <span className="text-xs font-black">اضغط هنا لإظهار القانون أو التعريف بالإنجليزية</span>
                       <span className="text-[10px] text-slate-400">اختبر استحضارك للمصطلح قبل الكشف!</span>
                     </button>
                   )}
@@ -543,10 +492,8 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                 </div>
 
               </div>
-
             </div>
           )}
-
         </div>
       )}
 
@@ -556,14 +503,15 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
           
           <div className="flex items-center justify-between text-xs font-bold text-slate-400 px-2 no-print">
             <span>عدد النتائج المعروضة: {filteredItems.length} مصطلح وقانون</span>
-            <span>كلية الهندسة بشبرا - قسم الكيمياء</span>
+            <span>كلية الهندسة بشبرا - قسم {isMath ? 'الرياضيات الهندسية' : 'الكيمياء'}</span>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {filteredItems.map((item) => {
               const isMastered = masteredIds.has(item.id);
               const isArabicExpanded = expandedArabicIds.has(item.id);
-              const defEn = item.definitionEn || ENGINEERING_TERMS[item.termEn]?.definitionEn;
+              const defEn = item.definitionEn || (!isMath && ENGINEERING_TERMS[item.termEn]?.definitionEn);
+              const isCalculus = item.division === 'calculus';
 
               return (
                 <div
@@ -580,14 +528,20 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                          item.module === 'corrosion' || item.id.startsWith('c-')
-                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
-                            : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                          isMath
+                            ? isCalculus
+                              ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
+                              : 'bg-purple-950 text-purple-300 border border-purple-800/60'
+                            : (item.module === 'corrosion' || item.id.startsWith('c-'))
+                              ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                              : 'bg-amber-950 text-amber-300 border border-amber-800/60'
                         }`}>
-                          {item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ Electro (د. سمر)' : '🔥 Thermal (د. هناء)'}
+                          {isMath 
+                            ? (isCalculus ? '📐 Calculus' : '⚡ Algebra')
+                            : (item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ Electro (د. سمر)' : '🔥 Thermal (د. هناء)')}
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">
-                          {item.type === 'definition' ? '📖 Definition' : item.type === 'law' ? '📐 Law & Formula' : '❓ Reasoning (Why)'}
+                          {item.type === 'definition' ? '📖 Definition' : item.type === 'law' ? '📐 Law & Formula' : '❓ Reasoning / Theorem'}
                         </span>
                       </div>
 
@@ -651,7 +605,7 @@ export default function GlossaryView({ activeDivision = 'all', setActiveDivision
                       </div>
                     )}
 
-                    {/* Formula Display (if definition has a reaction) */}
+                    {/* Formula Display (if reaction or alternate formula) */}
                     {item.formulaDisplay && (
                       <div 
                         className="p-2.5 bg-slate-950 rounded-lg font-mono text-[11px] font-bold text-amber-300 border border-slate-800 text-left overflow-x-auto" 

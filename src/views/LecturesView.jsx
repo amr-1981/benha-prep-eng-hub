@@ -8,7 +8,7 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
 
   const filteredVideos = LECTURE_VIDEOS.filter((v) => {
     const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
-    const matchDivision = !activeDivision || activeDivision === 'all' || (activeDivision === 'electro' ? isElectro : !isElectro);
+    const matchDivision = !activeDivision || activeDivision === 'all' || activeDivision === 'calculus' || activeDivision === 'algebra' || (activeDivision === 'electro' ? isElectro : !isElectro);
     const matchTopic = activeTopic === 'all' || v.topic === activeTopic;
     const matchSearch = searchQuery.trim() === '' ||
       v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

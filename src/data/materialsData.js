@@ -185,6 +185,46 @@ export const REAL_MATERIAL_FILES = [
     actionType: 'platform_sheet',
     targetTab: 'glossary',
     tags: ['Glossary', 'Definitions', 'Formulas', 'Flashcards', 'Exam Review']
+  },
+
+  // 9. Real Platform Printable A4 Sheet: Math 1 Calculus & Leibniz
+  {
+    id: 'mat-sheet-math-calculus',
+    category: 'cheatsheets',
+    division: 'calculus',
+    title: 'شيت قوانين المشتقات العليا ونظرية لايبنتز وتايلور (A4)',
+    titleEn: 'Calculus Higher Derivatives, Leibniz & Taylor Series Formulas (A4)',
+    descriptionEn: 'Printable A4 summary sheet covering standard derivatives, L\'Hôpital indeterminate forms, Leibniz product rule, and Taylor expansions for Shoubra Engineering.',
+    description: 'ورقة قوانين مكثفة لمقرر التفاضل بهندسة شبرا: المشتقات القياسية، قاعدة لوبيتال للحالات غير المعينة، ومفكوك لايبنتز بحاصل ضرب الدوال.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات 1',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Math 1', 'Calculus', 'Leibniz', 'Taylor Series', 'Derivatives']
+  },
+
+  // 10. Real Platform Printable A4 Sheet: Math 1 Algebra & 3D Geometry
+  {
+    id: 'mat-sheet-math-algebra',
+    category: 'cheatsheets',
+    division: 'algebra',
+    title: 'شيت المصفوفات وحذف غاوس والأعداد المركبة والهندسة الفراغية (A4)',
+    titleEn: 'Linear Algebra, Matrices, Complex Numbers & 3D Geometry Formulas (A4)',
+    descriptionEn: 'Printable A4 cheat sheet covering 3x3 matrix inverse, Gauss-Jordan elimination, De Moivre roots of unity, and plane equations in space.',
+    description: 'ورقة قوانين مكثفة لمقرر الجبر بهندسة شبرا: محدد ورتبة ومقلوب المصفوفات، نظرية ديموافر والجذور النونية، ومعادلات المستقيم والمستوى والمسافات في الفراغ.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات 1',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Math 1', 'Algebra', 'Matrices', 'Complex Numbers', '3D Geometry']
   }
 ];
 
