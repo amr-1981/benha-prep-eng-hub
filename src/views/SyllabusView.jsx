@@ -185,54 +185,20 @@ export default function SyllabusView({
         </div>
       </div>
 
-      {/* Two-Branch Academic Division Highlight Banner */}
+      {/* Active Academic Division Highlight Banner (Isolated Department) */}
       <div className="p-4 sm:p-5 rounded-3xl bg-slate-900/90 border border-slate-700/80 shadow-md">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-black text-amber-400 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-800/50">
-                {currentDivisionInfo?.badge || 'القسم الأكاديمي'}
-              </span>
-              <h2 className="text-sm sm:text-base font-black text-white">
-                {currentDivisionInfo?.titleAr}
-              </h2>
-            </div>
-            <p className="text-xs text-slate-400 leading-relaxed max-w-3xl">
-              {currentDivisionInfo?.description}
-            </p>
+        <div className="space-y-1 text-right">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-black text-amber-400 bg-amber-950/80 px-2.5 py-0.5 rounded-full border border-amber-800/50">
+              {currentDivisionInfo?.badge || 'القسم الأكاديمي'}
+            </span>
+            <h2 className="text-sm sm:text-base font-black text-white">
+              {currentDivisionInfo?.titleAr}
+            </h2>
           </div>
-
-          {/* Local Division Tabs */}
-          <div className="flex items-center gap-1.5 bg-slate-950 p-1.5 rounded-2xl border border-slate-800 shrink-0 overflow-x-auto no-scrollbar">
-            {divisionsList.map(div => (
-              <button
-                key={div.id}
-                onClick={() => setActiveDivision && setActiveDivision(div.id)}
-                className={`px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                  activeDivision === div.id
-                    ? isMath
-                      ? div.id === 'calculus'
-                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                        : div.id === 'algebra'
-                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                        : 'bg-blue-600 text-white shadow-md'
-                      : div.id === 'thermal'
-                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-                        : div.id === 'electro'
-                        ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-                        : 'bg-blue-600 text-white shadow-md'
-                    : 'text-slate-400 hover:text-white'
-                }`}
-              >
-                {div.id === 'calculus' ? <Calculator className="w-3.5 h-3.5 text-cyan-300" /> :
-                 div.id === 'algebra' ? <Grid className="w-3.5 h-3.5 text-purple-300" /> :
-                 div.id === 'thermal' ? <Flame className="w-3.5 h-3.5 text-amber-300" /> : 
-                 div.id === 'electro' ? <Zap className="w-3.5 h-3.5 text-cyan-300" /> : 
-                 <Sparkles className="w-3.5 h-3.5 text-amber-300" />}
-                <span>{div.shortTitleAr || div.titleAr}</span>
-              </button>
-            ))}
-          </div>
+          <p className="text-xs text-slate-400 leading-relaxed max-w-3xl">
+            {currentDivisionInfo?.description}
+          </p>
         </div>
       </div>
 

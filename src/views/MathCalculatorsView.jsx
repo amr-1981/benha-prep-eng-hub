@@ -5,8 +5,28 @@ import {
 } from 'lucide-react';
 
 export default function MathCalculatorsView({ activeDivision = 'all', setActiveDivision }) {
-  const [activeTab, setActiveTab] = useState('leibniz'); // 'leibniz' | 'matrices' | 'complex' | 'geometry3d'
+  const [activeTab, setActiveTab] = useState(activeDivision === 'calculus' ? 'leibniz' : 'matrices');
   const [showArabicExplanation, setShowArabicExplanation] = useState(false);
+
+  const availableTools = useMemo(() => {
+    const tools = [
+      { id: 'leibniz', label: 'حاسبة نظرية لايبنتز (Leibniz Formula)', icon: Binary, division: 'calculus' },
+      { id: 'matrices', label: 'حاسبة المصفوفات والمحدد والرتبة (3x3 Matrix)', icon: Grid, division: 'algebra' },
+      { id: 'complex', label: 'حاسبة الأعداد المركبة وديموافر (De Moivre)', icon: Sparkles, division: 'algebra' },
+      { id: 'geometry3d', label: 'حاسبة هندسة الفراغ والمستويات (3D Plane)', icon: Compass, division: 'algebra' }
+    ];
+    return tools.filter(t => !activeDivision || activeDivision === 'all' || t.division === activeDivision);
+  }, [activeDivision]);
+
+  React.useEffect(() => {
+    if (activeDivision === 'calculus') {
+      setActiveTab('leibniz');
+    } else if (activeDivision === 'algebra') {
+      if (activeTab === 'leibniz') {
+        setActiveTab('matrices');
+      }
+    }
+  }, [activeDivision]);
 
   // ----------------------------------------------------
   // TOOL 1: Leibniz Higher Derivatives Solver State
@@ -279,35 +299,32 @@ export default function MathCalculatorsView({ activeDivision = 'all', setActiveD
         </div>
       </div>
 
-      {/* Tool Selector Navigation Tabs */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800">
-        {[
-          { id: 'leibniz', label: 'حاسبة نظرية لايبنتز (Leibniz Formula)', icon: Binary, division: 'calculus' },
-          { id: 'matrices', label: 'حاسبة المصفوفات والمحدد والرتبة (3x3 Matrix)', icon: Grid, division: 'algebra' },
-          { id: 'complex', label: 'حاسبة الأعداد المركبة وديموافر (De Moivre)', icon: Sparkles, division: 'algebra' },
-          { id: 'geometry3d', label: 'حاسبة هندسة الفراغ والمستويات (3D Plane)', icon: Compass, division: 'algebra' }
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const isActive = activeTab === tab.id;
-          return (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${
-                isActive
-                  ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white border-indigo-400 shadow-md'
-                  : 'bg-slate-900/80 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-800'
-              }`}
-            >
-              <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-indigo-400'}`} />
-              <span>{tab.label}</span>
-              <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-black/30 font-mono opacity-80">
-                {tab.division === 'calculus' ? 'تفاضل' : 'جبر'}
-              </span>
-            </button>
-          );
-        })}
-      </div>
+      {/* Tool Selector Navigation Tabs (Filtered strictly to active division) */}
+      {availableTools.length > 1 && (
+        <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800">
+          {availableTools.map((tab) => {
+            const Icon = tab.icon;
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`px-4 py-2.5 rounded-2xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-2 border ${
+                  isActive
+                    ? 'bg-gradient-to-r from-indigo-600 to-blue-600 text-white border-indigo-400 shadow-md'
+                    : 'bg-slate-900/80 text-slate-300 hover:text-white hover:bg-slate-800 border-slate-800'
+                }`}
+              >
+                <Icon className={`w-4 h-4 ${isActive ? 'text-white' : 'text-indigo-400'}`} />
+                <span>{tab.label}</span>
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-black/30 font-mono opacity-80">
+                  {tab.division === 'calculus' ? 'تفاضل' : 'جبر'}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {/* ======================================================== */}
       {/* TOOL 1: LEIBNIZ SOLVER                                  */}

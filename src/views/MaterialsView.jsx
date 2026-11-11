@@ -6,7 +6,8 @@ import {
 } from 'lucide-react';
 import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/materialsData';
 
-export default function MaterialsView({ setActiveTab, activeDivision = 'all', setActiveDivision }) {
+export default function MaterialsView({ setActiveTab, activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
+  const isMath = activeSubject === 'math';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -21,9 +22,12 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
     });
   };
 
-  // Filter materials
+  // Filter materials strictly to this department
   const filteredFiles = MATERIAL_FILES.filter((file) => {
-    const matchDivision = !activeDivision || activeDivision === 'all' || file.division === 'all' || file.division === activeDivision;
+    let matchDivision = true;
+    if (activeDivision && activeDivision !== 'all') {
+      matchDivision = file.division === activeDivision || (file.division === 'all' && (isMath ? file.tags?.includes('Math 1') : !file.tags?.includes('Math 1')));
+    }
     const matchCat = activeCategory === 'all' || file.category === activeCategory;
     const query = searchQuery.trim().toLowerCase();
     const matchQuery = query === '' ||
@@ -47,10 +51,12 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
               <span>مستودع الماتريال والملفات • Course Repository & Downloads</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ
+              {isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              تحميل وتصفح مباشر لكتب وسلايدات دكاترة هندسة شبرا، شيتات وسكاشن المعيدين بالحلول النموذجية، امتحانات الفاينال السابقة، وملخصات ليلة الامتحان.
+              {isMath 
+                ? 'تحميل وتصفح مباشر لمذكرات وسلايدات دكاترة ومعيدي قسم الرياضيات الهندسية بهندسة شبرا، شيتات A4 للطباعة، وبنك القوانين والامتحانات.'
+                : 'تحميل وتصفح مباشر لكتب وسلايدات دكاترة هندسة شبرا، شيتات وسكاشن المعيدين بالحلول النموذجية، امتحانات الفاينال السابقة، وملخصات ليلة الامتحان.'}
             </p>
           </div>
 
@@ -142,76 +148,94 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {CLOUD_DRIVES.map((drive, idx) => (
-            <a
-              key={idx}
-              href={drive.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-5 rounded-3xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400/60 transition-all shadow-md group flex flex-col justify-between"
-            >
+          {isMath ? (
+            <div className="p-5 rounded-3xl bg-slate-800/90 border border-slate-700 shadow-md flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
                   <span className="text-[10px] font-black text-cyan-300 bg-cyan-950 px-2.5 py-0.5 rounded-full border border-cyan-800/60">
-                    {drive.badge}
+                    قسم الرياضيات 1
                   </span>
-                  <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition" />
+                  <HardDrive className="w-4 h-4 text-cyan-400" />
                 </div>
-                <h3 className="font-black text-sm text-white group-hover:text-cyan-300 transition-colors">
-                  {drive.title}
+                <h3 className="font-black text-sm text-white">
+                  {activeDivision === 'calculus' ? 'مستودع مذكرات حساب التفاضل والتطبيقات' : 'مستودع مذكرات الجبر والهندسة الفراغية'}
                 </h3>
                 <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
-                  {drive.subtitle}
+                  سلايدات وشيتات الدكاترة والمعيدين بشبرا، شيتات A4 للطباعة التفاعلية، وبنك امتحانات الفاينال.
                 </p>
               </div>
-
               <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-[11px] font-bold text-cyan-400">
-                <span>فتح الرابط السحابي</span>
+                <span>تصفح وتحميل مباشر للملفات أدناه</span>
                 <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
               </div>
-            </a>
-          ))}
+            </div>
+          ) : (
+            CLOUD_DRIVES.map((drive, idx) => (
+              <a
+                key={idx}
+                href={drive.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-5 rounded-3xl bg-slate-800/90 hover:bg-slate-800 border border-slate-700 hover:border-cyan-400/60 transition-all shadow-md group flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-[10px] font-black text-cyan-300 bg-cyan-950 px-2.5 py-0.5 rounded-full border border-cyan-800/60">
+                      {drive.badge}
+                    </span>
+                    <ExternalLink className="w-4 h-4 text-slate-400 group-hover:text-cyan-400 transition" />
+                  </div>
+                  <h3 className="font-black text-sm text-white group-hover:text-cyan-300 transition-colors">
+                    {drive.title}
+                  </h3>
+                  <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                    {drive.subtitle}
+                  </p>
+                </div>
+
+                <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-[11px] font-bold text-cyan-400">
+                  <span>فتح الرابط السحابي</span>
+                  <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
+                </div>
+              </a>
+            ))
+          )}
         </div>
       </div>
 
-      {/* Two-Branch Academic Division Bar */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+      {/* Active Department Isolation Badge */}
+      <div className="flex items-center gap-2 text-xs">
         <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
           <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>قسم الماتريال:</span>
+          <span>المستودع المعتمد للقسم الأكاديمي:</span>
         </span>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-            activeDivision === 'all'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          الكل (القسمان معاً)
-        </button>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('thermal')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'thermal'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-300" />
-          <span>الكيمياء الحرارية والوقود (د. هناء)</span>
-        </button>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('electro')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'electro'
-              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-cyan-300" />
-          <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-        </button>
+        <div className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-slate-800/90 text-cyan-300 border border-slate-700 shadow-sm flex items-center gap-2">
+          {isMath ? (
+            activeDivision === 'calculus' ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span>قسم حساب التفاضل والتطبيقات (Calculus MTH 001)</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                <span>قسم الجبر الخطي والهندسة الفراغية (Algebra MTH 001)</span>
+              </>
+            )
+          ) : (
+            activeDivision === 'thermal' ? (
+              <>
+                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <span>قسم الكيمياء الحرارية والوقود ومواد البناء (د. هناء عبد الوهاب)</span>
+              </>
+            ) : (
+              <>
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                <span>قسم الكيمياء الكهربية وتآكل المعادن وحمايتها (د. سمر عبد الحميد)</span>
+              </>
+            )
+          )}
+        </div>
       </div>
 
       {/* Search & Category Filter Navigation */}

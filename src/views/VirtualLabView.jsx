@@ -113,44 +113,14 @@ export default function VirtualLabView({ activeDivision = 'all', setActiveDivisi
         </div>
       </div>
 
-      {/* Two-Branch Academic Division Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
-        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
-          <span>قسم التجارب:</span>
+      {/* Active Division Indicator Badge */}
+      <div className="flex items-center gap-2 pb-1 text-xs">
+        <span className="text-slate-400 font-bold">قسم التجارب المعملية:</span>
+        <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 font-black text-cyan-300">
+          {activeDivision === 'thermal'
+            ? 'تجارب الكيمياء الحرارية والصناعية (د. هناء)'
+            : 'تجارب الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-            activeDivision === 'all'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          جميع التجارب (القسمان)
-        </button>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('thermal')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'thermal'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-300" />
-          <span>تجارب الكيمياء الحرارية والصناعية (د. هناء)</span>
-        </button>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('electro')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'electro'
-              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-cyan-300" />
-          <span>تجارب الكيمياء الكهربية والتآكل (د. سمر)</span>
-        </button>
       </div>
 
       {/* Experiment Selector Tabs */}

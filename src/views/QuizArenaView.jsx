@@ -68,26 +68,42 @@ export default function QuizArenaView({
     setShowArabicHelper(false);
   };
 
-  const mathFilters = [
-    { id: 'all', label: 'جميع الأسئلة (12)' },
-    { id: 'math-mod-limits', label: 'النهايات ولوبيتال' },
-    { id: 'math-mod-leibniz', label: 'نظرية لايبنتز' },
-    { id: 'math-mod-series', label: 'متسلسلات تايلور' },
-    { id: 'math-mod-curve', label: 'رسم المنحنيات والانحناء' },
-    { id: 'math-mod-partial', label: 'الاشتقاق الجزئي' },
-    { id: 'math-mod-matrices', label: 'المصفوفات والرتبة' },
-    { id: 'math-mod-complex', label: 'الأعداد المركبة' },
-    { id: 'math-mod-geometry3d', label: 'الهندسة الفراغية' }
-  ];
-
-  const chemFilters = [
-    { id: 'all', label: 'جميع الأسئلة (12)' },
-    { id: 'water-treatment', label: 'المياه والعسر (3)' },
-    { id: 'fuels-combustion', label: 'الوقود والاحتراق (2)' },
-    { id: 'corrosion-control', label: 'التآكل والصدأ (2)' },
-    { id: 'building-materials', label: 'الأسمنت وبوج (2)' },
-    { id: 'polymers-lubricants', label: 'البوليمرات والزيوت (3)' }
-  ];
+  const activeFilters = useMemo(() => {
+    if (isMath) {
+      if (activeDivision === 'calculus') {
+        return [
+          { id: 'all', label: 'جميع أسئلة التفاضل' },
+          { id: 'math-mod-limits', label: 'النهايات ولوبيتال' },
+          { id: 'math-mod-leibniz', label: 'نظرية لايبنتز' },
+          { id: 'math-mod-series', label: 'متسلسلات تايلور' },
+          { id: 'math-mod-curve', label: 'رسم المنحنيات والانحناء' },
+          { id: 'math-mod-partial', label: 'الاشتقاق الجزئي' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة الجبر والفراغية' },
+          { id: 'math-mod-matrices', label: 'المصفوفات والرتبة' },
+          { id: 'math-mod-complex', label: 'الأعداد المركبة' },
+          { id: 'math-mod-geometry3d', label: 'الهندسة الفراغية' }
+        ];
+      }
+    } else {
+      if (activeDivision === 'thermal') {
+        return [
+          { id: 'all', label: 'جميع أسئلة الحرارية (د. هناء)' },
+          { id: 'water-treatment', label: 'المياه والعسر' },
+          { id: 'fuels-combustion', label: 'الوقود والاحتراق' },
+          { id: 'building-materials', label: 'الأسمنت وبوج' },
+          { id: 'polymers-lubricants', label: 'البوليمرات والزيوت' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة الكهربية والتآكل (د. سمر)' },
+          { id: 'corrosion-control', label: 'التآكل والصدأ والحماية' }
+        ];
+      }
+    }
+  }, [isMath, activeDivision]);
 
   return (
     <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
@@ -125,97 +141,23 @@ export default function QuizArenaView({
         </div>
       </div>
 
-      {/* Two-Branch Academic Division Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1">
-        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-xs">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>{isMath ? 'فرع الرياضيات:' : 'قسم الكيمياء:'}</span>
+      {/* Active Division Indicator Badge */}
+      <div className="flex items-center gap-2 pb-1">
+        <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
+        <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-amber-300">
+          {isMath
+            ? activeDivision === 'calculus'
+              ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+              : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+            : activeDivision === 'thermal'
+              ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+              : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
-
-        <button
-          onClick={() => {
-            setActiveDivision && setActiveDivision('all');
-            handleRestart();
-          }}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-            activeDivision === 'all'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          {isMath ? 'جميع الأسئلة (الفرعان)' : 'جميع الأسئلة (القسمان)'}
-        </button>
-
-        {isMath ? (
-          <>
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('calculus');
-                handleRestart();
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'calculus'
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Calculator className="w-3.5 h-3.5 text-cyan-300" />
-              <span>قسم حساب التفاضل (Calculus)</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('algebra');
-                handleRestart();
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'algebra'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Grid className="w-3.5 h-3.5 text-purple-300" />
-              <span>قسم الجبر والهندسة الفراغية (Algebra & 3D)</span>
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('thermal');
-                handleRestart();
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'thermal'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('electro');
-                handleRestart();
-              }}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'electro'
-                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 text-cyan-300" />
-              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-            </button>
-          </>
-        )}
       </div>
 
-      {/* Module Filter Tabs */}
+      {/* Module Filter Tabs (Filtered strictly to active division) */}
       <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {(isMath ? mathFilters : chemFilters).map((tab) => (
+        {activeFilters.map((tab) => (
           <button
             key={tab.id}
             onClick={() => {

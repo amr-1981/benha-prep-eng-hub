@@ -3,7 +3,18 @@ import { Calculator, Droplets, Flame, Building2, Zap, ArrowLeft, RefreshCw, Chec
 import { ConceptAccordion, TermBadge } from '../components/BilingualExplainer';
 
 export default function CalculatorsView({ activeDivision = 'all', setActiveDivision, studyMode = 'bilingual' }) {
-  const [activeCalc, setActiveCalc] = useState('lime-soda');
+  const [activeCalc, setActiveCalc] = useState(activeDivision === 'electro' ? 'thermo' : 'lime-soda');
+
+  React.useEffect(() => {
+    if (activeDivision === 'electro') {
+      setActiveCalc('thermo');
+      setSubThermoMode('nernst');
+    } else if (activeDivision === 'thermal') {
+      if (activeCalc === 'thermo' && subThermoMode === 'nernst') {
+        setActiveCalc('lime-soda');
+      }
+    }
+  }, [activeDivision]);
 
   // ================= 1. LIME-SODA STATE =================
   const [waterVolume, setWaterVolume] = useState(50000);
@@ -159,41 +170,14 @@ export default function CalculatorsView({ activeDivision = 'all', setActiveDivis
             </p>
           </div>
 
-          {/* Division Switcher */}
-          <div className="flex items-center gap-1.5 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-700/80 shrink-0 overflow-x-auto no-scrollbar">
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('all')}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-                activeDivision === 'all' ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              جميع الحاسبات
-            </button>
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('thermal');
-                if (subThermoMode === 'nernst' && activeCalc === 'thermo') setSubThermoMode('enthalpy');
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'thermal' ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-            </button>
-            <button
-              onClick={() => {
-                setActiveDivision && setActiveDivision('electro');
-                setActiveCalc('thermo');
-                setSubThermoMode('nernst');
-              }}
-              className={`px-3 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'electro' ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 text-cyan-300" />
-              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-            </button>
+          {/* Active Division Indicator */}
+          <div className="flex items-center gap-2 text-xs">
+            <span className="text-slate-400 font-bold">القسم الأكاديمي:</span>
+            <span className="px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-700/80 font-black text-cyan-300">
+              {activeDivision === 'thermal'
+                ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+                : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+            </span>
           </div>
         </div>
 

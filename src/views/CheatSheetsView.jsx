@@ -106,77 +106,18 @@ export default function CheatSheetsView({
         </div>
       </div>
 
-      {/* Two-Branch Academic Division Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-print">
-        <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-xs">
-          <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
-          <span>{isMath ? 'فرع الرياضيات:' : 'قسم الكيمياء:'}</span>
+      {/* Active Division Indicator Badge */}
+      <div className="flex items-center gap-2 pb-1 no-print">
+        <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
+        <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-cyan-300">
+          {isMath
+            ? activeDivision === 'calculus'
+              ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+              : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+            : activeDivision === 'thermal'
+              ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+              : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
-
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-            activeDivision === 'all'
-              ? 'bg-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          {isMath ? 'جميع شيتات الرياضيات (الفرعان)' : 'جميع الشيتات (القسمان)'}
-        </button>
-
-        {isMath ? (
-          <>
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('calculus')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'calculus'
-                  ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Calculator className="w-3.5 h-3.5 text-cyan-300" />
-              <span>قسم حساب التفاضل والتطبيقات (Calculus)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('algebra')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'algebra'
-                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Grid className="w-3.5 h-3.5 text-purple-300" />
-              <span>قسم الجبر والهندسة الفراغية (Algebra & 3D)</span>
-            </button>
-          </>
-        ) : (
-          <>
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('thermal')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'thermal'
-                  ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Flame className="w-3.5 h-3.5 text-amber-300" />
-              <span>الكيمياء الحرارية والصناعية (د. هناء)</span>
-            </button>
-
-            <button
-              onClick={() => setActiveDivision && setActiveDivision('electro')}
-              className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-                activeDivision === 'electro'
-                  ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-                  : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-              }`}
-            >
-              <Zap className="w-3.5 h-3.5 text-cyan-300" />
-              <span>الكيمياء الكهربية والتآكل (د. سمر)</span>
-            </button>
-          </>
-        )}
       </div>
 
       {/* Category Filters (Hidden on Print) */}

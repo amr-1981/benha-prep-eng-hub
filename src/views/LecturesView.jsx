@@ -1,14 +1,47 @@
 import React, { useState } from 'react';
 import { Play, ExternalLink, Search, Filter, Youtube, Clock, Eye, Sparkles, Flame, Zap } from 'lucide-react';
-import { VIDEO_TOPICS, YOUTUBE_CHANNELS, LECTURE_VIDEOS } from '../data/videosData';
+import { 
+  VIDEO_TOPICS, YOUTUBE_CHANNELS, LECTURE_VIDEOS,
+  MATH_VIDEO_TOPICS, MATH_YOUTUBE_CHANNELS, MATH_LECTURE_VIDEOS 
+} from '../data/videosData';
 
-export default function LecturesView({ activeDivision = 'all', setActiveDivision }) {
+export default function LecturesView({ activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
+  const isMath = activeSubject === 'math';
+  const rawTopics = isMath ? MATH_VIDEO_TOPICS : VIDEO_TOPICS;
+  const rawChannels = isMath ? MATH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
+  const rawVideos = isMath ? MATH_LECTURE_VIDEOS : LECTURE_VIDEOS;
+
   const [activeTopic, setActiveTopic] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
-  const filteredVideos = LECTURE_VIDEOS.filter((v) => {
-    const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
-    const matchDivision = !activeDivision || activeDivision === 'all' || activeDivision === 'calculus' || activeDivision === 'algebra' || (activeDivision === 'electro' ? isElectro : !isElectro);
+  // Isolate topics by active division
+  const divisionTopics = React.useMemo(() => {
+    if (isMath) {
+      if (activeDivision === 'calculus') {
+        return rawTopics.filter(t => t.id === 'all' || ['limits', 'leibniz', 'series', 'partial'].includes(t.id));
+      } else if (activeDivision === 'algebra') {
+        return rawTopics.filter(t => t.id === 'all' || ['matrices', 'complex', 'induction', 'geometry3d'].includes(t.id));
+      }
+    } else {
+      if (activeDivision === 'electro') {
+        return rawTopics.filter(t => t.id === 'all' || t.id === 'corrosion');
+      } else if (activeDivision === 'thermal') {
+        return rawTopics.filter(t => t.id === 'all' || ['water', 'fuels', 'cement', 'polymers', 'labs'].includes(t.id));
+      }
+    }
+    return rawTopics;
+  }, [rawTopics, activeDivision, isMath]);
+
+  const filteredVideos = rawVideos.filter((v) => {
+    let matchDivision = true;
+    if (activeDivision && activeDivision !== 'all') {
+      if (isMath) {
+        matchDivision = v.division === activeDivision;
+      } else {
+        const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
+        matchDivision = (activeDivision === 'electro' ? isElectro : !isElectro);
+      }
+    }
     const matchTopic = activeTopic === 'all' || v.topic === activeTopic;
     const matchSearch = searchQuery.trim() === '' ||
       v.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -21,7 +54,7 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
     <div className="space-y-8 pb-16">
       
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-rose-500/40 shadow-xl">
+      <div className="bg-gradient-to-r from-slate-900 via-rose-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-rose-500/40 shadow-xl font-arabic">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-500/20 text-rose-300 text-xs font-bold border border-rose-400/30 mb-2">
@@ -29,10 +62,12 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
               <span>دليل المحاضرات المرئية • Curated Video Lectures</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ
+              {isMath ? 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الرِّيَاضِيَّاتِ 1' : 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              تجميعة منتقاة لأفضل شروحات دكاترة ومهندسي الجامعات المصرية مع روابط مباشرة للدروس وقوائم التشغيل
+              {isMath 
+                ? 'تجميعة منتقاة لأفضل شروحات التفاضل والجبر لأساتذة ومهندسي الجامعات المصرية مع أفكار امتحانات شبرا.'
+                : 'تجميعة منتقاة لأفضل شروحات دكاترة ومهندسي الجامعات المصرية مع روابط مباشرة للدروس وقوائم التشغيل.'}
             </p>
           </div>
 
@@ -43,7 +78,7 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
               placeholder="ابحث عن درس أو موضوع..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-slate-800/90 border border-slate-700 rounded-2xl pl-10 pr-4 py-2.5 text-xs font-bold text-white placeholder-slate-400 focus:outline-none focus:border-rose-400"
+              className="w-full bg-slate-800/90 border border-slate-700 rounded-2xl pl-10 pr-4 py-2.5 text-xs font-bold text-white placeholder-slate-400 focus:outline-none focus:border-rose-400 font-arabic"
             />
             <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-3" />
           </div>
@@ -51,8 +86,8 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
       </div>
 
       {/* Recommended Channels Showcase */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {YOUTUBE_CHANNELS.map((ch, i) => (
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 font-arabic">
+        {rawChannels.map((ch, i) => (
           <a
             key={i}
             href={`https://www.youtube.com/results?search_query=${encodeURIComponent(ch.searchQuery)}`}
@@ -84,55 +119,44 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
         ))}
       </div>
 
-      {/* Two-Branch Academic Division Switcher */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar text-xs">
+      {/* Active Department Isolation Badge */}
+      <div className="flex items-center gap-2 text-xs font-arabic">
         <span className="text-slate-400 font-bold shrink-0 flex items-center gap-1 text-[11px]">
           <Sparkles className="w-3.5 h-3.5 text-rose-400" />
-          <span>قسم الفيديوهات:</span>
+          <span>القسم الأكاديمي النشط:</span>
         </span>
-        <button
-          onClick={() => setActiveDivision && setActiveDivision('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition whitespace-nowrap ${
-            activeDivision === 'all'
-              ? 'bg-rose-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          جميع الفيديوهات (القسمان)
-        </button>
-        <button
-          onClick={() => {
-            setActiveDivision && setActiveDivision('thermal');
-            setActiveTopic('all');
-          }}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'thermal'
-              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Flame className="w-3.5 h-3.5 text-amber-300" />
-          <span>فيديوهات الكيمياء الحرارية والصناعية (د. هناء)</span>
-        </button>
-        <button
-          onClick={() => {
-            setActiveDivision && setActiveDivision('electro');
-            setActiveTopic('all');
-          }}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-black transition flex items-center gap-1.5 whitespace-nowrap ${
-            activeDivision === 'electro'
-              ? 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md'
-              : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
-          }`}
-        >
-          <Zap className="w-3.5 h-3.5 text-cyan-300" />
-          <span>فيديوهات الكيمياء الكهربية والتآكل (د. سمر)</span>
-        </button>
+        <div className="px-3.5 py-1.5 rounded-xl text-xs font-black bg-slate-800/90 text-rose-300 border border-slate-700 shadow-sm flex items-center gap-2">
+          {isMath ? (
+            activeDivision === 'calculus' ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+                <span>فيديوهات وشروحات حساب التفاضل والتطبيقات (Calculus)</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
+                <span>فيديوهات وشروحات الجبر الخطي والهندسة الفراغية (Algebra)</span>
+              </>
+            )
+          ) : (
+            activeDivision === 'thermal' ? (
+              <>
+                <Flame className="w-3.5 h-3.5 text-amber-400" />
+                <span>فيديوهات الكيمياء الحرارية والوقود ومواد البناء (د. هناء عبد الوهاب)</span>
+              </>
+            ) : (
+              <>
+                <Zap className="w-3.5 h-3.5 text-cyan-400" />
+                <span>فيديوهات الكيمياء الكهربية وتآكل المعادن (د. سمر عبد الحميد)</span>
+              </>
+            )
+          )}
+        </div>
       </div>
 
       {/* Topic Filter Pills */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2">
-        {VIDEO_TOPICS.map((top) => (
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 font-arabic">
+        {divisionTopics.map((top) => (
           <button
             key={top.id}
             onClick={() => setActiveTopic(top.id)}

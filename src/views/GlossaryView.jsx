@@ -34,6 +34,34 @@ export default function GlossaryView({
   const [expandedArabicIds, setExpandedArabicIds] = useState(new Set());
   const [flashcardArabicOpen, setFlashcardArabicOpen] = useState(false);
 
+  // Isolate modules strictly by active division
+  const divisionModules = useMemo(() => {
+    let mods = rawModules;
+    if (activeDivision && activeDivision !== 'all') {
+      if (isMath) {
+        if (activeDivision === 'calculus') {
+          mods = rawModules.filter(m => m.id === 'all' || ['limits', 'leibniz', 'series', 'curve', 'partial'].includes(m.id));
+        } else if (activeDivision === 'algebra') {
+          mods = rawModules.filter(m => m.id === 'all' || ['matrices', 'complex', 'induction', 'equations', 'geometry3d'].includes(m.id));
+        }
+      } else {
+        if (activeDivision === 'electro') {
+          mods = rawModules.filter(m => m.id === 'all' || m.id === 'corrosion');
+        } else if (activeDivision === 'thermal') {
+          mods = rawModules.filter(m => m.id === 'all' || ['water', 'fuels', 'cement', 'polymers'].includes(m.id));
+        }
+      }
+    }
+    return mods;
+  }, [rawModules, activeDivision, isMath]);
+
+  // Reset selectedModule if it is outside current division
+  React.useEffect(() => {
+    if (selectedModule !== 'all' && !divisionModules.some(m => m.id === selectedModule)) {
+      setSelectedModule('all');
+    }
+  }, [divisionModules, selectedModule]);
+
   // Filter items
   const filteredItems = useMemo(() => {
     return rawItems.filter((item) => {
@@ -259,19 +287,26 @@ export default function GlossaryView({
           {/* Module Pills */}
           <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
             <span className="text-slate-400 font-bold shrink-0 ml-1">الوحدات:</span>
-            {rawModules.map((m) => (
-              <button
-                key={m.id}
-                onClick={() => setSelectedModule(m.id)}
-                className={`px-3 py-1 rounded-xl whitespace-nowrap transition font-bold text-[11px] ${
-                  selectedModule === m.id
-                    ? 'bg-cyan-600 text-white shadow'
-                    : 'bg-slate-900 text-slate-300 hover:bg-slate-700'
-                }`}
-              >
-                {m.label}
-              </button>
-            ))}
+            {divisionModules.map((m) => {
+              const label = m.id === 'all'
+                ? isMath 
+                  ? (activeDivision === 'calculus' ? 'جميع وحدات التفاضل (5 وحدات)' : activeDivision === 'algebra' ? 'جميع وحدات الجبر والفراغية (5 وحدات)' : m.label)
+                  : (activeDivision === 'electro' ? 'وحدات الكيمياء الكهربية والتآكل' : activeDivision === 'thermal' ? 'جميع وحدات الكيمياء الحرارية' : m.label)
+                : m.label;
+              return (
+                <button
+                  key={m.id}
+                  onClick={() => setSelectedModule(m.id)}
+                  className={`px-3 py-1 rounded-xl whitespace-nowrap transition font-bold text-[11px] ${
+                    selectedModule === m.id
+                      ? 'bg-cyan-600 text-white shadow'
+                      : 'bg-slate-900 text-slate-300 hover:bg-slate-700'
+                  }`}
+                >
+                  {label}
+                </button>
+              );
+            })}
           </div>
 
           {/* Type Pills */}
