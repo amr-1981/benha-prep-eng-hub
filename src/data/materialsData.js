@@ -225,6 +225,127 @@ export const REAL_MATERIAL_FILES = [
     actionType: 'platform_sheet',
     targetTab: 'cheatsheets',
     tags: ['Math 1', 'Algebra', 'Matrices', 'Complex Numbers', '3D Geometry']
+  },
+
+  // ==================== TECHNICAL ENGLISH (HUM 001) ====================
+  // 11. Real Platform Printable A4 Sheet: Affixes & Technical Vocabulary
+  {
+    id: 'mat-sheet-eng-affixes',
+    category: 'cheatsheets',
+    division: 'vocab_grammar',
+    title: 'شيت فك وتفكيك السوابق واللواحق والمصطلحات الهندسية (A4)',
+    titleEn: 'Engineering Affixes, Greek & Latin Roots & Morphological Decoding (A4)',
+    descriptionEn: 'High-density printable A4 cheat sheet for Shoubra Engineering: Prefix matrix (nano-, micro-, ultra-, poly-), Latin roots (duct, fer, vert), and noun/adjective formers.',
+    description: 'ورقة A4 ملخصة ومكثفة لفك الكلمات الهندسية المركبة: مصفوفة السوابق القياسية، الجذور اللاتينية واليونانية المتكررة، وقواعد تحويل الأفعال لصفات ومصطلحات معتمدة.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Technical English', 'HUM 001', 'Prefixes', 'Suffixes', 'Roots', 'Decoding']
+  },
+
+  // 12. Real Platform Printable A4 Sheet: Engineering Grammar & Passive Voice
+  {
+    id: 'mat-sheet-eng-grammar',
+    category: 'cheatsheets',
+    division: 'vocab_grammar',
+    title: 'شيت قواعد الكتابة الهندسية والمبني للمجهول في المعامل والتقارير (A4)',
+    titleEn: 'Engineering Grammar, Passive Voice Lab Conventions & Cause-Effect Connectors (A4)',
+    descriptionEn: 'Printable A4 reference sheet covering active-to-passive conversion in methodology, hedging modals, and precision measurement clauses.',
+    description: 'ورقة A4 جاهزة للطباعة: قواعد تحويل أفعال التجارب المعملية للمبني للمجهول، أدوات الربط السببية المقارنة، وصياغة الأبعاد الفيزيائية بدون أخطاء ركاكة.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Technical English', 'HUM 001', 'Passive Voice', 'Lab Reports', 'Connectors', 'Grammar']
+  },
+
+  // 13. Real Platform Printable A4 Sheet: Technical Report Blueprint & Abstract
+  {
+    id: 'mat-sheet-eng-report',
+    category: 'cheatsheets',
+    division: 'reports_writing',
+    title: 'مخطط الهيكل المعماري للتقرير الهندسي والمستخلص التنفيذي المستقل (A4)',
+    titleEn: 'Formal Technical Report Blueprint & 5-Step Standalone Abstract Architecture (A4)',
+    descriptionEn: 'Printable A4 blueprint outlining the 10 standard report components (Title Page, Abstract, TOC, Intro, Methodology, Results, Discussion, Conclusion, Recommendations, References).',
+    description: 'مخطط هيكلي معتمد لكتابة التقارير الهندسية الرسمية: خطوات صياغة المستخلص التنفيذي الخمس، صياغة التوصيات، والتوثيق الأكاديمي IEEE.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Technical English', 'HUM 001', 'Report Blueprint', 'Abstract', 'IEEE', 'Technical Writing']
+  },
+
+  // 14. Real Platform Printable A4 Sheet: Mechanism & Process Flow Description
+  {
+    id: 'mat-sheet-eng-mechanism',
+    category: 'cheatsheets',
+    division: 'reports_writing',
+    title: 'شيت وصف الأجهزة الميكانيكية وتدفق العمليات الصناعية خطوة بخطوة (A4)',
+    titleEn: 'Mechanism & Technical Device Description vs Process Flow SOP Guide (A4)',
+    descriptionEn: 'Printable cheat sheet for Shoubra Engineering: The 4-stage mechanism description model and chronological process writing for engineering systems.',
+    description: 'دليل كتابة وصف المعدات والأجهزة الهندسية (المفهوم، المكونات، الوظيفة، الدورة التشغيلية) وتوثيق العمليات الصناعية بمحددات زمنية قياسية.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Technical English', 'HUM 001', 'Mechanism Description', 'Process Flow', 'SOP']
+  },
+
+  // 15. Real Platform Printable A4 Sheet: Professional Engineering Correspondence & Memos
+  {
+    id: 'mat-sheet-eng-correspondence',
+    category: 'cheatsheets',
+    division: 'reports_writing',
+    title: 'شيت المراسلات الهندسية الاحترافية ومذكرات حوادث الموقع (A4)',
+    titleEn: 'Engineering Correspondence: Formal Email Protocols & Site Incident Memos (A4)',
+    descriptionEn: 'Printable A4 cheat sheet containing formal engineering email structure, action request closing formulas, and internal technical memo templates.',
+    description: 'قوالب وصيغ جاهزة للمراسلات الهندسية: إيميلات طلب البيانات وموافقة الاستشاري، ومذكرات حوادث الموقع الطارئة بأسلوب فني حاسم واحترافي.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Technical English', 'HUM 001', 'Formal Email', 'Technical Memo', 'Site Incident']
+  },
+
+  // 16. Technical English Vocabulary & Rules Vault
+  {
+    id: 'mat-eng-glossary-vault',
+    category: 'vault',
+    division: 'all',
+    title: 'معجم المصطلحات الفنية وقواعد الكتابة الهندسية الشامل (HUM 001)',
+    titleEn: 'Comprehensive Technical English Glossary & Writing Vault (HUM 001)',
+    descriptionEn: 'Interactive vault of academic definitions, affixes, grammar conventions, report templates, and concise editing rules with instant Arabic explanations.',
+    description: 'بنك شامل للمصطلحات الهندسية الشائعة وقواعد الكتابة لمهندسي إعدادي شبرا، مزود بنظام فلاش كاردز تفاعلي وشرح بالعربي عند الحاجة.',
+    author: 'منصة إعدادي هندسة شبرا • قسم اللغة الإنجليزية الفنية',
+    format: 'تفاعلي / طباعة',
+    size: 'بنك شامل',
+    pages: 20,
+    date: 'مراجعة نهائية',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'glossary',
+    tags: ['Technical English', 'HUM 001', 'Vocabulary', 'Grammar', 'Report Writing', 'Flashcards']
   }
 ];
 

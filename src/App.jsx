@@ -7,6 +7,7 @@ import SyllabusView from './views/SyllabusView';
 import GlossaryView from './views/GlossaryView';
 import LabView from './views/LabView';
 import MathCalculatorsView from './views/MathCalculatorsView';
+import EnglishToolsView from './views/EnglishToolsView';
 import CheatSheetsView from './views/CheatSheetsView';
 import QuizArenaView from './views/QuizArenaView';
 import MaterialsView from './views/MaterialsView';
@@ -66,6 +67,7 @@ export default function App() {
   };
 
   const isMath = selectedSubject === 'math';
+  const isEnglish = selectedSubject === 'english';
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-arabic selection:bg-blue-600 selection:text-white">
@@ -140,12 +142,14 @@ export default function App() {
                   onClick={handleBackToSubject}
                   className="text-slate-300 hover:text-white transition font-black"
                 >
-                  {isMath ? 'مادة الرياضيات 1' : 'مادة الكيمياء الهندسية'}
+                  {isMath ? 'مادة الرياضيات 1' : isEnglish ? 'مادة اللغة الإنجليزية الفنية' : 'مادة الكيمياء الهندسية'}
                 </button>
                 <span className="text-slate-600">/</span>
                 <span className="text-amber-300 font-black">
                   {selectedDivision === 'calculus' ? 'قسم حساب التفاضل والتطبيقات' :
                    selectedDivision === 'algebra' ? 'قسم الجبر والهندسة الفراغية' :
+                   selectedDivision === 'vocab_grammar' ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية' :
+                   selectedDivision === 'reports_writing' ? 'قسم الكتابة الفنية وإعداد التقارير والمراسلات' :
                    selectedDivision === 'thermal' ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)' :
                    'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
                 </span>
@@ -195,6 +199,10 @@ export default function App() {
             {(activeTab === 'lab' || activeTab === 'calculators') && (
               isMath ? (
                 <MathCalculatorsView 
+                  activeDivision={selectedDivision} 
+                />
+              ) : isEnglish ? (
+                <EnglishToolsView 
                   activeDivision={selectedDivision} 
                 />
               ) : (

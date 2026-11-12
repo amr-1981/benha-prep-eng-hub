@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, Droplets, Flame, ShieldAlert, Building2, Layers, Zap, 
   CheckCircle2, AlertTriangle, ArrowRight, Sparkles, Lightbulb, 
-  Calculator, Binary, Compass, Grid, Activity 
+  Calculator, Binary, Compass, Grid, Activity, Scissors, Mail, FileText, Cpu, Repeat 
 } from 'lucide-react';
 import { CHEMISTRY_MODULES, CHEMISTRY_DIVISIONS, BENHA_EXAM_TIPS } from '../data/chemistryCurriculumData';
 import { MATH_MODULES, MATH_DIVISIONS, MATH_INFO } from '../data/mathCurriculumData';
+import { ENGLISH_MODULES, ENGLISH_DIVISIONS, ENGLISH_FACULTY_INFO } from '../data/englishCurriculumData';
 import { ConceptAccordion } from '../components/BilingualExplainer';
 
 const MATH_EXAM_TIPS = [
@@ -27,6 +28,25 @@ const MATH_EXAM_TIPS = [
   }
 ];
 
+const ENGLISH_EXAM_TIPS = [
+  {
+    title: "تفكيك المصطلحات في الامتحان (Prefix + Root + Suffix)",
+    tip: "عند تحليل مصطلح مركب، حدد وظيفته القواعدية أولاً من اللاحقة (Suffix): إذا انتهى بـ -able فهو صفة خاصية، وإذا انتهى بـ -tion أو -ics فهو اسم عملية أو تخصص."
+  },
+  {
+    title: "حذف الفاعل في التقارير المعملية (Agentless Passive)",
+    tip: "في أسئلة تحويل خطوات المعمل للمبني للمجهول: لا تكتب أبداً 'by us' أو 'by me'. التركيز يجب أن ينصب 100% على العينة المقاسة والجهاز المستخدم."
+  },
+  {
+    title: "القاعدة الذهبية لأدوات الربط (Due to vs Therefore)",
+    tip: "تذكر دائماً: 'Due to' يتبعها Noun Phrase لبيان السبب. بينما 'Therefore' أو 'Consequently' تتبعها جملة فعلية كاملة تعبر عن النتيجة الفنية المترتبة."
+  },
+  {
+    title: "المكونات الإلزامية للملخص التنفيذي (Abstract)",
+    tip: "الملخص التنفيذي المستقل يجب أن يحتوي بدقة على: الهدف (Objective) + الطريقة والأجهزة (Methodology) + أبرز رقمين تم قياسهما (Key Findings) + التوصية النهائية (Conclusion)."
+  }
+];
+
 export default function SyllabusView({ 
   activeDivision = 'all', 
   setActiveDivision, 
@@ -34,6 +54,8 @@ export default function SyllabusView({
   activeSubject = 'math'
 }) {
   const isMath = activeSubject === 'math';
+  const isChemistry = activeSubject === 'chemistry';
+  const isEnglish = activeSubject === 'english';
   const [showObjectivesAr, setShowObjectivesAr] = useState(false);
 
   const iconMap = {
@@ -49,11 +71,16 @@ export default function SyllabusView({
     Grid: Grid,
     Activity: Activity,
     Sparkles: Sparkles,
-    BookOpen: BookOpen
+    BookOpen: BookOpen,
+    Scissors: Scissors,
+    Mail: Mail,
+    FileText: FileText,
+    Cpu: Cpu,
+    Repeat: Repeat
   };
 
-  const modulesList = isMath ? MATH_MODULES : CHEMISTRY_MODULES;
-  const divisionsList = isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
+  const modulesList = isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;
+  const divisionsList = isEnglish ? ENGLISH_DIVISIONS : isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
 
   const filteredModules = modulesList.filter(m => {
     return !activeDivision || activeDivision === 'all' || m.division === activeDivision;
@@ -74,7 +101,7 @@ export default function SyllabusView({
 
   const getModuleBilingualInsight = (mod) => {
     if (!mod) return null;
-    if (isMath) {
+    if (isMath || isEnglish) {
       return mod.bilingualInsight || null;
     }
 
@@ -156,10 +183,12 @@ export default function SyllabusView({
     <div className="space-y-8 pb-16 font-arabic">
       
       {/* Hero Welcome Banner */}
-      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
-        isMath
-          ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 border-blue-500/40'
-          : 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 border-blue-500/40'
+      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
+        isEnglish
+          ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+          : isMath
+            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-blue-950 border-blue-500/40'
+            : 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 border-blue-500/40'
       }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
@@ -168,19 +197,29 @@ export default function SyllabusView({
               مقرر الفصل الدراسي الأول • كلية الهندسة بشبرا (جامعة بنها)
             </span>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isMath ? 'موسوعة الرياضيات 1 (Engineering Mathematics 1)' : 'موسوعة الكيمياء الهندسية (Engineering Chemistry)'}
+              {isEnglish 
+                ? 'موسوعة اللغة الإنجليزية الفنية (Technical English)'
+                : isMath 
+                  ? 'موسوعة الرياضيات 1 (Engineering Mathematics 1)' 
+                  : 'موسوعة الكيمياء الهندسية (Engineering Chemistry)'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isMath 
-                ? 'الدليل الشامل لمقرر رياضيات إعدادي هندسة شبرا مقسماً بين: فرع حساب التفاضل والتطبيقات (Calculus) وفرع الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
-                : 'الدليل الشامل لمقرر كيمياء إعدادي هندسة شبرا مقسماً أكاديمياً بين: الكيمياء الحرارية والتطبيقات الصناعية (د. هناء عبد الوهاب) و الكيمياء الكهربية والتآكل (د. سمر عبد الحميد).'}
+              {isEnglish
+                ? 'الدليل الشامل لمقرر إنجليزي إعدادي هندسة شبرا مقسماً بين: فرع المصطلحات الفنية وقواعد الكتابة الهندسية وفرع الكتابة الفنية وإعداد التقارير والمراسلات.'
+                : isMath 
+                  ? 'الدليل الشامل لمقرر رياضيات إعدادي هندسة شبرا مقسماً بين: فرع حساب التفاضل والتطبيقات (Calculus) وفرع الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
+                  : 'الدليل الشامل لمقرر كيمياء إعدادي هندسة شبرا مقسماً أكاديمياً بين: الكيمياء الحرارية والتطبيقات الصناعية (د. هناء عبد الوهاب) و الكيمياء الكهربية والتآكل (د. سمر عبد الحميد).'}
             </p>
           </div>
 
           <div className="bg-slate-800/80 p-4 rounded-2xl border border-slate-700/80 shrink-0 text-center sm:text-right space-y-1">
             <span className="text-[11px] font-bold text-slate-400">كود المادة بلائحة شبرا:</span>
-            <div className="text-lg font-black text-cyan-400 font-mono">{isMath ? 'MTH 001' : 'CHM 001'}</div>
-            <div className="text-[11px] text-amber-300 font-bold">150 درجة إجمالية (شبرا)</div>
+            <div className="text-lg font-black text-cyan-400 font-mono">
+              {isEnglish ? 'HUM 001' : isMath ? 'MTH 001' : 'CHM 001'}
+            </div>
+            <div className="text-[11px] text-amber-300 font-bold">
+              {isEnglish ? '100 درجة إجمالية (شبرا)' : '150 درجة إجمالية (شبرا)'}
+            </div>
           </div>
         </div>
       </div>
@@ -203,11 +242,15 @@ export default function SyllabusView({
       </div>
 
       {/* Module Navigation Tabs */}
-      <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${isMath ? 'lg:grid-cols-5' : 'xl:grid-cols-6'} gap-3`}>
+      <div className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 ${isMath || isEnglish ? 'lg:grid-cols-5' : 'xl:grid-cols-6'} gap-3`}>
         {filteredModules.map((mod) => {
           const Icon = iconMap[mod.icon] || BookOpen;
           const isSelected = selectedModule?.id === mod.id;
-          const isPrimary = isMath ? mod.division === 'calculus' : mod.division === 'thermal';
+          const isPrimary = isEnglish 
+            ? mod.division === 'vocab_grammar'
+            : isMath 
+              ? mod.division === 'calculus' 
+              : mod.division === 'thermal';
           return (
             <button
               key={mod.id}
@@ -215,21 +258,25 @@ export default function SyllabusView({
               className={`p-4 rounded-2xl border-2 text-right transition-all flex flex-col justify-between h-36 ${
                 isSelected
                   ? isPrimary
-                    ? 'bg-gradient-to-br from-blue-950/90 to-slate-900 border-blue-400 shadow-lg shadow-blue-950/50 scale-[1.02]'
-                    : 'bg-gradient-to-br from-indigo-950/90 to-slate-900 border-purple-400 shadow-lg shadow-purple-950/50 scale-[1.02]'
+                    ? 'bg-gradient-to-br from-emerald-950/90 to-slate-900 border-emerald-400 shadow-lg shadow-emerald-950/50 scale-[1.02]'
+                    : 'bg-gradient-to-br from-teal-950/90 to-slate-900 border-cyan-400 shadow-lg shadow-cyan-950/50 scale-[1.02]'
                   : 'bg-slate-800/60 hover:bg-slate-800 border-slate-700 text-slate-300'
               }`}
             >
               <div className="flex items-center justify-between">
-                <span className={`p-2 rounded-xl ${isSelected ? (isPrimary ? 'bg-blue-500 text-white' : 'bg-purple-500 text-white') : 'bg-slate-700 text-slate-300'}`}>
+                <span className={`p-2 rounded-xl ${isSelected ? (isPrimary ? 'bg-emerald-500 text-white' : 'bg-cyan-500 text-white') : 'bg-slate-700 text-slate-300'}`}>
                   <Icon className="w-5 h-5" />
                 </span>
                 <span className={`text-[10px] font-black px-2 py-0.5 rounded-full border ${
                   isPrimary 
-                    ? 'text-cyan-300 bg-blue-950/80 border-blue-800/50' 
-                    : 'text-purple-300 bg-purple-950/80 border-purple-800/50'
+                    ? 'text-emerald-300 bg-emerald-950/80 border-emerald-800/50' 
+                    : 'text-cyan-300 bg-cyan-950/80 border-cyan-800/50'
                 }`}>
-                  {isMath ? (isPrimary ? 'تفاضل (Calculus)' : 'جبر (Algebra)') : (isPrimary ? 'حرارية (د. هناء)' : 'كهربية (د. سمر)')}
+                  {isEnglish 
+                    ? (isPrimary ? 'مصطلحات وقواعد' : 'كتابة وتقارير')
+                    : isMath 
+                      ? (isPrimary ? 'تفاضل (Calculus)' : 'جبر (Algebra)') 
+                      : (isPrimary ? 'حرارية (د. هناء)' : 'كهربية (د. سمر)')}
                 </span>
               </div>
               <div>

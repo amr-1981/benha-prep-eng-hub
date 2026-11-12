@@ -67,6 +67,38 @@ export const AVAILABLE_SUBJECTS = [
     descriptionAr: 'المقرر الأكاديمي المعتمد لإعدادي شبرا يشمل قسمين مستقلين: الكيمياء الحرارية والصناعية، والكيمياء الكهربية وهندسة التآكل.'
   },
   {
+    id: 'english',
+    code: 'HUM 001',
+    status: 'active',
+    titleAr: 'اللغة الإنجليزية الفنية والتقارير الهندسية',
+    titleEn: 'Technical English & Engineering Report Writing',
+    shortTitleAr: 'إنجليزي فني',
+    shortTitleEn: 'Technical English',
+    icon: 'FileText',
+    color: 'from-emerald-600 via-teal-600 to-cyan-500',
+    borderColor: 'border-emerald-500/50',
+    badge: '100 درجة إجمالية',
+    divisions: [
+      { 
+        id: 'vocab_grammar', 
+        titleAr: 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية', 
+        titleEn: 'Technical Vocabulary & Grammar Branch',
+        subtitleAr: 'اشتقاق المصطلحات والبادئات اللاتينية واليونانية، قواعد المبني للمجهول، أدوات الربط والسبب، والأبعاد والقياسات',
+        icon: 'BookOpen',
+        badge: '5 وحدات دراسية'
+      },
+      { 
+        id: 'reports_writing', 
+        titleAr: 'قسم الكتابة الفنية وإعداد التقارير والمراسلات', 
+        titleEn: 'Technical Writing & Reports Branch',
+        subtitleAr: 'هيكل التقرير الهندسي الشامل والملخص التنفيذي، الوصف الفني للأجهزة والعمليات، والإيميلات والمذكرات المهنية',
+        icon: 'FileEdit',
+        badge: '5 وحدات دراسية'
+      }
+    ],
+    descriptionAr: 'المقرر الأكاديمي المعتمد لإعدادي شبرا يشمل فرعين: المصطلحات والقواعد الفنية المتخصصة، وهندسة كتابة التقارير والمراسلات والمذكرات المهنية.'
+  },
+  {
     id: 'physics',
     code: 'PHY 001',
     status: 'coming_soon',

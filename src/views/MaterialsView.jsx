@@ -8,6 +8,7 @@ import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/mater
 
 export default function MaterialsView({ setActiveTab, activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
   const isMath = activeSubject === 'math';
+  const isEnglish = activeSubject === 'english';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -26,7 +27,11 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
   const filteredFiles = MATERIAL_FILES.filter((file) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      matchDivision = file.division === activeDivision || (file.division === 'all' && (isMath ? file.tags?.includes('Math 1') : !file.tags?.includes('Math 1')));
+      matchDivision = file.division === activeDivision || (file.division === 'all' && (
+        isMath ? file.tags?.includes('Math 1') :
+        isEnglish ? file.tags?.includes('Technical English') :
+        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English'))
+      ));
     }
     const matchCat = activeCategory === 'all' || file.category === activeCategory;
     const query = searchQuery.trim().toLowerCase();
@@ -51,11 +56,15 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
               <span>مستودع الماتريال والملفات • Course Repository & Downloads</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
+              {isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 
+               isEnglish ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
+               'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
               {isMath 
                 ? 'تحميل وتصفح مباشر لمذكرات وسلايدات دكاترة ومعيدي قسم الرياضيات الهندسية بهندسة شبرا، شيتات A4 للطباعة، وبنك القوانين والامتحانات.'
+                : isEnglish
+                ? 'تحميل وتصفح مباشر لقوالب كتابة التقارير والمراسلات الرسمية بهندسة شبرا، شيتات فك السوابق واللواحق اللاتينية A4 للطباعة، وبنك الأسئلة المعتمد.'
                 : 'تحميل وتصفح مباشر لكتب وسلايدات دكاترة هندسة شبرا، شيتات وسكاشن المعيدين بالحلول النموذجية، امتحانات الفاينال السابقة، وملخصات ليلة الامتحان.'}
             </p>
           </div>
@@ -148,7 +157,30 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
         </h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {isMath ? (
+          {isEnglish ? (
+            <div className="p-5 rounded-3xl bg-slate-800/90 border border-slate-700 shadow-md flex flex-col justify-between">
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <span className="text-[10px] font-black text-amber-300 bg-amber-950 px-2.5 py-0.5 rounded-full border border-amber-800/60">
+                    قسم اللغة الإنجليزية الفنية (HUM 001)
+                  </span>
+                  <HardDrive className="w-4 h-4 text-amber-400" />
+                </div>
+                <h3 className="font-black text-sm text-white">
+                  {activeDivision === 'vocab_grammar' 
+                    ? 'مستودع مذكرات وقواعد المصطلحات الفنية والكتابة الهندسية' 
+                    : 'مستودع قوالب ومخططات التقارير الفنية والمراسلات الرسمية'}
+                </h3>
+                <p className="text-xs text-slate-400 mt-1.5 leading-relaxed">
+                  قوالب معتمدة لهندسة شبرا، شيتات A4 للطباعة والتصدير كـ PDF، ونماذج إيميلات ومذكرات حوادث الموقع.
+                </p>
+              </div>
+              <div className="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-[11px] font-bold text-amber-400">
+                <span>تصفح وتحميل مباشر للملفات أدناه</span>
+                <ChevronRight className="w-3.5 h-3.5 rtl:rotate-180" />
+              </div>
+            </div>
+          ) : isMath ? (
             <div className="p-5 rounded-3xl bg-slate-800/90 border border-slate-700 shadow-md flex flex-col justify-between">
               <div>
                 <div className="flex items-center justify-between mb-3">
@@ -220,6 +252,18 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
               <>
                 <span className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></span>
                 <span>قسم الجبر الخطي والهندسة الفراغية (Algebra MTH 001)</span>
+              </>
+            )
+          ) : isEnglish ? (
+            activeDivision === 'vocab_grammar' ? (
+              <>
+                <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+                <span>قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocabulary & Grammar HUM 001)</span>
+              </>
+            ) : (
+              <>
+                <span className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                <span>قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing HUM 001)</span>
               </>
             )
           ) : (

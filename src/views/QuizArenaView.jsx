@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { 
   Award, CheckCircle2, XCircle, RotateCcw, ArrowRight, HelpCircle, 
   Sparkles, Filter, Flame, Zap, Lightbulb, Calculator, Grid, Layers 
@@ -6,6 +6,7 @@ import {
 import confetti from 'canvas-confetti';
 import { QUIZ_QUESTIONS } from '../data/quizBankData';
 import { MATH_QUIZ_QUESTIONS } from '../data/mathQuizBankData';
+import { ENGLISH_QUIZ_QUESTIONS } from '../data/englishQuizBankData';
 
 export default function QuizArenaView({ 
   activeDivision = 'all', 
@@ -14,7 +15,10 @@ export default function QuizArenaView({
   activeSubject = 'math'
 }) {
   const isMath = activeSubject === 'math';
-  const questionsList = isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
+  const isChemistry = activeSubject === 'chemistry';
+  const isEnglish = activeSubject === 'english';
+
+  const questionsList = isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -26,7 +30,7 @@ export default function QuizArenaView({
   const filteredQuestions = questionsList.filter((q) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isMath) {
+      if (isEnglish || isMath) {
         matchDivision = q.division === activeDivision || q.division === 'all';
       } else {
         const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
@@ -38,12 +42,13 @@ export default function QuizArenaView({
   });
 
   const currentQ = filteredQuestions[currentIdx] || filteredQuestions[0];
+  const correctIdx = currentQ ? (currentQ.correctIndex !== undefined ? currentQ.correctIndex : currentQ.correctAnswer) : 0;
 
   const handleSelectOption = (idx) => {
     if (selectedOption !== null) return;
     setSelectedOption(idx);
 
-    if (idx === currentQ.correctIndex) {
+    if (idx === correctIdx) {
       setScore(prev => prev + 1);
       confetti({ particleCount: 50, spread: 60 });
     }
@@ -69,7 +74,27 @@ export default function QuizArenaView({
   };
 
   const activeFilters = useMemo(() => {
-    if (isMath) {
+    if (isEnglish) {
+      if (activeDivision === 'vocab_grammar') {
+        return [
+          { id: 'all', label: 'جميع أسئلة المصطلحات والقواعد' },
+          { id: 'affixes', label: 'البادئات واللواحق' },
+          { id: 'word_formation', label: 'اشتقاق المصطلحات' },
+          { id: 'passive_voice', label: 'المبني للمجهول' },
+          { id: 'connectors', label: 'أدوات الربط والشرط' },
+          { id: 'dimensions', label: 'الأبعاد والمقاييس' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة الكتابة والتقارير' },
+          { id: 'report_structure', label: 'هيكل التقرير والملخص' },
+          { id: 'mechanism_desc', label: 'الوصف الفني للأجهزة' },
+          { id: 'process_desc', label: 'وصف العمليات' },
+          { id: 'correspondence', label: 'الإيميلات والمذكرات' },
+          { id: 'style_clarity', label: 'الإيجاز والدقة' }
+        ];
+      }
+    } else if (isMath) {
       if (activeDivision === 'calculus') {
         return [
           { id: 'all', label: 'جميع أسئلة التفاضل' },
@@ -103,32 +128,40 @@ export default function QuizArenaView({
         ];
       }
     }
-  }, [isMath, activeDivision]);
+  }, [isMath, isEnglish, activeDivision]);
 
   return (
     <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
       
       {/* Top Banner */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
-        isMath
-          ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
-          : 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
+        isEnglish
+          ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+          : isMath
+            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+            : 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
       }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
-              isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-purple-500/20 text-purple-300 border-purple-400/30'
+              isEnglish ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-purple-500/20 text-purple-300 border-purple-400/30'
             }`}>
               <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>بنك الأسئلة والامتحانات التفاعلي • {isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
+              <span>بنك الأسئلة والامتحانات التفاعلي • {isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isMath ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الرِّيَاضِيَّاتِ 1' : 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
+              {isEnglish 
+                ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الإِنْجِلِيزِي الفَنِّي' 
+                : isMath 
+                  ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الرِّيَاضِيَّاتِ 1' 
+                  : 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isMath
-                ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرري التفاضل والجبر بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
-                : 'نظام تدريب ذكي وتصحيح فوري لأسئلة الميدتيرم والفاينال المقررة في هندسة شبرا مقسمة بين: الكيمياء الحرارية والكيمياء الكهربية.'}
+              {isEnglish
+                ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرر Technical English بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                : isMath
+                  ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرري التفاضل والجبر بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                  : 'نظام تدريب ذكي وتصحيح فوري لأسئلة الميدتيرم والفاينال المقررة في هندسة شبرا مقسمة بين: الكيمياء الحرارية والكيمياء الكهربية.'}
             </p>
           </div>
 
@@ -145,13 +178,17 @@ export default function QuizArenaView({
       <div className="flex items-center gap-2 pb-1">
         <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
         <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-amber-300">
-          {isMath
-            ? activeDivision === 'calculus'
-              ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
-              : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
-            : activeDivision === 'thermal'
-              ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
-              : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+          {isEnglish
+            ? activeDivision === 'vocab_grammar'
+              ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
+              : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
+            : isMath
+              ? activeDivision === 'calculus'
+                ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+                : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+              : activeDivision === 'thermal'
+                ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+                : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
       </div>
 

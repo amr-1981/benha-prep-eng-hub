@@ -19,10 +19,15 @@ export default function Navbar({
   const isLevel3 = selectedSubject && selectedDivision;
 
   const isMath = selectedSubject === 'math';
+  const isChemistry = selectedSubject === 'chemistry';
+  const isEnglish = selectedSubject === 'english';
+
   const isCalculus = selectedDivision === 'calculus';
   const isAlgebra = selectedDivision === 'algebra';
   const isThermal = selectedDivision === 'thermal';
   const isElectro = selectedDivision === 'electro';
+  const isVocabGrammar = selectedDivision === 'vocab_grammar';
+  const isReportsWriting = selectedDivision === 'reports_writing';
 
   // Division-specific labels & icons for Level 3
   const getNavItems = () => {
@@ -48,8 +53,7 @@ export default function Navbar({
           { id: 'lectures', label: 'فيديوهات الجبر', icon: Youtube, badge: 'YouTube' }
         ];
       }
-    } else {
-      // Chemistry
+    } else if (isChemistry) {
       if (isThermal) {
         return [
           { id: 'syllabus', label: 'مقرر الكيمياء الحرارية', icon: BookOpen, badge: 'د. هناء' },
@@ -69,6 +73,29 @@ export default function Navbar({
           { id: 'quiz', label: 'امتحانات كهربية MCQ', icon: Award, badge: 'شبرا' },
           { id: 'materials', label: 'مذكرات د. سمر', icon: FolderArchive, badge: '14 صفحة' },
           { id: 'lectures', label: 'فيديوهات د. سمر', icon: Youtube, badge: 'YouTube' }
+        ];
+      }
+    } else {
+      // Technical English
+      if (isVocabGrammar) {
+        return [
+          { id: 'syllabus', label: 'مقرر المصطلحات والقواعد', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم المصطلحات والبادئات', icon: BrainCircuit, badge: 'اشتقاق ولواحق' },
+          { id: 'lab', label: 'مفكك المصطلحات والمبني للمجهول', icon: Calculator, badge: 'أدوات تفاعلية' },
+          { id: 'cheatsheets', label: 'شيتات قواعد A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات القواعد MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات القواعد', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات القواعد', icon: Youtube, badge: 'YouTube' }
+        ];
+      } else {
+        return [
+          { id: 'syllabus', label: 'مقرر الكتابة الفنية والتقارير', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'قوالب التقارير والمراسلات', icon: BrainCircuit, badge: 'Abstract & Memos' },
+          { id: 'lab', label: 'مساعد بناء التقارير والإيميلات', icon: Calculator, badge: 'توليد فوري' },
+          { id: 'cheatsheets', label: 'شيتات تقارير A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات التقارير MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'نماذج التقارير', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات التقارير', icon: Youtube, badge: 'YouTube' }
         ];
       }
     }
@@ -110,7 +137,7 @@ export default function Navbar({
                       onClick={onBackToSubject}
                       className={`transition ${isLevel2 ? 'text-cyan-300 font-black' : 'text-slate-400 hover:text-white'}`}
                     >
-                      {isMath ? 'الرياضيات 1 (MTH 001)' : 'الكيمياء الهندسية (CHM 001)'}
+                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : 'اللغة الإنجليزية الفنية (HUM 001)'}
                     </button>
                   </>
                 )}
@@ -121,7 +148,10 @@ export default function Navbar({
                     <span className="text-amber-300 font-black">
                       {isCalculus ? 'حساب التفاضل (Calculus)' :
                        isAlgebra ? 'الجبر والفراغية (Algebra)' :
-                       isThermal ? 'الكيمياء الحرارية (د. هناء)' : 'الكيمياء الكهربية (د. سمر)'}
+                       isThermal ? 'الكيمياء الحرارية (د. هناء)' :
+                       isElectro ? 'الكيمياء الكهربية (د. سمر)' :
+                       isVocabGrammar ? 'المصطلحات والقواعد (Vocab & Grammar)' :
+                       'الكتابة الفنية والتقارير (Reports & Writing)'}
                     </span>
                   </>
                 )}
@@ -129,12 +159,18 @@ export default function Navbar({
 
               <h1 className="text-sm sm:text-base font-black text-white leading-tight mt-0.5">
                 {isLevel1 && 'بوابة إعدادي هندسة شبرا 🏛️'}
-                {isLevel2 && (isMath ? 'مادة الرياضيات 1 • قائمة الأقسام الأكاديمية' : 'مادة الكيمياء الهندسية • قائمة الأقسام الأكاديمية')}
+                {isLevel2 && (
+                  isMath ? 'مادة الرياضيات 1 • قائمة الأقسام الأكاديمية' :
+                  isChemistry ? 'مادة الكيمياء الهندسية • قائمة الأقسام الأكاديمية' :
+                  'مادة اللغة الإنجليزية الفنية • قائمة الأقسام الأكاديمية'
+                )}
                 {isLevel3 && (
                   isCalculus ? 'قسم حساب التفاضل والتطبيقات (Calculus)' :
                   isAlgebra ? 'قسم الجبر والهندسة التحليلية والفراغية (Algebra & 3D)' :
                   isThermal ? 'قسم الكيمياء الحرارية والتطبيقات الصناعية (د. هناء)' :
-                  'قسم الكيمياء الكهربية وتطبيقات التآكل (د. سمر)'
+                  isElectro ? 'قسم الكيمياء الكهربية وتطبيقات التآكل (د. سمر)' :
+                  isVocabGrammar ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية' :
+                  'قسم الكتابة الفنية وإعداد التقارير والمراسلات'
                 )}
               </h1>
             </div>

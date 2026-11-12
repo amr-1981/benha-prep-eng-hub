@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap, Lightbulb, Calculator, Grid, Layers } from 'lucide-react';
+import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight, Flame, Zap, Lightbulb, Calculator, Grid, Layers, Scissors, Mail, Cpu, Repeat, BookOpen } from 'lucide-react';
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
 import { MATH_CHEAT_SHEETS_CATEGORIES, MATH_CHEAT_SHEETS_DATA } from '../data/mathCheatSheetsData';
+import { ENGLISH_CHEAT_SHEETS } from '../data/englishCheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 // BiDi Isolation Helper: Guarantees English formulas, brackets, and notations inside Arabic text never flip backwards
@@ -38,8 +39,20 @@ export default function CheatSheetsView({
   activeSubject = 'math'
 }) {
   const isMath = activeSubject === 'math';
-  const categoriesList = isMath ? MATH_CHEAT_SHEETS_CATEGORIES : CHEAT_SHEETS_CATEGORIES;
-  const rawSheetsList = isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
+  const isChemistry = activeSubject === 'chemistry';
+  const isEnglish = activeSubject === 'english';
+
+  const categoriesList = isEnglish
+    ? [
+        { id: 'all', label: 'جميع شيتات الإنجليزي الفني (A4)', icon: Sparkles },
+        { id: 'vocab', label: 'شيتات المصطلحات والقواعد', icon: BookOpen },
+        { id: 'reports', label: 'شيتات التقارير والمراسلات', icon: FileText }
+      ]
+    : isMath 
+      ? MATH_CHEAT_SHEETS_CATEGORIES 
+      : CHEAT_SHEETS_CATEGORIES;
+
+  const rawSheetsList = isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
@@ -72,32 +85,40 @@ export default function CheatSheetsView({
       
       {/* Top Banner (Hidden on Print) */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
-        isMath
-          ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
-          : 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+        isEnglish
+          ? 'bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-500/40'
+          : isMath
+            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+            : 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
       }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-2 ${
-              isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+              isEnglish ? 'bg-teal-500/20 text-teal-300 border-teal-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
             }`}>
               <Printer className="w-3.5 h-3.5" />
               <span>مكتبة الملخصات الهندسية الجاهزة للطباعة (A4) • هندسة شبرا</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {isMath ? 'شِيتَاتُ قَوَانِينِ الرِّيَاضِيَّاتِ 1 وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ' : 'شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ'}
+              {isEnglish 
+                ? 'شِيتَاتُ ومُلَخَّصَاتُ الإِنْجِلِيزِي الفَنِّي الجَاهِزَةُ لِلطِّبَاعَةِ (A4 Cheat Sheets)'
+                : isMath 
+                  ? 'شِيتَاتُ قَوَانِينِ الرِّيَاضِيَّاتِ 1 وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ' 
+                  : 'شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              {isMath 
-                ? 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: قسم حساب التفاضل والتطبيقات (Calculus) وقسم الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
-                : 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: الكيمياء الحرارية (د. هناء) و الكيمياء الكهربية (د. سمر).'}
+              {isEnglish
+                ? 'ملخصات مركزة بمقاس A4 القياسي مجهزة للطباعة: مصفوفة البادئات واللواحق، قواعد المبني للمجهول، وهيكل التقرير والإيميلات والمذكرات.'
+                : isMath 
+                  ? 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: قسم حساب التفاضل والتطبيقات (Calculus) وقسم الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
+                  : 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: الكيمياء الحرارية (د. هناء) و الكيمياء الكهربية (د. سمر).'}
             </p>
           </div>
 
           <button
             onClick={() => window.print()}
             className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-black text-xs shadow-lg transition active:scale-95 shrink-0 ${
-              isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
+              isEnglish ? 'bg-teal-600 hover:bg-teal-500' : isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
             }`}
           >
             <Printer className="w-4 h-4" />
@@ -110,13 +131,17 @@ export default function CheatSheetsView({
       <div className="flex items-center gap-2 pb-1 no-print">
         <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
         <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-cyan-300">
-          {isMath
-            ? activeDivision === 'calculus'
-              ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
-              : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
-            : activeDivision === 'thermal'
-              ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
-              : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+          {isEnglish
+            ? activeDivision === 'vocab_grammar'
+              ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
+              : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
+            : isMath
+              ? activeDivision === 'calculus'
+                ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+                : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+              : activeDivision === 'thermal'
+                ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+                : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
       </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   Calculator, TestTube, Compass, Activity, Layers, GraduationCap, 
-  ArrowRight, Sparkles, BookOpen, BarChart3, Clock, CheckCircle2 
+  ArrowRight, Sparkles, BookOpen, BarChart3, Clock, CheckCircle2, FileText 
 } from 'lucide-react';
 import { AVAILABLE_SUBJECTS } from '../data/subjectsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
@@ -12,7 +12,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
     TestTube: TestTube,
     Compass: Compass,
     Activity: Activity,
-    Layers: Layers
+    Layers: Layers,
+    FileText: FileText
   };
 
   return (

@@ -278,3 +278,127 @@ export const MATH_LECTURE_VIDEOS = [
     tags: ["فراغية", "مستوى", "مستقيم", "كرة", "3D Geometry"]
   }
 ];
+
+// ==================== TECHNICAL ENGLISH (HUM 001) ====================
+export const ENGLISH_VIDEO_TOPICS = [
+  { id: "all", label: "جميع دروس اللغة الإنجليزية الفنية", icon: "Layers" },
+  { id: "affixes", label: "السوابق واللواحق وفك المصطلحات", icon: "Hash" },
+  { id: "grammar", label: "المبني للمجهول في المعامل والتقارير", icon: "Activity" },
+  { id: "reports", label: "هيكل التقرير الفني والمستخلص التنفيذي", icon: "FileText" },
+  { id: "mechanism", label: "وصف الأجهزة والعمليات الصناعية", icon: "Cpu" },
+  { id: "correspondence", label: "الإيميل الفني ومذكرات الموقع", icon: "Send" }
+];
+
+export const ENGLISH_YOUTUBE_CHANNELS = [
+  {
+    name: "Engineering Communication & Technical English Hub",
+    badge: "شرح أكاديمي معتمد 🎓",
+    description: "شرح مفصل لمنهج اللغة الإنجليزية الفنية وإعداد التقارير الهندسية لطلاب كليات الهندسة المصرية (شبرا وبنها).",
+    subscribers: "+95 ألف مهندس وطالب",
+    searchQuery: "technical english engineering report writing Shoubra Benha",
+    avatar: "📝"
+  },
+  {
+    name: "Technical Writing for Engineers (IEEE & Academic Writing)",
+    badge: "قوالب ومعايير دولية 🏛️",
+    description: "ورش عمل لصياغة المستخلص التنفيذي Abstract، وصف الأنظمة الميكانيكية، وكتابة إيميلات العمل والمذكرات الفنية.",
+    subscribers: "+140 ألف مشترك",
+    searchQuery: "technical writing engineering abstract passive voice laboratory report",
+    avatar: "📑"
+  },
+  {
+    name: "Scientific & Engineering Grammar Essentials",
+    badge: "قواعد وأخطاء الامتحانات 💡",
+    description: "شروحات مركزة للتفريق بين الدقة والصحة (Accuracy vs Precision)، أدوات الربط، وحذف الركاكة اللغوية في الامتحانات.",
+    subscribers: "+180 ألف مشترك",
+    searchQuery: "engineering vocabulary affixes passive voice concise writing",
+    avatar: "🇬🇧"
+  }
+];
+
+export const ENGLISH_LECTURE_VIDEOS = [
+  {
+    id: "ve-affixes-1",
+    topic: "affixes",
+    division: "vocab_grammar",
+    title: "فك شفرات المصطلحات الهندسية: السوابق واللواحق والجذور اللاتينية واليونانية",
+    channel: "Technical English Hub",
+    duration: "32 دقيقة",
+    views: "85,000 مشاهدة",
+    description: "طريقة استنتاج معاني الكلمات المعقدة في امتحانات شبرا من خلال مصفوفة السوابق (mega-, nano-, poly-) والجذور (duct, tract, vert).",
+    url: "https://www.youtube.com/results?search_query=engineering+prefixes+suffixes+latin+roots+technical+english",
+    tags: ["سوابق", "لواحق", "Affixes", "Roots", "Prefixes"]
+  },
+  {
+    id: "ve-grammar-1",
+    topic: "grammar",
+    division: "vocab_grammar",
+    title: "المبني للمجهول (Passive Voice) في كتابة التجارب المعملية والتقارير الفنية",
+    channel: "Engineering Communication",
+    duration: "28 دقيقة",
+    views: "92,000 مشاهدة",
+    description: "لماذا تمنع كتابة (I, We) في قسم الإجراءات بالمعمل، وكيفية التحويل الاحترافي للمبني للمجهول بالماضي البسيط.",
+    url: "https://www.youtube.com/results?search_query=passive+voice+in+scientific+and+technical+writing",
+    tags: ["Passive Voice", "المبني للمجهول", "Lab Reports", "Grammar"]
+  },
+  {
+    id: "ve-grammar-2",
+    topic: "grammar",
+    division: "vocab_grammar",
+    title: "أدوات الربط الفنية (Connectors & Transitions) والتعبير عن الأبعاد والقياسات",
+    channel: "Scientific Writing Essentials",
+    duration: "25 دقيقة",
+    views: "64,000 مشاهدة",
+    description: "استخدام روابط السبب والنتيجة (Consequently, Due to, Thereby) وصياغة أبعاد القطع الميكانيكية بدقة متناهية.",
+    url: "https://www.youtube.com/results?search_query=technical+writing+cause+and+effect+connectors+transitions",
+    tags: ["Connectors", "Transitions", "Cause and Effect", "Dimensions"]
+  },
+  {
+    id: "ve-reports-1",
+    topic: "reports",
+    division: "reports_writing",
+    title: "الهيكل المعماري للتقرير الهندسي الرسمي (Formal Technical Report Structure)",
+    channel: "Technical Writing for Engineers",
+    duration: "42 دقيقة",
+    views: "115,000 مشاهدة",
+    description: "تشريح الأقسام العشرة للتقرير الهندسي من صفحة الغلاف والمستخلص وحتى التوصيات والمراجع بأسلوب هندسي دقيق.",
+    url: "https://www.youtube.com/results?search_query=engineering+technical+report+writing+structure+format",
+    tags: ["Report Structure", "Technical Report", "Format", "Architecture"]
+  },
+  {
+    id: "ve-reports-2",
+    topic: "reports",
+    division: "reports_writing",
+    title: "كتابة المستخلص التنفيذي المستقل (Standalone Abstract) في 5 خطوات قياسية",
+    channel: "Engineering Communication Hub",
+    duration: "30 دقيقة",
+    views: "78,000 مشاهدة",
+    description: "نموذج صياغة المستخلص في 150-250 كلمة: الدافع، المشكلة، المنهجية، النتائج الرقمية، والاستنتاج دون اختصارات مجهولة.",
+    url: "https://www.youtube.com/results?search_query=how+to+write+an+abstract+for+engineering+paper",
+    tags: ["Abstract", "Executive Summary", "Technical Writing"]
+  },
+  {
+    id: "ve-mechanism-1",
+    topic: "mechanism",
+    division: "reports_writing",
+    title: "الوصف الفني للأجهزة والمعدات الميكانيكية (Mechanism & Device Description)",
+    channel: "Technical Writing for Engineers",
+    duration: "35 دقيقة",
+    views: "58,000 مشاهدة",
+    description: "نموذج المراحل الأربع لوصف الأجهزة: التعريف العام، المكونات المادية، الوظيفة التفاعلية، ودورة العمل التشغيلية كاملة.",
+    url: "https://www.youtube.com/results?search_query=mechanism+description+technical+writing+engineering",
+    tags: ["Mechanism", "Device Description", "Technical Writing"]
+  },
+  {
+    id: "ve-correspondence-1",
+    topic: "correspondence",
+    division: "reports_writing",
+    title: "أصول المراسلات الهندسية: الإيميل المهني الرسمي ومذكرات حوادث الموقع (Memos)",
+    channel: "Professional Engineering Communication",
+    duration: "38 دقيقة",
+    views: "89,000 مشاهدة",
+    description: "قواعد كتابة الإيميلات الرسمية للشركات والاستشاريين وصياغة مذكرات الحوادث الفنية الموقع وتوصيات السلامة العاجلة.",
+    url: "https://www.youtube.com/results?search_query=engineering+formal+email+memo+incident+report+writing",
+    tags: ["Formal Email", "Technical Memo", "Incident Report", "Correspondence"]
+  }
+];

@@ -2,10 +2,12 @@ import React, { useState, useMemo } from 'react';
 import { 
   BookMarked, Search, Filter, Sparkles, CheckCircle2, RotateCcw, 
   HelpCircle, Eye, EyeOff, Copy, Check, Printer, BrainCircuit,
-  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap, Lightbulb, Grid
+  Droplets, Flame, ShieldAlert, Building2, Layers, BookOpen, Calculator, Zap, Lightbulb, Grid,
+  Scissors, Mail, FileText, Cpu, Repeat 
 } from 'lucide-react';
 import { GLOSSARY_ITEMS, GLOSSARY_MODULES, GLOSSARY_TYPES } from '../data/glossaryData';
 import { MATH_GLOSSARY_ITEMS, MATH_GLOSSARY_MODULES, MATH_GLOSSARY_TYPES } from '../data/mathGlossaryData';
+import { ENGLISH_GLOSSARY_ITEMS, ENGLISH_GLOSSARY_MODULES, ENGLISH_GLOSSARY_TYPES } from '../data/englishGlossaryData';
 import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 
 export default function GlossaryView({ 
@@ -15,9 +17,12 @@ export default function GlossaryView({
   activeSubject = 'math'
 }) {
   const isMath = activeSubject === 'math';
-  const rawItems = isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
-  const rawModules = isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
-  const rawTypes = isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
+  const isChemistry = activeSubject === 'chemistry';
+  const isEnglish = activeSubject === 'english';
+
+  const rawItems = isEnglish ? ENGLISH_GLOSSARY_ITEMS : isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
+  const rawModules = isEnglish ? ENGLISH_GLOSSARY_MODULES : isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
+  const rawTypes = isEnglish ? ENGLISH_GLOSSARY_TYPES : isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
@@ -38,7 +43,13 @@ export default function GlossaryView({
   const divisionModules = useMemo(() => {
     let mods = rawModules;
     if (activeDivision && activeDivision !== 'all') {
-      if (isMath) {
+      if (isEnglish) {
+        if (activeDivision === 'vocab_grammar') {
+          mods = rawModules.filter(m => m.id === 'all' || ['affixes', 'word_formation', 'passive_voice', 'connectors', 'dimensions'].includes(m.id));
+        } else if (activeDivision === 'reports_writing') {
+          mods = rawModules.filter(m => m.id === 'all' || ['report_structure', 'mechanism_desc', 'process_desc', 'correspondence', 'style_clarity'].includes(m.id));
+        }
+      } else if (isMath) {
         if (activeDivision === 'calculus') {
           mods = rawModules.filter(m => m.id === 'all' || ['limits', 'leibniz', 'series', 'curve', 'partial'].includes(m.id));
         } else if (activeDivision === 'algebra') {
@@ -53,7 +64,7 @@ export default function GlossaryView({
       }
     }
     return mods;
-  }, [rawModules, activeDivision, isMath]);
+  }, [rawModules, activeDivision, isMath, isEnglish]);
 
   // Reset selectedModule if it is outside current division
   React.useEffect(() => {
@@ -68,7 +79,7 @@ export default function GlossaryView({
       // Division filter
       let matchDivision = true;
       if (activeDivision && activeDivision !== 'all') {
-        if (isMath) {
+        if (isEnglish || isMath) {
           matchDivision = item.division === activeDivision || item.division === 'all';
         } else {
           const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
@@ -164,20 +175,32 @@ export default function GlossaryView({
     <div className="space-y-8 pb-16 font-arabic">
       
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-8 border-2 border-indigo-500/40 shadow-xl no-print">
+      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
+        isEnglish
+          ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+          : isMath
+            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+            : 'bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 border-blue-500/40'
+      }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-400/30">
               <BrainCircuit className="w-3.5 h-3.5 text-cyan-400" />
-              <span>معجم الحفظ والمراجعة السريعة • {isMath ? 'Math Formulas Vault' : 'Glossary & Formulas Vault'}</span>
+              <span>معجم الحفظ والمراجعة السريعة • {isEnglish ? 'Technical Vocab & Phrasing Vault' : isMath ? 'Math Formulas Vault' : 'Glossary & Formulas Vault'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isMath ? 'مَعْجَمُ قَوَانِينِ وَنَظَرِيَّاتِ الرِّيَاضِيَّاتِ 1' : 'مَعْجَمُ المُصْطَلَحَاتِ والقَوَانِينِ وَبَنْكُ الحِفْظِ الهَنْدَسِي'}
+              {isEnglish 
+                ? 'مَعْجَمُ مُصْطَلَحَاتِ وَقَوَاعِدِ وَتَرَاكِيبِ الإِنْجِلِيزِي الفَنِّي'
+                : isMath 
+                  ? 'مَعْجَمُ قَوَانِينِ وَنَظَرِيَّاتِ الرِّيَاضِيَّاتِ 1' 
+                  : 'مَعْجَمُ المُصْطَلَحَاتِ والقَوَانِينِ وَبَنْكُ الحِفْظِ الهَنْدَسِي'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isMath 
-                ? 'بنك شامل يضم أكثر من 29 قانوناً ونظرية وتعليلاً رياضياً لمقرري التفاضل والجبر مع الشرح بالعربي وأسرار الامتحان.'
-                : 'بنك شامل ومبوب لجميع التعريفات العلمية، القوانين الرياضية، والتعليلات الامتحانية المقررة في هندسة شبرا لسهولة الحفظ والمراجعة ليلة الامتحان.'}
+              {isEnglish
+                ? 'بنك شامل يضم أكثر من 20 مصطلحاً هندسياً وقاعدة نحوية وتراكيب كتابة التقارير والمراسلات الرسمية مع الشرح بالعربي وأسرار الامتحان.'
+                : isMath 
+                  ? 'بنك شامل يضم أكثر من 29 قانوناً ونظرية وتعليلاً رياضياً لمقرري التفاضل والجبر مع الشرح بالعربي وأسرار الامتحان.'
+                  : 'بنك شامل ومبوب لجميع التعريفات العلمية، القوانين الرياضية، والتعليلات الامتحانية المقررة في هندسة شبرا لسهولة الحفظ والمراجعة ليلة الامتحان.'}
             </p>
           </div>
 
@@ -289,9 +312,11 @@ export default function GlossaryView({
             <span className="text-slate-400 font-bold shrink-0 ml-1">الوحدات:</span>
             {divisionModules.map((m) => {
               const label = m.id === 'all'
-                ? isMath 
-                  ? (activeDivision === 'calculus' ? 'جميع وحدات التفاضل (5 وحدات)' : activeDivision === 'algebra' ? 'جميع وحدات الجبر والفراغية (5 وحدات)' : m.label)
-                  : (activeDivision === 'electro' ? 'وحدات الكيمياء الكهربية والتآكل' : activeDivision === 'thermal' ? 'جميع وحدات الكيمياء الحرارية' : m.label)
+                ? isEnglish
+                  ? (activeDivision === 'vocab_grammar' ? 'جميع وحدات المصطلحات والقواعد (5 وحدات)' : 'جميع وحدات الكتابة والتقارير (5 وحدات)')
+                  : isMath 
+                    ? (activeDivision === 'calculus' ? 'جميع وحدات التفاضل (5 وحدات)' : activeDivision === 'algebra' ? 'جميع وحدات الجبر والفراغية (5 وحدات)' : m.label)
+                    : (activeDivision === 'electro' ? 'وحدات الكيمياء الكهربية والتآكل' : activeDivision === 'thermal' ? 'جميع وحدات الكيمياء الحرارية' : m.label)
                 : m.label;
               return (
                 <button
@@ -372,17 +397,23 @@ export default function GlossaryView({
                         {currentFlashcard.id}
                       </span>
                       <span className={`text-[10px] font-bold px-2.5 py-1 rounded-xl ${
-                        isMath 
-                          ? currentFlashcard.division === 'calculus'
-                            ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
-                            : 'bg-purple-950 text-purple-300 border border-purple-800/60'
-                          : currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-')
-                            ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
-                            : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                        isEnglish
+                          ? currentFlashcard.division === 'vocab_grammar'
+                            ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60'
+                            : 'bg-teal-950 text-cyan-300 border border-teal-800/60'
+                          : isMath 
+                            ? currentFlashcard.division === 'calculus'
+                              ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
+                              : 'bg-purple-950 text-purple-300 border border-purple-800/60'
+                            : currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-')
+                              ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                              : 'bg-amber-950 text-amber-300 border border-amber-800/60'
                       }`}>
-                        {isMath 
-                          ? (currentFlashcard.division === 'calculus' ? '📐 Calculus' : '⚡ Algebra')
-                          : (currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-') ? '⚡ Electro' : '🔥 Thermal')}
+                        {isEnglish
+                          ? (currentFlashcard.division === 'vocab_grammar' ? '📖 Vocab & Grammar' : '📝 Reports & Writing')
+                          : isMath 
+                            ? (currentFlashcard.division === 'calculus' ? '📐 Calculus' : '⚡ Algebra')
+                            : (currentFlashcard.module === 'corrosion' || currentFlashcard.id.startsWith('c-') ? '⚡ Electro' : '🔥 Thermal')}
                       </span>
                     </div>
 
@@ -563,17 +594,23 @@ export default function GlossaryView({
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-1.5 flex-wrap">
                         <span className={`text-[10px] font-bold px-2 py-0.5 rounded-md ${
-                          isMath
-                            ? isCalculus
-                              ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
-                              : 'bg-purple-950 text-purple-300 border border-purple-800/60'
-                            : (item.module === 'corrosion' || item.id.startsWith('c-'))
-                              ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
-                              : 'bg-amber-950 text-amber-300 border border-amber-800/60'
+                          isEnglish
+                            ? item.division === 'vocab_grammar'
+                              ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/60'
+                              : 'bg-teal-950 text-cyan-300 border border-teal-800/60'
+                            : isMath
+                              ? isCalculus
+                                ? 'bg-blue-950 text-cyan-300 border border-blue-800/60'
+                                : 'bg-purple-950 text-purple-300 border border-purple-800/60'
+                              : (item.module === 'corrosion' || item.id.startsWith('c-'))
+                                ? 'bg-cyan-950 text-cyan-300 border border-cyan-800/60'
+                                : 'bg-amber-950 text-amber-300 border border-amber-800/60'
                         }`}>
-                          {isMath 
-                            ? (isCalculus ? '📐 Calculus' : '⚡ Algebra')
-                            : (item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ Electro (د. سمر)' : '🔥 Thermal (د. هناء)')}
+                          {isEnglish
+                            ? (item.division === 'vocab_grammar' ? '📖 Vocab & Grammar' : '📝 Reports & Writing')
+                            : isMath 
+                              ? (isCalculus ? '📐 Calculus' : '⚡ Algebra')
+                              : (item.module === 'corrosion' || item.id.startsWith('c-') ? '⚡ Electro (د. سمر)' : '🔥 Thermal (د. هناء)')}
                         </span>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-slate-900 text-slate-300 border border-slate-700">
                           {item.type === 'definition' ? '📖 Definition' : item.type === 'law' ? '📐 Law & Formula' : '❓ Reasoning / Theorem'}
