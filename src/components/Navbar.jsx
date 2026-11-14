@@ -224,13 +224,17 @@ export default function Navbar({
                   onClick={() => setActiveTab(item.id)}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all flex items-center gap-2 shrink-0 ${
                     isActive
-                      ? isMath
-                        ? isCalculus
-                          ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-900/40'
-                          : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-purple-900/40'
-                        : isThermal
-                          ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-900/40'
-                          : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-900/40'
+                      ? isEnglish
+                        ? isVocabGrammar
+                          ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-900/40'
+                          : 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-md shadow-teal-900/40'
+                        : isMath
+                          ? isCalculus
+                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-900/40'
+                            : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-purple-900/40'
+                          : isThermal
+                            ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-900/40'
+                            : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-900/40'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >

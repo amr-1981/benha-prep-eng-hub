@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { 
   BookOpen, Droplets, Flame, ShieldAlert, Building2, Layers, Zap, 
   CheckCircle2, AlertTriangle, ArrowRight, Sparkles, Lightbulb, 
-  Calculator, Binary, Compass, Grid, Activity, Scissors, Mail, FileText, Cpu, Repeat 
+  Calculator, Binary, Compass, Grid, Activity, Scissors, Mail, FileText, Cpu, Repeat, GitFork 
 } from 'lucide-react';
 import { CHEMISTRY_MODULES, CHEMISTRY_DIVISIONS, BENHA_EXAM_TIPS } from '../data/chemistryCurriculumData';
 import { MATH_MODULES, MATH_DIVISIONS, MATH_INFO } from '../data/mathCurriculumData';
@@ -76,7 +76,9 @@ export default function SyllabusView({
     Mail: Mail,
     FileText: FileText,
     Cpu: Cpu,
-    Repeat: Repeat
+    Repeat: Repeat,
+    GitFork: GitFork,
+    CheckCircle2: CheckCircle2
   };
 
   const modulesList = isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;

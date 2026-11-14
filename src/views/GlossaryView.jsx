@@ -100,7 +100,7 @@ export default function GlossaryView({
 
       return matchDivision && matchModule && matchType && matchSearch;
     });
-  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath]);
+  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath, isEnglish]);
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 

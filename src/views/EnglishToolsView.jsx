@@ -72,6 +72,11 @@ export default function EnglishToolsView({ activeDivision = 'vocab_grammar' }) {
   // Preset lab active sentences for converter
   const PRESET_SENTENCES = [
     {
+      active: 'We heated the water to 100 degrees Celsius and measured the pressure.',
+      passive: 'The water was heated to 100 degrees Celsius and the pressure was measured.',
+      rule: 'Compound Past Simple Passive: Coordinated verbs (heated, measured) are converted with personal agent ("by us") omitted.'
+    },
+    {
       active: 'We poured 50 ml of concentrated acid into the beaker.',
       passive: '50 ml of concentrated acid was poured into the beaker.',
       rule: 'Past Simple Passive: Subject (50 ml of acid) + was + Past Participle (poured). Personal agent "by us" is omitted.'
