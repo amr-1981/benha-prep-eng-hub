@@ -158,19 +158,19 @@ export default function Navbar({
               </div>
 
               <h1 className="text-sm sm:text-base font-black text-white leading-tight mt-0.5">
-                {isLevel1 && 'بوابة إعدادي هندسة شبرا 🏛️'}
+                {isLevel1 && 'Preparatory Engineering Hub • بوابة إعدادي هندسة شبرا 🏛️'}
                 {isLevel2 && (
-                  isMath ? 'مادة الرياضيات 1 • قائمة الأقسام الأكاديمية' :
-                  isChemistry ? 'مادة الكيمياء الهندسية • قائمة الأقسام الأكاديمية' :
-                  'مادة اللغة الإنجليزية الفنية • قائمة الأقسام الأكاديمية'
+                  isMath ? 'Engineering Mathematics 1 (MTH 001) • Academic Branches' :
+                  isChemistry ? 'Engineering Chemistry (CHM 001) • Academic Divisions' :
+                  'Technical English & Reports (HUM 001) • Academic Branches'
                 )}
                 {isLevel3 && (
-                  isCalculus ? 'قسم حساب التفاضل والتطبيقات (Calculus)' :
-                  isAlgebra ? 'قسم الجبر والهندسة التحليلية والفراغية (Algebra & 3D)' :
-                  isThermal ? 'قسم الكيمياء الحرارية والتطبيقات الصناعية (د. هناء)' :
-                  isElectro ? 'قسم الكيمياء الكهربية وتطبيقات التآكل (د. سمر)' :
-                  isVocabGrammar ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية' :
-                  'قسم الكتابة الفنية وإعداد التقارير والمراسلات'
+                  isCalculus ? 'Calculus & Applications Branch • قسم حساب التفاضل' :
+                  isAlgebra ? 'Algebra & 3D Geometry Branch • قسم الجبر والفراغية' :
+                  isThermal ? 'Thermal & Industrial Chemistry • قسم الكيمياء الحرارية (د. هناء)' :
+                  isElectro ? 'Electrochemistry & Corrosion • قسم الكيمياء الكهربية (د. سمر)' :
+                  isVocabGrammar ? 'Technical Vocabulary & Grammar • قسم المصطلحات والقواعد' :
+                  'Technical Writing & Reports • قسم التقارير والمراسلات'
                 )}
               </h1>
             </div>

@@ -142,16 +142,16 @@ export default function App() {
                   onClick={handleBackToSubject}
                   className="text-slate-300 hover:text-white transition font-black"
                 >
-                  {isMath ? 'مادة الرياضيات 1' : isEnglish ? 'مادة اللغة الإنجليزية الفنية' : 'مادة الكيمياء الهندسية'}
+                  {isMath ? 'Engineering Mathematics 1 (مادة الرياضيات 1)' : isEnglish ? 'Technical English (مادة اللغة الإنجليزية الفنية)' : 'Engineering Chemistry (مادة الكيمياء الهندسية)'}
                 </button>
                 <span className="text-slate-600">/</span>
                 <span className="text-amber-300 font-black">
-                  {selectedDivision === 'calculus' ? 'قسم حساب التفاضل والتطبيقات' :
-                   selectedDivision === 'algebra' ? 'قسم الجبر والهندسة الفراغية' :
-                   selectedDivision === 'vocab_grammar' ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية' :
-                   selectedDivision === 'reports_writing' ? 'قسم الكتابة الفنية وإعداد التقارير والمراسلات' :
-                   selectedDivision === 'thermal' ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)' :
-                   'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+                  {selectedDivision === 'calculus' ? 'Calculus Branch (قسم حساب التفاضل والتطبيقات)' :
+                   selectedDivision === 'algebra' ? 'Algebra & 3D Branch (قسم الجبر والهندسة الفراغية)' :
+                   selectedDivision === 'vocab_grammar' ? 'Vocab & Grammar Branch (قسم المصطلحات الفنية وقواعد الكتابة)' :
+                   selectedDivision === 'reports_writing' ? 'Reports & Writing Branch (قسم التقارير والمراسلات)' :
+                   selectedDivision === 'thermal' ? 'Thermal Chemistry Division (قسم الكيمياء الحرارية - د. هناء)' :
+                   'Electrochemistry Division (قسم الكيمياء الكهربية - د. سمر)'}
                 </span>
               </div>
 
