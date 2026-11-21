@@ -119,7 +119,7 @@ export const AVAILABLE_SUBJECTS = [
   {
     id: 'physics',
     code: 'PHY 001',
-    status: 'coming_soon',
+    status: 'active',
     titleAr: 'الفيزياء الهندسية 1 (الخواص الميكانيكية والحرارية والموجات)',
     titleEn: 'Engineering Physics 1 (Mechanics, Heat & Waves)',
     shortTitleAr: 'الفيزياء 1',
@@ -127,9 +127,32 @@ export const AVAILABLE_SUBJECTS = [
     icon: 'Compass',
     color: 'from-purple-600 via-violet-600 to-indigo-500',
     borderColor: 'border-purple-500/40',
-    badge: '150 درجة • قيد التجهيز',
-    divisions: [],
-    descriptionAr: 'قريباً: مرونة المواد، التوتر السطحي، اللزوجة، انتقال الحرارة والديناميكا الحرارية، والحركة التوافقية البسيطة والموجات الصوتية.'
+    badge: '150 درجة إجمالية',
+    badgeEn: '150 Total Marks (90 Final + 30 Practical + 30 Coursework)',
+    divisions: [
+      { 
+        id: 'properties_mechanics', 
+        titleAr: 'قسم خواص المادة والميكانيكا وميكانيكا الموائع', 
+        titleEn: 'Properties of Matter & Mechanics Branch',
+        subtitleAr: 'مرونة المواد ومعامل يونج، التوتر السطحي والأنابيب الشعرية، لزوجة السوائل وقانون ستوكس، وديناميكا الموائع ومعادلة برنولي',
+        subtitleEn: 'Elasticity & Hooke\'s Law, Young\'s Modulus, Surface Tension & Capillarity, Viscosity & Stokes\' Law, Hydrodynamics & Bernoulli',
+        icon: 'Compass',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Mechanics & Fluids'
+      },
+      { 
+        id: 'heat_waves', 
+        titleAr: 'قسم الحرارة والديناميكا الحرارية والموجات والاهتزازات', 
+        titleEn: 'Heat, Thermodynamics & Wave Motion Branch',
+        subtitleAr: 'التمدد الحراري، التوصيل الحراري وقانون فورييه، القانون الأول للديناميكا، الحركة التوافقية البسيطة (SHM)، والموجات وظاهرة دوبلر',
+        subtitleEn: 'Thermal Expansion, Fourier\'s Heat Conduction, First Law of Thermodynamics, Simple Harmonic Motion (SHM) & Doppler Effect',
+        icon: 'Activity',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Heat & Waves'
+      }
+    ],
+    descriptionAr: 'المقرر الأكاديمي المعتمد لإعدادي شبرا يشمل فرعين رئيسيين: خواص المادة وميكانيكا الموائع الحقيقية والمثالية، والحرارة والديناميكا الحرارية والاهتزازات والموجات الصوتية مع المعمل التجريبي.',
+    descriptionEn: 'The accredited syllabus for Preparatory Engineering at Shoubra (PHY 001) covers two core branches: Properties of Matter & Fluid Mechanics (elasticity, Young\'s modulus, surface tension, viscosity, Stokes\' law, and Bernoulli\'s equation) and Heat, Thermodynamics & Wave Motion (thermal conduction, first law of thermodynamics, SHM, and acoustic waves).'
   },
   {
     id: 'mechanics',

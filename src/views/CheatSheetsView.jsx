@@ -3,6 +3,7 @@ import { Printer, Eye, FileText, Download, CheckCircle2, Sparkles, X, ArrowRight
 import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsData';
 import { MATH_CHEAT_SHEETS_CATEGORIES, MATH_CHEAT_SHEETS_DATA } from '../data/mathCheatSheetsData';
 import { ENGLISH_CHEAT_SHEETS } from '../data/englishCheatSheetsData';
+import { PHYSICS_CHEAT_SHEETS, PHYSICS_CHEAT_SHEETS_CATEGORIES } from '../data/physicsCheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 // BiDi Isolation Helper: Guarantees English formulas, brackets, and notations inside Arabic text never flip backwards
@@ -41,8 +42,11 @@ export default function CheatSheetsView({
   const isMath = activeSubject === 'math';
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
+  const isPhysics = activeSubject === 'physics';
 
-  const categoriesList = isEnglish
+  const categoriesList = isPhysics
+    ? PHYSICS_CHEAT_SHEETS_CATEGORIES
+    : isEnglish
     ? [
         { id: 'all', label: 'جميع شيتات الإنجليزي الفني (A4)', icon: Sparkles },
         { id: 'vocab', label: 'شيتات المصطلحات والقواعد', icon: BookOpen },
@@ -52,7 +56,7 @@ export default function CheatSheetsView({
       ? MATH_CHEAT_SHEETS_CATEGORIES 
       : CHEAT_SHEETS_CATEGORIES;
 
-  const rawSheetsList = isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
+  const rawSheetsList = isPhysics ? PHYSICS_CHEAT_SHEETS : isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
@@ -85,40 +89,46 @@ export default function CheatSheetsView({
       
       {/* Top Banner (Hidden on Print) */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
-        isEnglish
-          ? 'bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-500/40'
-          : isMath
-            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
-            : 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+        isPhysics
+          ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
+          : isEnglish
+            ? 'bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-500/40'
+            : isMath
+              ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+              : 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
       }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-2 ${
-              isEnglish ? 'bg-teal-500/20 text-teal-300 border-teal-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+              isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-teal-500/20 text-teal-300 border-teal-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
             }`}>
               <Printer className="w-3.5 h-3.5" />
               <span>مكتبة الملخصات الهندسية الجاهزة للطباعة (A4) • هندسة شبرا</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {isEnglish 
-                ? 'شِيتَاتُ ومُلَخَّصَاتُ الإِنْجِلِيزِي الفَنِّي الجَاهِزَةُ لِلطِّبَاعَةِ (A4 Cheat Sheets)'
-                : isMath 
-                  ? 'شِيتَاتُ قَوَانِينِ الرِّيَاضِيَّاتِ 1 وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ' 
-                  : 'شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ'}
+              {isPhysics
+                ? 'شِيتَاتُ قَوَانِينِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1 الجَاهِزَةُ لِلطِّبَاعَةِ (A4 Cheat Sheets)'
+                : isEnglish 
+                  ? 'شِيتَاتُ ومُلَخَّصَاتُ الإِنْجِلِيزِي الفَنِّي الجَاهِزَةُ لِلطِّبَاعَةِ (A4 Cheat Sheets)'
+                  : isMath 
+                    ? 'شِيتَاتُ قَوَانِينِ الرِّيَاضِيَّاتِ 1 وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ' 
+                    : 'شِيتَاتُ القَوَانِينِ وَنَمَاذِجُ الإِجَابَاتِ النَّمُوذَجِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              {isEnglish
-                ? 'ملخصات مركزة بمقاس A4 القياسي مجهزة للطباعة: مصفوفة البادئات واللواحق، قواعد المبني للمجهول، وهيكل التقرير والإيميلات والمذكرات.'
-                : isMath 
-                  ? 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: قسم حساب التفاضل والتطبيقات (Calculus) وقسم الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
-                  : 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: الكيمياء الحرارية (د. هناء) و الكيمياء الكهربية (د. سمر).'}
+              {isPhysics
+                ? 'ملخصات مكثفة بمقاس A4 القياسي مجهزة للطباعة: مصفوفة قوانين المرونة ومعامل يونج، التوتر السطحي ولزوجة ستوكس، معادلة برنولي وفنتوري، التوصيل الحراري فورييه، والحركة التوافقية وموجات دوبلر.'
+                : isEnglish
+                  ? 'ملخصات مركزة بمقاس A4 القياسي مجهزة للطباعة: مصفوفة البادئات واللواحق، قواعد المبني للمجهول، وهيكل التقرير والإيميلات والمذكرات.'
+                  : isMath 
+                    ? 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: قسم حساب التفاضل والتطبيقات (Calculus) وقسم الجبر والهندسة الفراغية (Algebra & 3D Geometry).'
+                    : 'ملخصات مركزة تم إعدادها وتنسيقها للطباعة المباشرة بمقاس A4 مقسمة بين: الكيمياء الحرارية (د. هناء) و الكيمياء الكهربية (د. سمر).'}
             </p>
           </div>
 
           <button
             onClick={() => window.print()}
             className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-black text-xs shadow-lg transition active:scale-95 shrink-0 ${
-              isEnglish ? 'bg-teal-600 hover:bg-teal-500' : isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
+              isPhysics ? 'bg-purple-600 hover:bg-purple-500' : isEnglish ? 'bg-teal-600 hover:bg-teal-500' : isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
             }`}
           >
             <Printer className="w-4 h-4" />
@@ -131,17 +141,21 @@ export default function CheatSheetsView({
       <div className="flex items-center gap-2 pb-1 no-print">
         <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
         <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-cyan-300">
-          {isEnglish
-            ? activeDivision === 'vocab_grammar'
-              ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
-              : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
-            : isMath
-              ? activeDivision === 'calculus'
-                ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
-                : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
-              : activeDivision === 'thermal'
-                ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
-                : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+          {isPhysics
+            ? activeDivision === 'properties_mechanics'
+              ? 'قسم خواص المادة وميكانيكا الموائع (Properties & Mechanics)'
+              : 'قسم الحرارة والديناميكا الحرارية والموجات (Heat & Waves)'
+            : isEnglish
+              ? activeDivision === 'vocab_grammar'
+                ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
+                : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
+              : isMath
+                ? activeDivision === 'calculus'
+                  ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+                  : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+                : activeDivision === 'thermal'
+                  ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+                  : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
       </div>
 
@@ -179,17 +193,29 @@ export default function CheatSheetsView({
                       📄 {sheet.paperSize} ({sheet.pagesCount} Page)
                     </span>
                     <span className={`text-[10px] font-black px-2.5 py-0.5 rounded-full border ${
-                      isMath
-                        ? sheet.division === 'calculus'
-                          ? 'text-cyan-300 bg-blue-950/80 border-blue-800/50'
-                          : 'text-purple-300 bg-purple-950/80 border-purple-800/50'
-                        : sheet.division === 'thermal'
-                          ? 'text-amber-300 bg-amber-950/80 border-amber-800/50'
-                          : 'text-cyan-300 bg-cyan-950/80 border-cyan-800/50'
+                      isPhysics
+                        ? sheet.division === 'properties_mechanics'
+                          ? 'text-purple-300 bg-purple-950/80 border-purple-800/50'
+                          : 'text-indigo-300 bg-indigo-950/80 border-indigo-800/50'
+                        : isEnglish
+                          ? sheet.division === 'vocab_grammar'
+                            ? 'text-emerald-300 bg-emerald-950/80 border-emerald-800/50'
+                            : 'text-cyan-300 bg-teal-950/80 border-teal-800/50'
+                          : isMath
+                            ? sheet.division === 'calculus'
+                              ? 'text-cyan-300 bg-blue-950/80 border-blue-800/50'
+                              : 'text-purple-300 bg-purple-950/80 border-purple-800/50'
+                            : sheet.division === 'thermal'
+                              ? 'text-amber-300 bg-amber-950/80 border-amber-800/50'
+                              : 'text-cyan-300 bg-cyan-950/80 border-cyan-800/50'
                     }`}>
-                      {isMath
-                        ? (sheet.division === 'calculus' ? '📐 تفاضل (Calculus)' : '⚡ جبر (Algebra)')
-                        : (sheet.division === 'thermal' ? '🔥 حرارية (د. هناء)' : '⚡ كهربية (د. سمر)')}
+                      {isPhysics
+                        ? (sheet.division === 'properties_mechanics' ? '🔬 خواص وموائع' : '🔥 حرارة وموجات')
+                        : isEnglish
+                          ? (sheet.division === 'vocab_grammar' ? '📖 مصطلحات وقواعد' : '📝 تقارير ومراسلات')
+                          : isMath
+                            ? (sheet.division === 'calculus' ? '📐 تفاضل (Calculus)' : '⚡ جبر (Algebra)')
+                            : (sheet.division === 'thermal' ? '🔥 حرارية (د. هناء)' : '⚡ كهربية (د. سمر)')}
                     </span>
                   </div>
 
@@ -324,7 +350,7 @@ export default function CheatSheetsView({
                     <p className="text-[10px] text-slate-600 font-mono" dir="ltr">{previewSheet.subtitleEn}</p>
                   </div>
                   <div className="text-right text-[10px] font-bold text-slate-700">
-                    <div>{isMath ? 'MTH 001' : 'CHM 001'}</div>
+                    <div>{isMath ? 'MTH 001' : isPhysics ? 'PHY 001' : isEnglish ? 'HUM 001' : 'CHM 001'}</div>
                     <div className="font-mono">Page 1 of {previewSheet.pagesCount}</div>
                   </div>
                 </div>

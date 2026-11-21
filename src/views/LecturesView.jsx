@@ -3,22 +3,30 @@ import { Play, ExternalLink, Search, Filter, Youtube, Clock, Eye, Sparkles, Flam
 import { 
   VIDEO_TOPICS, YOUTUBE_CHANNELS, LECTURE_VIDEOS,
   MATH_VIDEO_TOPICS, MATH_YOUTUBE_CHANNELS, MATH_LECTURE_VIDEOS,
-  ENGLISH_VIDEO_TOPICS, ENGLISH_YOUTUBE_CHANNELS, ENGLISH_LECTURE_VIDEOS 
+  ENGLISH_VIDEO_TOPICS, ENGLISH_YOUTUBE_CHANNELS, ENGLISH_LECTURE_VIDEOS,
+  PHYSICS_VIDEO_TOPICS, PHYSICS_YOUTUBE_CHANNELS, PHYSICS_LECTURE_VIDEOS 
 } from '../data/videosData';
 
 export default function LecturesView({ activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
   const isMath = activeSubject === 'math';
   const isEnglish = activeSubject === 'english';
-  const rawTopics = isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
-  const rawChannels = isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
-  const rawVideos = isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
+  const isPhysics = activeSubject === 'physics';
+  const rawTopics = isPhysics ? PHYSICS_VIDEO_TOPICS : isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
+  const rawChannels = isPhysics ? PHYSICS_YOUTUBE_CHANNELS : isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
+  const rawVideos = isPhysics ? PHYSICS_LECTURE_VIDEOS : isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
 
   const [activeTopic, setActiveTopic] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Isolate topics by active division
   const divisionTopics = React.useMemo(() => {
-    if (isMath) {
+    if (isPhysics) {
+      if (activeDivision === 'properties_mechanics') {
+        return rawTopics.filter(t => t.id === 'all' || ['elasticity', 'viscosity', 'hydrodynamics'].includes(t.id));
+      } else if (activeDivision === 'heat_waves') {
+        return rawTopics.filter(t => t.id === 'all' || ['heat_conduction', 'thermodynamics', 'waves'].includes(t.id));
+      }
+    } else if (isMath) {
       if (activeDivision === 'calculus') {
         return rawTopics.filter(t => t.id === 'all' || ['limits', 'leibniz', 'series', 'partial'].includes(t.id));
       } else if (activeDivision === 'algebra') {
@@ -38,12 +46,12 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
       }
     }
     return rawTopics;
-  }, [rawTopics, activeDivision, isMath, isEnglish]);
+  }, [rawTopics, activeDivision, isMath, isEnglish, isPhysics]);
 
   const filteredVideos = rawVideos.filter((v) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isMath || isEnglish) {
+      if (isMath || isEnglish || isPhysics) {
         matchDivision = v.division === activeDivision;
       } else {
         const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
@@ -70,12 +78,15 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
               <span>دليل المحاضرات المرئية • Curated Video Lectures</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {isMath ? 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الرِّيَاضِيَّاتِ 1' : 
+              {isPhysics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
+               isMath ? 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الرِّيَاضِيَّاتِ 1' : 
                isEnglish ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
                'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              {isMath 
+              {isPhysics
+                ? 'تجميعة منتقاة لأفضل شروحات خواص المادة والميكانيكا والحرارة والموجات التوافقية وتجارب المعمل لأساتذة ومهندسي الجامعات المصرية.' :
+               isMath 
                 ? 'تجميعة منتقاة لأفضل شروحات التفاضل والجبر لأساتذة ومهندسي الجامعات المصرية مع أفكار امتحانات شبرا.'
                 : isEnglish
                 ? 'شروحات مرئية لقواعد السوابق واللواحق، تحويل المعامل للمبني للمجهول، وهيكل التقارير والإيميلات الرسمية.'

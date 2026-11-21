@@ -346,6 +346,126 @@ export const REAL_MATERIAL_FILES = [
     actionType: 'platform_sheet',
     targetTab: 'glossary',
     tags: ['Technical English', 'HUM 001', 'Vocabulary', 'Grammar', 'Report Writing', 'Flashcards']
+  },
+
+  // 17. Real Platform Printable A4 Sheet: Elasticity & Hooke's Law
+  {
+    id: 'mat-sheet-phys-elasticity',
+    category: 'cheatsheets',
+    division: 'properties_mechanics',
+    title: 'شيت قوانين المرونة والإجهاد والانفعال ومعامل يونج (A4)',
+    titleEn: 'Mechanical Elasticity, Stress-Strain & Young\'s Modulus (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing tensile stress-strain relations, Young\'s modulus, Bulk modulus, Poisson\'s ratio, and strain energy formulas.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: قوانين المرونة ومعامل يونج ومعامل القص ونسبة بواسون مع خطوات حل مسائل استطالة الأسلاك في امتحانات شبرا.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Physics 1', 'PHY 001', 'Elasticity', 'Young Modulus', 'Poisson Ratio']
+  },
+
+  // 18. Real Platform Printable A4 Sheet: Surface Tension & Stokes' Viscosity
+  {
+    id: 'mat-sheet-phys-viscosity',
+    category: 'cheatsheets',
+    division: 'properties_mechanics',
+    title: 'شيت قوانين التوتر السطحي والأنابيب الشعرية ولزوجة ستوكس (A4)',
+    titleEn: 'Surface Tension, Jurin\'s Law & Stokes\' Viscosity (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering Young-Laplace excess pressure in bubbles/drops, Jurin\'s capillary rise, Stokes drag, and terminal velocity.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: الضغط الإضافي داخل الفقاعات والقطرات، قانون يوران للارتفاع الشعري، وقانون ستوكس والسرعة الحدية وسريان بوازيه.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Physics 1', 'PHY 001', 'Surface Tension', 'Stokes Law', 'Terminal Velocity', 'Viscosity']
+  },
+
+  // 19. Real Platform Printable A4 Sheet: Fluid Dynamics & Bernoulli
+  {
+    id: 'mat-sheet-phys-hydro',
+    category: 'cheatsheets',
+    division: 'properties_mechanics',
+    title: 'شيت ديناميكا الموائع ومعادلتي الاستمرارية وبرنولي ومقياس فنتوري (A4)',
+    titleEn: 'Fluid Dynamics: Continuity, Bernoulli & Flowmeters (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing continuity equation, Bernoulli energy conservation, Venturi meter discharge, and Torricelli efflux speed.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: معادلة الاستمرارية وحفظ الكتلة، معادلة برنولي للأنابيب الأفقية والمائلة، وحساب معدل التدفق في أنبوب فنتوري وتفريغ الخزانات.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Physics 1', 'PHY 001', 'Bernoulli', 'Continuity', 'Venturi Meter', 'Hydrodynamics']
+  },
+
+  // 20. Real Platform Printable A4 Sheet: Thermal Conduction & Thermodynamics
+  {
+    id: 'mat-sheet-phys-thermal',
+    category: 'cheatsheets',
+    division: 'heat_waves',
+    title: 'شيت قوانين التمدد الحراري والتوصيل فورييه والديناميكا الحرارية (A4)',
+    titleEn: 'Thermal Physics: Expansion, Fourier Conduction & 1st Law (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing thermal stress, Fourier steady-state heat conduction, thermal resistance in composite walls, and thermodynamic gas work.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: الإجهاد الحراري في القضبان المقيدة، قانون فورييه للجدران متعددة الطبقات وحساب درجة حرارة الفاصل Tx، وشغل الغاز في التغيرات الإيزوثرمية والأديباتية.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Physics 1', 'PHY 001', 'Thermal Expansion', 'Fourier Conduction', 'Thermodynamics']
+  },
+
+  // 21. Real Platform Printable A4 Sheet: SHM & Acoustics Doppler
+  {
+    id: 'mat-sheet-phys-waves',
+    category: 'cheatsheets',
+    division: 'heat_waves',
+    title: 'شيت الحركة التوافقية البسيطة وموجات الصوت وظاهرة دوبلر (A4)',
+    titleEn: 'Acoustics & Waves: SHM, Sound Decibels & Doppler Effect (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering simple pendulum, mass-spring oscillators, speed of sound in gases, decibel scale, and Doppler frequency shifts.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: معادلة الحركة التوافقية وعلاقة البندول البسيط بعجلة الجاذبية g، طاقة الاهتزاز، مقياس الديسيبل اللوغاريتمي، وقاعدة إشارات ظاهرة دوبلر.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Physics 1', 'PHY 001', 'SHM', 'Simple Pendulum', 'Sound Intensity', 'Doppler Effect']
+  },
+
+  // 22. Engineering Physics 1 Laws & Formulas Vault
+  {
+    id: 'mat-phys-glossary-vault',
+    category: 'vault',
+    division: 'all',
+    title: 'معجم قوانين ومصطلحات الفيزياء الهندسية 1 الشامل (PHY 001)',
+    titleEn: 'Comprehensive Engineering Physics 1 Laws & Formulas Vault (PHY 001)',
+    descriptionEn: 'Interactive vault of 26+ physical laws, definitions, unit dimensions, and laboratory derivations covering properties of matter, fluid mechanics, heat, and wave motion.',
+    description: 'بنك شامل لجميع قوانين وتعريفات وتجارب معمل الفيزياء 1 المقررة على طلاب إعدادي هندسة شبرا، مزود بفلاش كاردز تفاعلية وشرح بالعربي.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية',
+    format: 'تفاعلي / طباعة',
+    size: 'بنك شامل',
+    pages: 26,
+    date: 'مراجعة نهائية',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'glossary',
+    tags: ['Physics 1', 'PHY 001', 'Glossary', 'Flashcards', 'EMP Department']
   }
 ];
 

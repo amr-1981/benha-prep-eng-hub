@@ -21,6 +21,7 @@ export default function Navbar({
   const isMath = selectedSubject === 'math';
   const isChemistry = selectedSubject === 'chemistry';
   const isEnglish = selectedSubject === 'english';
+  const isPhysics = selectedSubject === 'physics';
 
   const isCalculus = selectedDivision === 'calculus';
   const isAlgebra = selectedDivision === 'algebra';
@@ -28,10 +29,34 @@ export default function Navbar({
   const isElectro = selectedDivision === 'electro';
   const isVocabGrammar = selectedDivision === 'vocab_grammar';
   const isReportsWriting = selectedDivision === 'reports_writing';
+  const isPropertiesMechanics = selectedDivision === 'properties_mechanics';
+  const isHeatWaves = selectedDivision === 'heat_waves';
 
   // Division-specific labels & icons for Level 3
   const getNavItems = () => {
-    if (isMath) {
+    if (isPhysics) {
+      if (isPropertiesMechanics) {
+        return [
+          { id: 'syllabus', label: 'مقرر خواص المادة والميكانيكا', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم قوانين الخواص والموائع', icon: BrainCircuit, badge: 'يونج وستوكس' },
+          { id: 'lab', label: 'حاسبات الخواص والموائع', icon: Calculator, badge: '4 حاسبات' },
+          { id: 'cheatsheets', label: 'شيتات خواص وموائع A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات الميكانيكا MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات الميكانيكا', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات الميكانيكا', icon: Youtube, badge: 'YouTube' }
+        ];
+      } else {
+        return [
+          { id: 'syllabus', label: 'مقرر الحرارة والموجات', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم قوانين الحرارة والموجات', icon: BrainCircuit, badge: 'فورييه ودوبلر' },
+          { id: 'lab', label: 'حاسبات الحرارة والموجات', icon: Calculator, badge: '4 حاسبات' },
+          { id: 'cheatsheets', label: 'شيتات حرارة وموجات A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات الحرارة MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات الحرارة والموجات', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات الحرارة والموجات', icon: Youtube, badge: 'YouTube' }
+        ];
+      }
+    } else if (isMath) {
       if (isCalculus) {
         return [
           { id: 'syllabus', label: 'مقرر التفاضل والتطبيقات', icon: BookOpen, badge: '5 وحدات' },
@@ -137,7 +162,7 @@ export default function Navbar({
                       onClick={onBackToSubject}
                       className={`transition ${isLevel2 ? 'text-cyan-300 font-black' : 'text-slate-400 hover:text-white'}`}
                     >
-                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : 'اللغة الإنجليزية الفنية (HUM 001)'}
+                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : isEnglish ? 'اللغة الإنجليزية الفنية (HUM 001)' : 'الفيزياء الهندسية 1 (PHY 001)'}
                     </button>
                   </>
                 )}
@@ -151,7 +176,9 @@ export default function Navbar({
                        isThermal ? 'الكيمياء الحرارية (د. هناء)' :
                        isElectro ? 'الكيمياء الكهربية (د. سمر)' :
                        isVocabGrammar ? 'المصطلحات والقواعد (Vocab & Grammar)' :
-                       'الكتابة الفنية والتقارير (Reports & Writing)'}
+                       isReportsWriting ? 'الكتابة الفنية والتقارير (Reports & Writing)' :
+                       isPropertiesMechanics ? 'خواص المادة والميكانيكا (Properties & Mechanics)' :
+                       'الحرارة والموجات (Heat & Waves)'}
                     </span>
                   </>
                 )}
@@ -162,7 +189,8 @@ export default function Navbar({
                 {isLevel2 && (
                   isMath ? 'Engineering Mathematics 1 (MTH 001) • Academic Branches' :
                   isChemistry ? 'Engineering Chemistry (CHM 001) • Academic Divisions' :
-                  'Technical English & Reports (HUM 001) • Academic Branches'
+                  isEnglish ? 'Technical English & Reports (HUM 001) • Academic Branches' :
+                  'Engineering Physics 1 (PHY 001) • Academic Branches'
                 )}
                 {isLevel3 && (
                   isCalculus ? 'Calculus & Applications Branch • قسم حساب التفاضل' :
@@ -170,7 +198,9 @@ export default function Navbar({
                   isThermal ? 'Thermal & Industrial Chemistry • قسم الكيمياء الحرارية (د. هناء)' :
                   isElectro ? 'Electrochemistry & Corrosion • قسم الكيمياء الكهربية (د. سمر)' :
                   isVocabGrammar ? 'Technical Vocabulary & Grammar • قسم المصطلحات والقواعد' :
-                  'Technical Writing & Reports • قسم التقارير والمراسلات'
+                  isReportsWriting ? 'Technical Writing & Reports • قسم التقارير والمراسلات' :
+                  isPropertiesMechanics ? 'Properties of Matter & Fluid Mechanics • قسم خواص المادة والموائع' :
+                  'Heat, Thermodynamics & Wave Motion • قسم الحرارة والموجات'
                 )}
               </h1>
             </div>
@@ -224,17 +254,21 @@ export default function Navbar({
                   onClick={() => setActiveTab(item.id)}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all flex items-center gap-2 shrink-0 ${
                     isActive
-                      ? isEnglish
-                        ? isVocabGrammar
-                          ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-900/40'
-                          : 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-md shadow-teal-900/40'
-                        : isMath
-                          ? isCalculus
-                            ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-900/40'
-                            : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-purple-900/40'
-                          : isThermal
-                            ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-900/40'
-                            : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-900/40'
+                      ? isPhysics
+                        ? isPropertiesMechanics
+                          ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-md shadow-purple-900/40'
+                          : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-900/40'
+                        : isEnglish
+                          ? isVocabGrammar
+                            ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-900/40'
+                            : 'bg-gradient-to-r from-teal-600 to-cyan-600 text-white shadow-md shadow-teal-900/40'
+                          : isMath
+                            ? isCalculus
+                              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-blue-900/40'
+                              : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-purple-900/40'
+                            : isThermal
+                              ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-900/40'
+                              : 'bg-gradient-to-r from-cyan-600 to-blue-600 text-white shadow-md shadow-cyan-900/40'
                       : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
                   }`}
                 >

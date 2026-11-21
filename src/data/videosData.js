@@ -402,3 +402,120 @@ export const ENGLISH_LECTURE_VIDEOS = [
     tags: ["Formal Email", "Technical Memo", "Incident Report", "Correspondence"]
   }
 ];
+
+// ==================== ENGINEERING PHYSICS 1 (PHY 001) ====================
+export const PHYSICS_VIDEO_TOPICS = [
+  { id: "all", label: "جميع دروس ومحاضرات الفيزياء 1", icon: "Layers" },
+  // Branch 1: Properties of Matter & Mechanics
+  { id: "elasticity", label: "مرونة المواد ومعامل يونج", icon: "Layers" },
+  { id: "viscosity", label: "التوتر السطحي ولزوجة ستوكس", icon: "Droplets" },
+  { id: "hydrodynamics", label: "ديناميكا الموائع ومعادلة برنولي", icon: "Zap" },
+  // Branch 2: Heat, Thermodynamics & Waves
+  { id: "heat_conduction", label: "التمدد الحراري وقانون فورييه", icon: "Flame" },
+  { id: "thermodynamics", label: "القانون الأول وشغل الغازات", icon: "Activity" },
+  { id: "waves", label: "الحركة التوافقية وظاهرة دوبلر", icon: "Repeat" }
+];
+
+export const PHYSICS_YOUTUBE_CHANNELS = [
+  {
+    name: "Engineering Physics Hub - المصرية لهندسة شبرا",
+    badge: "شرح أكاديمي معتمد 🎓",
+    description: "شرح مفصل ومسائل شيتات وامتحانات الفاينال لمقرر الفيزياء الهندسية 1 (خواص المادة، الموائع، الحرارة، والموجات) بإعدادي هندسة شبرا وبنها.",
+    subscribers: "+110 ألف طالب هندسة",
+    searchQuery: "فيزياء هندسية 1 إعدادي هندسة شبرا خواص مادة حرارة موجات",
+    avatar: "🔬"
+  },
+  {
+    name: "Applied Physics & Fluid Dynamics for Engineers",
+    badge: "تجارب المعمل ومسائل الشيتات 🧪",
+    description: "شرح تجارب معمل الفيزياء (معامل يونج، لزوجة الجلسرين وستوكس، البندول البسيط) مع الرسوم التوضيحية ثلاثية الأبعاد.",
+    subscribers: "+160 ألف مشترك",
+    searchQuery: "engineering physics 1 young modulus stokes viscosity bernoulli fourier",
+    avatar: "⚙️"
+  },
+  {
+    name: "Physics Galaxy & Classical Waves Academia",
+    badge: "مسائل الفاينال الصعبة 💡",
+    description: "شرح معمق للحركة التوافقية البسيطة، سرعة الصوت في الأوساط المختلفة، ومسائل ظاهرة دوبلر وحسابات الديسيبل.",
+    subscribers: "+220 ألف مشترك",
+    searchQuery: "simple harmonic motion doppler effect sound waves engineering physics",
+    avatar: "🌊"
+  }
+];
+
+export const PHYSICS_LECTURE_VIDEOS = [
+  // Branch 1: Properties of Matter & Mechanics
+  {
+    id: "vp-elasticity-1",
+    topic: "elasticity",
+    division: "properties_mechanics",
+    title: "مرونة المواد وقانون هوك وحساب استطالة الأسلاك ومعامل يونج (Y)",
+    channel: "Engineering Physics Hub",
+    duration: "45 دقيقة",
+    views: "92,000 مشاهدة",
+    description: "شرح منحنى الإجهاد والانفعال للمواد المطيلة، حد المرونة ونقطة الخضوع، وحساب طاقة الانفعال المخزونة ونسبة بواسون.",
+    url: "https://www.youtube.com/results?search_query=elasticity+young+modulus+stress+strain+engineering+physics",
+    tags: ["مرونة", "معامل يونج", "إجهاد", "انفعال", "Elasticity"]
+  },
+  {
+    id: "vp-viscosity-1",
+    topic: "viscosity",
+    division: "properties_mechanics",
+    title: "التوتر السطحي ولزوجة السوائل وقانون ستوكس والسرعة الحدية (تجربة الجلسرين)",
+    channel: "Applied Physics Academia",
+    duration: "38 دقيقة",
+    views: "84,000 مشاهدة",
+    description: "الضغط الإضافي داخل الفقاعات والقطرات، قانون يوران للارتفاع الشعري، وسقوط الكرات المعدنية في الجلسرين لحساب معامل اللزوجة.",
+    url: "https://www.youtube.com/results?search_query=surface+tension+stokes+law+terminal+velocity+glycerin+physics+lab",
+    tags: ["توتر سطحي", "لزوجة", "ستوكس", "سرعة حدية", "Viscosity"]
+  },
+  {
+    id: "vp-hydro-1",
+    topic: "hydrodynamics",
+    division: "properties_mechanics",
+    title: "ديناميكا الموائع: معادلة الاستمرارية وحفظ الطاقة في برنولي وتطبيقات فنتوري",
+    channel: "Engineering Physics Hub",
+    duration: "50 دقيقة",
+    views: "105,000 مشاهدة",
+    description: "حل مسائل الأنابيب متغيرة المقطع، حساب فرق الضغط ومعدل التصرف Q في مقياس فنتوري وقانون تورشيللي لخروج السائل من الخزانات.",
+    url: "https://www.youtube.com/results?search_query=bernoulli+equation+continuity+venturi+meter+fluid+dynamics",
+    tags: ["برنولي", "استمرارية", "فنتوري", "تورشيللي", "Bernoulli"]
+  },
+  // Branch 2: Heat, Thermodynamics & Waves
+  {
+    id: "vp-thermal-1",
+    topic: "heat_conduction",
+    division: "heat_waves",
+    title: "التمدد الحراري وقانون فورييه للتوصيل وحسابات الجدران المركبة ومقاومة التوصيل",
+    channel: "Engineering Physics Hub",
+    duration: "42 دقيقة",
+    views: "76,000 مشاهدة",
+    description: "حساب الإجهاد الحراري في القضبان المقيدة، قانون أوم الحراري لسريان الحرارة بالتوصيل، وإيجاد درجة حرارة السطح الفاصل للجدران.",
+    url: "https://www.youtube.com/results?search_query=fourier+law+heat+conduction+composite+walls+thermal+stress",
+    tags: ["فورييه", "توصيل حراري", "جدران مركبة", "إجهاد حراري", "Heat Conduction"]
+  },
+  {
+    id: "vp-thermo-1",
+    topic: "thermodynamics",
+    division: "heat_waves",
+    title: "القانون الأول للديناميكا الحرارية وحساب شغل الغازات في العمليات الإيزوثرمية والأديباتية",
+    channel: "Classical Waves Academia",
+    duration: "48 دقيقة",
+    views: "89,000 مشاهدة",
+    description: "شرح القانون الأول ΔU = Q - W، دالة الطاقة الداخلية، التمدد الإيزوثرمي W = nRT ln(V2/V1)، والتمدد الأديباتي وقوانين بواسون.",
+    url: "https://www.youtube.com/results?search_query=first+law+of+thermodynamics+isothermal+adiabatic+work+done+physics",
+    tags: ["ديناميكا حرارية", "القانون الأول", "إيزوثرمي", "أديباتي", "Thermodynamics"]
+  },
+  {
+    id: "vp-waves-1",
+    topic: "waves",
+    division: "heat_waves",
+    title: "الحركة التوافقية البسيطة (SHM) والبندول البسيط وظاهرة دوبلر ومستوى الديسيبل",
+    channel: "Physics Galaxy",
+    duration: "52 دقيقة",
+    views: "112,000 مشاهدة",
+    description: "معادلة الحركة التوافقية وعجلة الجاذبية في البندول، انتشار الموجات الصوتية ومقياس الديسيبل، وانزياح التردد في ظاهرة دوبلر لقطار وسيارة إسعاف.",
+    url: "https://www.youtube.com/results?search_query=simple+harmonic+motion+pendulum+doppler+effect+sound+intensity+physics",
+    tags: ["حركة توافقية", "بندول بسيط", "دوبلر", "ديسيبل", "صوت", "SHM"]
+  }
+];

@@ -7,6 +7,7 @@ import confetti from 'canvas-confetti';
 import { QUIZ_QUESTIONS } from '../data/quizBankData';
 import { MATH_QUIZ_QUESTIONS } from '../data/mathQuizBankData';
 import { ENGLISH_QUIZ_QUESTIONS } from '../data/englishQuizBankData';
+import { PHYSICS_QUIZ_QUESTIONS } from '../data/physicsQuizBankData';
 
 export default function QuizArenaView({ 
   activeDivision = 'all', 
@@ -17,8 +18,9 @@ export default function QuizArenaView({
   const isMath = activeSubject === 'math';
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
+  const isPhysics = activeSubject === 'physics';
 
-  const questionsList = isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
+  const questionsList = isPhysics ? PHYSICS_QUIZ_QUESTIONS : isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -30,7 +32,7 @@ export default function QuizArenaView({
   const filteredQuestions = questionsList.filter((q) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isEnglish || isMath) {
+      if (isEnglish || isMath || isPhysics) {
         matchDivision = q.division === activeDivision || q.division === 'all';
       } else {
         const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
@@ -74,7 +76,27 @@ export default function QuizArenaView({
   };
 
   const activeFilters = useMemo(() => {
-    if (isEnglish) {
+    if (isPhysics) {
+      if (activeDivision === 'properties_mechanics') {
+        return [
+          { id: 'all', label: 'جميع أسئلة الخواص والميكانيكا' },
+          { id: 'dimensions', label: 'التحليل البعدي' },
+          { id: 'elasticity', label: 'المرونة ومعامل يونج' },
+          { id: 'surface_tension', label: 'التوتر السطحي والأنابيب' },
+          { id: 'viscosity', label: 'اللزوجة والسرعة الحدية' },
+          { id: 'hydrodynamics', label: 'ديناميكا الموائع وبرنولي' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة الحرارة والموجات' },
+          { id: 'thermal_expansion', label: 'التمدد الحراري' },
+          { id: 'heat_conduction', label: 'التوصيل الحراري فورييه' },
+          { id: 'thermodynamics', label: 'الديناميكا الحرارية والغازات' },
+          { id: 'shm', label: 'الحركة التوافقية والبندول' },
+          { id: 'acoustics', label: 'موجات الصوت ودوبلر' }
+        ];
+      }
+    } else if (isEnglish) {
       if (activeDivision === 'vocab_grammar') {
         return [
           { id: 'all', label: 'جميع أسئلة المصطلحات والقواعد' },
@@ -128,40 +150,46 @@ export default function QuizArenaView({
         ];
       }
     }
-  }, [isMath, isEnglish, activeDivision]);
+  }, [isMath, isEnglish, isPhysics, activeDivision]);
 
   return (
     <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
       
       {/* Top Banner */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
-        isEnglish
-          ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
-          : isMath
-            ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
-            : 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
+        isPhysics
+          ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
+          : isEnglish
+            ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
+            : isMath
+              ? 'bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 border-indigo-500/40'
+              : 'bg-gradient-to-r from-slate-900 via-cyan-950 to-slate-900 border-cyan-500/40'
       }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${
-              isEnglish ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-purple-500/20 text-purple-300 border-purple-400/30'
+              isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30'
             }`}>
               <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>بنك الأسئلة والامتحانات التفاعلي • {isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
+              <span>بنك الأسئلة والامتحانات التفاعلي • {isPhysics ? 'Physics 1 Exam Arena' : isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isEnglish 
-                ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الإِنْجِلِيزِي الفَنِّي' 
-                : isMath 
-                  ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الرِّيَاضِيَّاتِ 1' 
-                  : 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
+              {isPhysics
+                ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1'
+                : isEnglish 
+                  ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الإِنْجِلِيزِي الفَنِّي' 
+                  : isMath 
+                    ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الرِّيَاضِيَّاتِ 1' 
+                    : 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isEnglish
-                ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرر Technical English بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
-                : isMath
-                  ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرري التفاضل والجبر بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
-                  : 'نظام تدريب ذكي وتصحيح فوري لأسئلة الميدتيرم والفاينال المقررة في هندسة شبرا مقسمة بين: الكيمياء الحرارية والكيمياء الكهربية.'}
+              {isPhysics
+                ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرر الفيزياء 1 (خواص المادة، ميكانيكا الموائع، الحرارة، والموجات) بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                : isEnglish
+                  ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرر Technical English بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                  : isMath
+                    ? 'اختبر مستواك في أسئلة امتحانات شبرا السابقة لمقرري التفاضل والجبر بنظام الاختيار من متعدد MCQ مع التصحيح الفوري والشرح بالعربي.'
+                    : 'نظام تدريب ذكي وتصحيح فوري لأسئلة الميدتيرم والفاينال المقررة في هندسة شبرا مقسمة بين: الكيمياء الحرارية والكيمياء الكهربية.'}
             </p>
           </div>
 
@@ -178,17 +206,21 @@ export default function QuizArenaView({
       <div className="flex items-center gap-2 pb-1">
         <span className="text-xs font-bold text-slate-400">القسم الأكاديمي الحالي:</span>
         <span className="px-3 py-1 rounded-xl bg-slate-900 border border-slate-700 text-xs font-black text-amber-300">
-          {isEnglish
-            ? activeDivision === 'vocab_grammar'
-              ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
-              : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
-            : isMath
-              ? activeDivision === 'calculus'
-                ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
-                : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
-              : activeDivision === 'thermal'
-                ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
-                : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
+          {isPhysics
+            ? activeDivision === 'properties_mechanics'
+              ? 'قسم خواص المادة وميكانيكا الموائع (Properties & Mechanics)'
+              : 'قسم الحرارة والديناميكا الحرارية والموجات (Heat & Waves)'
+            : isEnglish
+              ? activeDivision === 'vocab_grammar'
+                ? 'قسم المصطلحات الفنية وقواعد الكتابة الهندسية (Vocab & Grammar)'
+                : 'قسم الكتابة الفنية وإعداد التقارير والمراسلات (Reports & Writing)'
+              : isMath
+                ? activeDivision === 'calculus'
+                  ? 'قسم حساب التفاضل والتطبيقات (Calculus)'
+                  : 'قسم الجبر والهندسة الفراغية (Algebra & 3D)'
+                : activeDivision === 'thermal'
+                  ? 'قسم الكيمياء الحرارية والصناعية (د. هناء)'
+                  : 'قسم الكيمياء الكهربية والتآكل (د. سمر)'}
         </span>
       </div>
 
@@ -203,7 +235,7 @@ export default function QuizArenaView({
             }}
             className={`px-3.5 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all ${
               activeFilter === tab.id
-                ? (isMath ? 'bg-indigo-600 text-white shadow-md' : 'bg-purple-600 text-white shadow-md')
+                ? (isPhysics ? 'bg-purple-600 text-white shadow-md' : isMath ? 'bg-indigo-600 text-white shadow-md' : 'bg-emerald-600 text-white shadow-md')
                 : 'bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white border border-slate-700'
             }`}
           >

@@ -9,6 +9,7 @@ import { MATERIAL_CATEGORIES, CLOUD_DRIVES, MATERIAL_FILES } from '../data/mater
 export default function MaterialsView({ setActiveTab, activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
   const isMath = activeSubject === 'math';
   const isEnglish = activeSubject === 'english';
+  const isPhysics = activeSubject === 'physics';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -30,7 +31,8 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
       matchDivision = file.division === activeDivision || (file.division === 'all' && (
         isMath ? file.tags?.includes('Math 1') :
         isEnglish ? file.tags?.includes('Technical English') :
-        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English'))
+        isPhysics ? file.tags?.includes('Physics 1') :
+        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English') && !file.tags?.includes('Physics 1'))
       ));
     }
     const matchCat = activeCategory === 'all' || file.category === activeCategory;
@@ -48,7 +50,15 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
     <div className="space-y-8 pb-16 font-arabic">
       
       {/* Top Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 rounded-3xl p-6 sm:p-8 border-2 border-blue-500/40 shadow-xl">
+      <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
+        isPhysics
+          ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-indigo-950 border-purple-500/40'
+          : isMath
+            ? 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 border-blue-500/40'
+            : isEnglish
+              ? 'bg-gradient-to-r from-slate-900 via-teal-950 to-emerald-950 border-teal-500/40'
+              : 'bg-gradient-to-r from-slate-900 via-cyan-950 to-blue-950 border-cyan-500/40'
+      }`}>
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="space-y-2 text-center md:text-right">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs font-bold border border-blue-400/30">
@@ -56,12 +66,16 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
               <span>مستودع الماتريال والملفات • Course Repository & Downloads</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 
+              {isPhysics
+                ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
+               isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 
                isEnglish ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
                'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isMath 
+              {isPhysics
+                ? 'تصفح وطباعة مباشرة لشيتات قوانين خواص المادة والميكانيكا والحرارة والموجات بمقاس A4، بنك المصطلحات والتجارب المعملية، ومذكرات قسم الرياضيات والفيزياء الهندسية بشبرا.' :
+               isMath 
                 ? 'تحميل وتصفح مباشر لمذكرات وسلايدات دكاترة ومعيدي قسم الرياضيات الهندسية بهندسة شبرا، شيتات A4 للطباعة، وبنك القوانين والامتحانات.'
                 : isEnglish
                 ? 'تحميل وتصفح مباشر لقوالب كتابة التقارير والمراسلات الرسمية بهندسة شبرا، شيتات فك السوابق واللواحق اللاتينية A4 للطباعة، وبنك الأسئلة المعتمد.'

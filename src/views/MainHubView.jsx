@@ -106,6 +106,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
                       ? 'bg-gradient-to-br from-slate-900 via-slate-850 to-blue-950/40 border-blue-500/50 hover:border-blue-400 shadow-xl hover:shadow-blue-950/40'
                       : subject.id === 'english'
                       ? 'bg-gradient-to-br from-slate-900 via-slate-850 to-emerald-950/40 border-emerald-500/50 hover:border-emerald-400 shadow-xl hover:shadow-emerald-950/40'
+                      : subject.id === 'physics'
+                      ? 'bg-gradient-to-br from-slate-900 via-slate-850 to-purple-950/40 border-purple-500/50 hover:border-purple-400 shadow-xl hover:shadow-purple-950/40'
                       : 'bg-gradient-to-br from-slate-900 via-slate-850 to-cyan-950/40 border-cyan-500/50 hover:border-cyan-400 shadow-xl hover:shadow-cyan-950/40'
                     : 'bg-slate-900/60 border-slate-800 opacity-75'
                 }`}
@@ -153,6 +155,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
                         ? 'bg-gradient-to-br from-cyan-600 to-teal-600 text-white border-cyan-400/40 shadow-cyan-900/50'
                         : subject.id === 'english'
                         ? 'bg-gradient-to-br from-emerald-600 to-teal-600 text-white border-emerald-400/40 shadow-emerald-900/50'
+                        : subject.id === 'physics'
+                        ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white border-purple-400/40 shadow-purple-900/50'
                         : 'bg-slate-800 text-slate-400 border-slate-700'
                     }`}>
                       <Icon className="w-7 h-7" />
@@ -226,6 +230,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
                           ? 'bg-gradient-to-r from-blue-600 via-indigo-600 to-blue-700 hover:from-blue-500 hover:to-indigo-500 text-white shadow-blue-900/50'
                           : subject.id === 'english'
                           ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-700 hover:from-emerald-500 hover:to-teal-500 text-white shadow-emerald-900/50'
+                          : subject.id === 'physics'
+                          ? 'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-700 hover:from-purple-500 hover:to-violet-500 text-white shadow-purple-900/50'
                           : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-700 hover:from-cyan-500 hover:to-teal-500 text-white shadow-cyan-900/50'
                       }`}
                     >

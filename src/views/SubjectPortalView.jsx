@@ -15,6 +15,7 @@ export default function SubjectPortalView({
   const isMath = subject === 'math';
   const isChemistry = subject === 'chemistry';
   const isEnglish = subject === 'english';
+  const isPhysics = subject === 'physics';
 
   const [expandedArabicDivisions, setExpandedArabicDivisions] = useState(new Set());
 
@@ -41,7 +42,7 @@ export default function SubjectPortalView({
           </button>
           <span className="text-slate-600">/</span>
           <span className="text-white font-mono font-black">
-            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : 'Technical English (HUM 001)'}
+            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : isEnglish ? 'Technical English (HUM 001)' : 'Engineering Physics 1 (PHY 001)'}
           </span>
         </div>
 
@@ -850,6 +851,293 @@ export default function SubjectPortalView({
 
         </div>
       )}
+
+      {/* ======================================================== */}
+      {/* SUBJECT 4: ENGINEERING PHYSICS 1 (PHY 001)                */}
+      {/* ======================================================== */}
+      {isPhysics && (
+        <div className="space-y-8">
+          
+          {/* Main Subject Welcome Hero */}
+          <div className="bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 rounded-3xl p-6 sm:p-10 border-2 border-purple-500/40 shadow-2xl relative overflow-hidden text-left" dir="ltr">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+
+            <div className="relative z-10 space-y-4 max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-purple-500/20 text-purple-300 text-xs font-bold border border-purple-400/30">
+                <Zap className="w-4 h-4 text-violet-400" />
+                <span>PHY 001 • Engineering Physics 1 Portal • Shoubra</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight font-mono">
+                ENGINEERING PHYSICS 1
+                <span className="block text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-violet-300 to-indigo-300 font-bold mt-2">
+                  Properties of Matter, Fluid Mechanics, Heat, Thermodynamics & Waves • 100 Marks
+                </span>
+              </h1>
+
+              <p className="text-xs font-bold text-amber-300" dir="rtl">
+                الصفحة الرئيسية لمادة الفيزياء الهندسية 1 • كلية الهندسة بشبرا (جامعة بنها)
+              </p>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                Welcome to the Engineering Physics 1 (PHY 001) Portal at Shoubra Engineering. The curriculum is strictly organized into two independent academic branches. Select a branch below to access its isolated curriculum modules, interactive physics simulation engines, high-density cheat sheets, and past exam questions:
+              </p>
+
+              <div className="flex flex-wrap items-center justify-start gap-3 pt-2 text-xs">
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-purple-300 border border-slate-700 font-bold font-mono">
+                  📐 10 Accredited Curriculum Modules
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-violet-300 border border-slate-700 font-bold">
+                  💡 On-Demand Arabic Explanations Available
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-indigo-300 border border-slate-700 font-bold font-mono">
+                  🔬 8 Interactive Physics Solvers & Simulators
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-amber-300 border border-slate-700 font-bold font-mono">
+                  🖨️ 5 Printable A4 Cheat Sheets
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Department Cards Section */}
+          <div className="space-y-4">
+            <div className="text-left" dir="ltr">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-purple-400" />
+                <h2 className="text-xl sm:text-2xl font-black text-white font-mono uppercase tracking-wide">
+                  Academic Branches (Select to Enter)
+                </h2>
+              </div>
+              <p className="text-xs text-slate-400 font-normal">
+                Notice: Upon entering either branch, you operate strictly within its isolated curriculum with zero cross-branch distractions.
+              </p>
+              <p className="text-xs text-amber-300 font-bold mt-1" dir="rtl">
+                أقسام مادة الفيزياء الهندسية 1 (اختر قسماً للدخول المباشر):
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* ======================================================== */}
+              {/* DEPARTMENT 1: PROPERTIES OF MATTER & FLUID MECHANICS     */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-purple-500/40 hover:border-purple-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-purple-300 bg-purple-950 px-3 py-1 rounded-full border border-purple-800/80 font-mono">
+                      Branch 1 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('properties_mechanics')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('properties_mechanics')
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                          : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{expandedArabicDivisions.has('properties_mechanics') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-purple-300 transition-colors mt-1 font-mono">
+                      Properties of Matter & Fluid Mechanics
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      خواص المادة وميكانيكا الموائع • <span className="text-purple-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers physical dimensions and dimensional homogeneity, elasticity and modulus of elasticity (Hooke, Young, Shear, Bulk), surface tension and capillarity (Jurin's law, drop weight), fluid viscosity (Newton's law, Poiseuille, Stokes' terminal velocity), and hydrodynamics (continuity equation, Bernoulli's equation, Venturi tube, Torricelli).
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('properties_mechanics') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/95 border border-amber-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-300 border-b border-amber-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم خواص المادة وميكانيكا الموائع:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز هذا القسم على معادلات الأبعاد وتطبيقاتها، المرونة وإجهاد الشد وقانون هوك ومعامل ينج والقص والحجم، التوتر السطحي والخاصية الشعرية (قانون جورين Jurin)، لزوجة السوائل وقانون نيوتن وقانون ستوكس للسرعة الحدية (Stokes Terminal Velocity)، وديناميكا الموائع ومعادلة الاستمرارية وقانون برنولي وتطبيقاته (أنبوبة فنتوري Venturi وقانون توريشيللي).
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-purple-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-purple-400 shrink-0" />
+                        <span>Dimensional Analysis & Physical Dimensions</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Layers className="w-4 h-4 text-violet-400 shrink-0" />
+                        <span>Elasticity, Hooke's Law & Young's Modulus</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Droplets className="w-4 h-4 text-cyan-400 shrink-0" />
+                        <span>Surface Tension & Capillary Action (Jurin)</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Activity className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>Viscosity, Poiseuille & Stokes' Drag</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-purple-950/60 text-purple-300 text-[11px] font-bold border border-purple-800/50 font-mono">
+                      🧪 Young's Modulus Simulator
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🪂 Stokes' Terminal Velocity Engine
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      💧 Jurin's Capillary Rise Solver
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🌪️ Venturi & Bernoulli Flow Engine
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 3 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('properties_mechanics')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-700 hover:from-purple-500 hover:to-violet-500 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-purple-950/60 transition-all active:scale-[0.98] group-hover:shadow-purple-500/20 font-mono"
+                  >
+                    <span>Enter Properties & Fluid Mechanics Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+              {/* ======================================================== */}
+              {/* DEPARTMENT 2: HEAT, THERMODYNAMICS & WAVE MOTION         */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-indigo-500/40 hover:border-indigo-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-indigo-300 bg-indigo-950 px-3 py-1 rounded-full border border-indigo-800/80 font-mono">
+                      Branch 2 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('heat_waves')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('heat_waves')
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                          : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{expandedArabicDivisions.has('heat_waves') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-indigo-300 transition-colors mt-1 font-mono">
+                      Heat, Thermodynamics & Wave Motion
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      الحرارة والديناميكا الحرارية وحركة الأمواج • <span className="text-indigo-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers thermal expansion of solids and liquids, Fourier's law of 1D heat conduction through composite walls, the First Law of Thermodynamics and thermal work across state processes (isothermal, isobaric, isochoric, adiabatic), Simple Harmonic Motion (SHM) and simple pendulum kinematics, and acoustic wave propagation with Doppler frequency shift equations.
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('heat_waves') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/95 border border-amber-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-300 border-b border-amber-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم الحرارة والأمواج:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز على التمدد الحراري للأجسام والسوائل، انتقال الحرارة بالتوصيل وقانون فورييه للجدران المركبة (Fourier Conduction)، القانون الأول للديناميكا الحرارية وحسابات الشغل والحرارة (العمليات الأيزوثيرمية والأيزوبارية والأديباتية)، الحركة التوافقية البسيطة (SHM) والبندول البسيط، والموجات الصوتية وظاهرة دوبلر (Doppler Effect).
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-indigo-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Flame className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>Thermal Expansion & Thermometry</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Layers className="w-4 h-4 text-orange-400 shrink-0" />
+                        <span>Fourier's Heat Conduction in Walls</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Zap className="w-4 h-4 text-rose-400 shrink-0" />
+                        <span>1st Law of Thermodynamics & PV Work</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Repeat className="w-4 h-4 text-indigo-400 shrink-0" />
+                        <span>Simple Harmonic Motion & Doppler Waves</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-indigo-950/60 text-indigo-300 text-[11px] font-bold border border-indigo-800/50 font-mono">
+                      🔥 Fourier Heat Conduction Composite Wall Solver
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⚙️ Thermodynamic Work & PV Engine
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⏱️ Simple Pendulum & Gravity Solver
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🔊 Doppler Acoustic Frequency Analyzer
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 2 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('heat_waves')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-700 hover:from-indigo-500 hover:to-purple-500 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-indigo-950/60 transition-all active:scale-[0.98] group-hover:shadow-indigo-500/20 font-mono"
+                  >
+                    <span>Enter Heat, Thermodynamics & Waves Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      )}
+
 
     </div>
   );
