@@ -3,7 +3,7 @@ import {
   Flame, Zap, Sparkles, BookOpen, Calculator, Printer, TestTube, 
   Award, FolderArchive, ArrowRight, CheckCircle2, GraduationCap, 
   ShieldAlert, Droplets, Building2, Layers, ChevronRight, Info, Grid, Binary, Compass, ArrowLeft,
-  FileText, Mail, FileEdit, Scissors, Repeat, Cpu, Activity, Lightbulb 
+  FileText, Mail, FileEdit, Scissors, Repeat, Cpu, Activity, Lightbulb, Box 
 } from 'lucide-react';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
