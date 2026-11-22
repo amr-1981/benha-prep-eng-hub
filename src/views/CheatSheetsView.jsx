@@ -4,6 +4,7 @@ import { CHEAT_SHEETS_CATEGORIES, CHEAT_SHEETS_DATA } from '../data/cheatSheetsD
 import { MATH_CHEAT_SHEETS_CATEGORIES, MATH_CHEAT_SHEETS_DATA } from '../data/mathCheatSheetsData';
 import { ENGLISH_CHEAT_SHEETS } from '../data/englishCheatSheetsData';
 import { PHYSICS_CHEAT_SHEETS, PHYSICS_CHEAT_SHEETS_CATEGORIES } from '../data/physicsCheatSheetsData';
+import { STATICS_CHEAT_SHEETS, STATICS_CHEAT_SHEETS_CATEGORIES } from '../data/staticsCheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 // BiDi Isolation Helper: Guarantees English formulas, brackets, and notations inside Arabic text never flip backwards
@@ -43,8 +44,9 @@ export default function CheatSheetsView({
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
+  const isMechanics = activeSubject === 'mechanics';
 
-  const categoriesList = isPhysics
+  const categoriesList = isMechanics ? STATICS_CHEAT_SHEETS_CATEGORIES : isPhysics
     ? PHYSICS_CHEAT_SHEETS_CATEGORIES
     : isEnglish
     ? [
@@ -56,7 +58,7 @@ export default function CheatSheetsView({
       ? MATH_CHEAT_SHEETS_CATEGORIES 
       : CHEAT_SHEETS_CATEGORIES;
 
-  const rawSheetsList = isPhysics ? PHYSICS_CHEAT_SHEETS : isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
+  const rawSheetsList = isMechanics ? STATICS_CHEAT_SHEETS : isPhysics ? PHYSICS_CHEAT_SHEETS : isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
@@ -89,7 +91,9 @@ export default function CheatSheetsView({
       
       {/* Top Banner (Hidden on Print) */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl no-print ${
-        isPhysics
+        isMechanics
+          ? 'bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 border-amber-500/40'
+          : isPhysics
           ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
           : isEnglish
             ? 'bg-gradient-to-r from-slate-900 via-teal-950 to-slate-900 border-teal-500/40'

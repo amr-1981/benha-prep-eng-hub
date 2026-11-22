@@ -8,6 +8,7 @@ import { QUIZ_QUESTIONS } from '../data/quizBankData';
 import { MATH_QUIZ_QUESTIONS } from '../data/mathQuizBankData';
 import { ENGLISH_QUIZ_QUESTIONS } from '../data/englishQuizBankData';
 import { PHYSICS_QUIZ_QUESTIONS } from '../data/physicsQuizBankData';
+import { STATICS_QUIZ_QUESTIONS } from '../data/staticsQuizBankData';
 
 export default function QuizArenaView({ 
   activeDivision = 'all', 
@@ -19,8 +20,9 @@ export default function QuizArenaView({
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
+  const isMechanics = activeSubject === 'mechanics';
 
-  const questionsList = isPhysics ? PHYSICS_QUIZ_QUESTIONS : isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
+  const questionsList = isMechanics ? STATICS_QUIZ_QUESTIONS : isPhysics ? PHYSICS_QUIZ_QUESTIONS : isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -32,7 +34,7 @@ export default function QuizArenaView({
   const filteredQuestions = questionsList.filter((q) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isEnglish || isMath || isPhysics) {
+      if (isEnglish || isMath || isPhysics || isMechanics) {
         matchDivision = q.division === activeDivision || q.division === 'all';
       } else {
         const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
@@ -76,7 +78,27 @@ export default function QuizArenaView({
   };
 
   const activeFilters = useMemo(() => {
-    if (isPhysics) {
+    if (isMechanics) {
+      if (activeDivision === 'force_equilibrium') {
+        return [
+          { id: 'all', label: 'جميع أسئلة نظم القوى والاتزان' },
+          { id: 'vectors', label: 'متجهات الفراغ' },
+          { id: 'moments', label: 'العزوم وفارينون' },
+          { id: 'equivalent_systems', label: 'اختزال النظم والبريمة' },
+          { id: 'particle_equilibrium', label: 'اتزان الجسيم والزنبرك' },
+          { id: 'rigid_body_equilibrium', label: 'اتزان الجسم والركائز' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة المنشآت والقصور' },
+          { id: 'trusses', label: 'الجمالونات والأعضاء الصفرية' },
+          { id: 'frames_machines', label: 'الإطارات والآلات' },
+          { id: 'friction', label: 'الاحتكاك والانزلاق والانقلاب' },
+          { id: 'centroids', label: 'مراكز الثقل وبابوس' },
+          { id: 'moments_of_inertia', label: 'عزوم القصور وشتينر' }
+        ];
+      }
+    } else if (isPhysics) {
       if (activeDivision === 'properties_mechanics') {
         return [
           { id: 'all', label: 'جميع أسئلة الخواص والميكانيكا' },
@@ -150,14 +172,16 @@ export default function QuizArenaView({
         ];
       }
     }
-  }, [isMath, isEnglish, isPhysics, activeDivision]);
+  }, [isMath, isEnglish, isPhysics, isMechanics, activeDivision]);
 
   return (
     <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
       
       {/* Top Banner */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
-        isPhysics
+        isMechanics
+          ? 'bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 border-amber-500/40'
+          : isPhysics
           ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 border-purple-500/40'
           : isEnglish
             ? 'bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 border-emerald-500/40'
@@ -171,10 +195,12 @@ export default function QuizArenaView({
               isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30'
             }`}>
               <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>بنك الأسئلة والامتحانات التفاعلي • {isPhysics ? 'Physics 1 Exam Arena' : isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
+              <span>بنك الأسئلة والامتحانات التفاعلي • {isMechanics ? 'Statics 1 Exam Arena' : isPhysics ? 'Physics 1 Exam Arena' : isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isPhysics
+              {isMechanics
+                ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ المِيكَانِيكَا 1 (الاسْتَاتِيكَا)'
+                : isPhysics
                 ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1'
                 : isEnglish 
                   ? 'بَنْكُ أَسْئِلَةِ وَامْتِحَانَاتِ الإِنْجِلِيزِي الفَنِّي' 

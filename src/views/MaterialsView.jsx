@@ -10,6 +10,7 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
   const isMath = activeSubject === 'math';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
+  const isMechanics = activeSubject === 'mechanics';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -32,7 +33,8 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
         isMath ? file.tags?.includes('Math 1') :
         isEnglish ? file.tags?.includes('Technical English') :
         isPhysics ? file.tags?.includes('Physics 1') :
-        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English') && !file.tags?.includes('Physics 1'))
+        isMechanics ? file.tags?.includes('Statics') :
+        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English') && !file.tags?.includes('Physics 1') && !file.tags?.includes('Statics'))
       ));
     }
     const matchCat = activeCategory === 'all' || file.category === activeCategory;
@@ -51,7 +53,9 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
       
       {/* Top Banner */}
       <div className={`rounded-3xl p-6 sm:p-8 border-2 shadow-xl ${
-        isPhysics
+        isMechanics
+          ? 'bg-gradient-to-r from-slate-900 via-amber-950 to-orange-950 border-amber-500/40'
+          : isPhysics
           ? 'bg-gradient-to-r from-slate-900 via-purple-950 to-indigo-950 border-purple-500/40'
           : isMath
             ? 'bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-950 border-blue-500/40'
@@ -66,14 +70,18 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
               <span>مستودع الماتريال والملفات • Course Repository & Downloads</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
-              {isPhysics
+              {isMechanics
+                ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ المِيكَانِيكَا 1 (الاسْتَاتِيكَا)' :
+               isPhysics
                 ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
                isMath ? 'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الرِّيَاضِيَّاتِ 1' : 
                isEnglish ? 'مَكْتَبَةُ مَلَفَّاتِ وَشِيتَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
                'مَكْتَبَةُ المَاتِرْيَالِ وَمُسْتَوْدَعُ مِلَفَّاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm max-w-2xl font-normal leading-relaxed">
-              {isPhysics
+              {isMechanics
+                ? 'تصفح وطباعة مباشرة لشيتات قوانين متجهات الفراغ والاتزان والجمالونات والاحتكاك والقصور الذاتي بمقاس A4، بنك المصطلحات، ومذكرات قسم الهندسة الميكانيكية بشبرا.' :
+               isPhysics
                 ? 'تصفح وطباعة مباشرة لشيتات قوانين خواص المادة والميكانيكا والحرارة والموجات بمقاس A4، بنك المصطلحات والتجارب المعملية، ومذكرات قسم الرياضيات والفيزياء الهندسية بشبرا.' :
                isMath 
                 ? 'تحميل وتصفح مباشر لمذكرات وسلايدات دكاترة ومعيدي قسم الرياضيات الهندسية بهندسة شبرا، شيتات A4 للطباعة، وبنك القوانين والامتحانات.'

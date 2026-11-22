@@ -519,3 +519,119 @@ export const PHYSICS_LECTURE_VIDEOS = [
     tags: ["حركة توافقية", "بندول بسيط", "دوبلر", "ديسيبل", "صوت", "SHM"]
   }
 ];
+
+// =========================================================================
+// ENGINEERING MECHANICS 1 (STATICS - MEC 001) VIDEO REGISTRY
+// =========================================================================
+export const STATICS_VIDEO_TOPICS = [
+  { id: "all", label: "جميع دروس ومحاضرات الاستاتيكا", icon: "Layers" },
+  { id: "vectors_moments", label: "متجهات الفراغ 3D والعزوم والازدواج", icon: "Compass" },
+  { id: "equilibrium", label: "اتزان الجسيم والجسم الجاسئ والركائز", icon: "Activity" },
+  { id: "trusses", label: "الجمالونات والأعضاء الصفرية", icon: "Layers" },
+  { id: "friction", label: "الاحتكاك الجاف والانزلاق والانقلاب", icon: "Activity" },
+  { id: "inertia", label: "مراكز الثقل وعزوم القصور لشتينر", icon: "Sparkles" }
+];
+
+export const STATICS_YOUTUBE_CHANNELS = [
+  {
+    name: "Engineering Mechanics Statics - Dr. Jeff Hanson",
+    badge: "شرح عالمي معتمد لـ Hibbeler 🎓",
+    description: "أشهر وأقوى سلسلة لشرح استاتيكا هبلر الهندسية خطوة بخطوة بالرسم التخطيطي الكامل لمخططات الجسم الحر (FBD).",
+    subscribers: "+450 ألف طالب هندسة",
+    searchQuery: "Jeff Hanson Engineering Mechanics Statics",
+    avatar: "👨‍🏫"
+  },
+  {
+    name: "منصة المهندس - ميكانيكا إعدادي هندسة شبرا وبنها",
+    badge: "شيتات وامتحانات شبرا 🏛️",
+    description: "شرح مفصل بالعربي لمسائل شيتات الاستاتيكا لكليات الهندسة المصرية (شبرا، بنها، القاهرة، عين شمس).",
+    subscribers: "+120 ألف طالب",
+    searchQuery: "استاتيكا إعدادي هندسة شبرا بنها شيتات محلولة",
+    avatar: "📐"
+  },
+  {
+    name: "StructureFree - Statics & Structural Mechanics",
+    badge: "الجمالونات والقصور الذاتي 🏗️",
+    description: "شرح بصري فائق الوضوح لتحليل الجمالونات بطريقتي العقد والقطاعات، وحساب مراكز الثقل وعزوم القصور الذاتي.",
+    subscribers: "+280 ألف طالب",
+    searchQuery: "StructureFree statics trusses centroid moment of inertia",
+    avatar: "⚙️"
+  }
+];
+
+export const STATICS_LECTURE_VIDEOS = [
+  // Branch 1: Force Systems & Equilibrium
+  {
+    id: "vs-vec-1",
+    topic: "vectors_moments",
+    division: "force_equilibrium",
+    title: "متجهات القوى بالفراغ 3D: زوايا الاتجاه، متجهات الموضع على طول الكابل، والضرب القياسي",
+    channel: "Jeff Hanson Statics",
+    duration: "40 دقيقة",
+    views: "185,000 مشاهدة",
+    description: "حساب إحداثيات النقاط بالفراغ، طرح متجهات الموضع r_AB، إيجاد متجه الوحدة، وتحليل الشد في الكابلات المعلقة مع الضرب القياسي للإسقاط.",
+    url: "https://www.youtube.com/results?search_query=3D+force+vectors+position+vector+coordinate+direction+angles+statics",
+    tags: ["متجهات", "فراغ 3D", "زوايا اتجاه", "كابلات", "3D Vectors"]
+  },
+  {
+    id: "vs-mom-1",
+    topic: "vectors_moments",
+    division: "force_equilibrium",
+    title: "عزوم القوى في الفراغ: الضرب الاتجاهي بالمحددات r × F، نظرية فارينون، وعزم القوة حول محور",
+    channel: "منصة المهندس",
+    duration: "45 دقيقة",
+    views: "140,000 مشاهدة",
+    description: "شرح فك محدد العزم الثلاثي، حساب عزم الازدواج كمتجه حر، والضرب الثلاثي القياسي لإيجاد عزم القوة حول خط مائل في الفراغ.",
+    url: "https://www.youtube.com/results?search_query=moment+of+a+force+cross+product+moment+about+axis+statics",
+    tags: ["عزوم", "محددات", "فارينون", "ازدواج", "Moment"]
+  },
+  {
+    id: "vs-equil-1",
+    topic: "equilibrium",
+    division: "force_equilibrium",
+    title: "اتزان الأجسام الجاسئة: ردود أفعال الركائز (مفصلة، دحرجة، تثبيت كامل) وحل الكمرات المحملة",
+    channel: "منصة المهندس",
+    duration: "55 دقيقة",
+    views: "210,000 مشاهدة",
+    description: "رسم مخطط الجسم الحر FBD بدقة، حساب ردود الأفعال للكمرات الحاملة لأحمال موزعة وعزوم مركزة، وقاعدة اختيار نقطة العزوم الذهبية.",
+    url: "https://www.youtube.com/results?search_query=rigid+body+equilibrium+support+reactions+beams+statics",
+    tags: ["اتزان", "ردود أفعال", "ركائز", "FBD", "Rigid Body"]
+  },
+  // Branch 2: Structures, Friction & Inertia
+  {
+    id: "vs-truss-1",
+    topic: "trusses",
+    division: "structures_inertia",
+    title: "تحليل الجمالونات (Trusses): قواعد اكتشاف الأعضاء الصفرية بالنظر وطريقتا العقد والقطاعات",
+    channel: "StructureFree",
+    duration: "48 دقيقة",
+    views: "195,000 مشاهدة",
+    description: "قواعد التصفير الفوري للأعضاء بدون حسابات، تطبيق طريقة العقد لإيجاد الشد والضغط، واستخدام طريقة القطاعات للأعضاء الداخلية.",
+    url: "https://www.youtube.com/results?search_query=truss+analysis+method+of+joints+sections+zero+force+members",
+    tags: ["جمالونات", "أعضاء صفرية", "طريقة العقد", "قطاعات", "Trusses"]
+  },
+  {
+    id: "vs-fric-1",
+    topic: "friction",
+    division: "structures_inertia",
+    title: "الاحتكاك الجاف لكولوم: معيار الانزلاق مقابل الانقلاب (Slipping vs Tipping) واحتكاك السيور",
+    channel: "Jeff Hanson Statics",
+    duration: "42 دقيقة",
+    views: "160,000 مشاهدة",
+    description: "مقارنة القوة الحرجة للانزلاق مع قوة الانقلاب P_tip = W(b/2h)، انتقال رد الفعل N إلى الحافة، وقانون كابستان لاحتكاك الحبل حول أسطوانة.",
+    url: "https://www.youtube.com/results?search_query=dry+friction+slipping+vs+tipping+belt+friction+statics",
+    tags: ["احتكاك", "انزلاق", "انقلاب", "سيور", "Friction"]
+  },
+  {
+    id: "vs-iner-1",
+    topic: "inertia",
+    division: "structures_inertia",
+    title: "مراكز الثقل وعزوم القصور الذاتي: جدول المساحات المركبة ونظرية شتينر للكمرات (I-Beam)",
+    channel: "StructureFree",
+    duration: "50 دقيقة",
+    views: "230,000 مشاهدة",
+    description: "إيجاد المركز الهندسي y_bar للقطاعات المركبة، تطبيق نظرية المحاور المتوازية I = I_bar + A d²، ونصف قطر القصور الذاتي k_x.",
+    url: "https://www.youtube.com/results?search_query=centroid+composite+area+moment+of+inertia+parallel+axis+theorem",
+    tags: ["مركز ثقل", "عزم القصور", "شتينر", "كمرات", "Centroid", "Moment of Inertia"]
+  }
+];

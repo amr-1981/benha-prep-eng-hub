@@ -9,6 +9,7 @@ import { GLOSSARY_ITEMS, GLOSSARY_MODULES, GLOSSARY_TYPES } from '../data/glossa
 import { MATH_GLOSSARY_ITEMS, MATH_GLOSSARY_MODULES, MATH_GLOSSARY_TYPES } from '../data/mathGlossaryData';
 import { ENGLISH_GLOSSARY_ITEMS, ENGLISH_GLOSSARY_MODULES, ENGLISH_GLOSSARY_TYPES } from '../data/englishGlossaryData';
 import { PHYSICS_GLOSSARY_ITEMS, PHYSICS_GLOSSARY_MODULES, PHYSICS_GLOSSARY_TYPES } from '../data/physicsGlossaryData';
+import { STATICS_GLOSSARY_ITEMS, STATICS_GLOSSARY_MODULES, STATICS_GLOSSARY_TYPES } from '../data/staticsGlossaryData';
 import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 
 export default function GlossaryView({ 
@@ -21,10 +22,11 @@ export default function GlossaryView({
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
+  const isMechanics = activeSubject === 'mechanics';
 
-  const rawItems = isPhysics ? PHYSICS_GLOSSARY_ITEMS : isEnglish ? ENGLISH_GLOSSARY_ITEMS : isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
-  const rawModules = isPhysics ? PHYSICS_GLOSSARY_MODULES : isEnglish ? ENGLISH_GLOSSARY_MODULES : isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
-  const rawTypes = isPhysics ? PHYSICS_GLOSSARY_TYPES : isEnglish ? ENGLISH_GLOSSARY_TYPES : isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
+  const rawItems = isMechanics ? STATICS_GLOSSARY_ITEMS : isPhysics ? PHYSICS_GLOSSARY_ITEMS : isEnglish ? ENGLISH_GLOSSARY_ITEMS : isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
+  const rawModules = isMechanics ? STATICS_GLOSSARY_MODULES : isPhysics ? PHYSICS_GLOSSARY_MODULES : isEnglish ? ENGLISH_GLOSSARY_MODULES : isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
+  const rawTypes = isMechanics ? STATICS_GLOSSARY_TYPES : isPhysics ? PHYSICS_GLOSSARY_TYPES : isEnglish ? ENGLISH_GLOSSARY_TYPES : isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
@@ -45,7 +47,13 @@ export default function GlossaryView({
   const divisionModules = useMemo(() => {
     let mods = rawModules;
     if (activeDivision && activeDivision !== 'all') {
-      if (isPhysics) {
+      if (isMechanics) {
+        if (activeDivision === 'force_equilibrium') {
+          mods = rawModules.filter(m => m.id === 'all' || ['vectors', 'moments', 'equivalent_systems', 'particle_equilibrium', 'rigid_body_equilibrium'].includes(m.id));
+        } else if (activeDivision === 'structures_inertia') {
+          mods = rawModules.filter(m => m.id === 'all' || ['trusses', 'frames_machines', 'friction', 'centroids', 'moments_of_inertia'].includes(m.id));
+        }
+      } else if (isPhysics) {
         if (activeDivision === 'properties_mechanics') {
           mods = rawModules.filter(m => m.id === 'all' || ['dimensions', 'elasticity', 'surface_tension', 'viscosity', 'hydrodynamics'].includes(m.id));
         } else if (activeDivision === 'heat_waves') {
@@ -72,7 +80,7 @@ export default function GlossaryView({
       }
     }
     return mods;
-  }, [rawModules, activeDivision, isMath, isEnglish, isPhysics]);
+  }, [rawModules, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
 
   // Reset selectedModule if it is outside current division
   React.useEffect(() => {
@@ -87,7 +95,7 @@ export default function GlossaryView({
       // Division filter
       let matchDivision = true;
       if (activeDivision && activeDivision !== 'all') {
-        if (isEnglish || isMath || isPhysics) {
+        if (isEnglish || isMath || isPhysics || isMechanics) {
           matchDivision = item.division === activeDivision || item.division === 'all';
         } else {
           const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
@@ -108,7 +116,7 @@ export default function GlossaryView({
 
       return matchDivision && matchModule && matchType && matchSearch;
     });
-  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath, isEnglish, isPhysics]);
+  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 

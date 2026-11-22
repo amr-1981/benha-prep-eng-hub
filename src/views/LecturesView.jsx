@@ -4,23 +4,31 @@ import {
   VIDEO_TOPICS, YOUTUBE_CHANNELS, LECTURE_VIDEOS,
   MATH_VIDEO_TOPICS, MATH_YOUTUBE_CHANNELS, MATH_LECTURE_VIDEOS,
   ENGLISH_VIDEO_TOPICS, ENGLISH_YOUTUBE_CHANNELS, ENGLISH_LECTURE_VIDEOS,
-  PHYSICS_VIDEO_TOPICS, PHYSICS_YOUTUBE_CHANNELS, PHYSICS_LECTURE_VIDEOS 
+  PHYSICS_VIDEO_TOPICS, PHYSICS_YOUTUBE_CHANNELS, PHYSICS_LECTURE_VIDEOS,
+  STATICS_VIDEO_TOPICS, STATICS_YOUTUBE_CHANNELS, STATICS_LECTURE_VIDEOS
 } from '../data/videosData';
 
 export default function LecturesView({ activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
   const isMath = activeSubject === 'math';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
-  const rawTopics = isPhysics ? PHYSICS_VIDEO_TOPICS : isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
-  const rawChannels = isPhysics ? PHYSICS_YOUTUBE_CHANNELS : isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
-  const rawVideos = isPhysics ? PHYSICS_LECTURE_VIDEOS : isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
+  const isMechanics = activeSubject === 'mechanics';
+  const rawTopics = isMechanics ? STATICS_VIDEO_TOPICS : isPhysics ? PHYSICS_VIDEO_TOPICS : isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
+  const rawChannels = isMechanics ? STATICS_YOUTUBE_CHANNELS : isPhysics ? PHYSICS_YOUTUBE_CHANNELS : isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
+  const rawVideos = isMechanics ? STATICS_LECTURE_VIDEOS : isPhysics ? PHYSICS_LECTURE_VIDEOS : isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
 
   const [activeTopic, setActiveTopic] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Isolate topics by active division
   const divisionTopics = React.useMemo(() => {
-    if (isPhysics) {
+    if (isMechanics) {
+      if (activeDivision === 'force_equilibrium') {
+        return rawTopics.filter(t => t.id === 'all' || ['vectors_moments', 'equilibrium'].includes(t.id));
+      } else if (activeDivision === 'structures_inertia') {
+        return rawTopics.filter(t => t.id === 'all' || ['trusses', 'friction', 'inertia'].includes(t.id));
+      }
+    } else if (isPhysics) {
       if (activeDivision === 'properties_mechanics') {
         return rawTopics.filter(t => t.id === 'all' || ['elasticity', 'viscosity', 'hydrodynamics'].includes(t.id));
       } else if (activeDivision === 'heat_waves') {
@@ -46,12 +54,12 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
       }
     }
     return rawTopics;
-  }, [rawTopics, activeDivision, isMath, isEnglish, isPhysics]);
+  }, [rawTopics, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
 
   const filteredVideos = rawVideos.filter((v) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isMath || isEnglish || isPhysics) {
+      if (isMath || isEnglish || isPhysics || isMechanics) {
         matchDivision = v.division === activeDivision;
       } else {
         const isElectro = v.topic === 'corrosion' || v.title.includes('تآكل') || v.title.includes('كهربية') || v.title.includes('جلفانية') || v.title.includes('نيرنست');
@@ -78,13 +86,15 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
               <span>دليل المحاضرات المرئية • Curated Video Lectures</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {isPhysics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
+              {isMechanics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ المِيكَانِيكَا 1 (الاسْتَاتِيكَا)' : isPhysics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
                isMath ? 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الرِّيَاضِيَّاتِ 1' : 
                isEnglish ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
                'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}
             </h1>
             <p className="text-slate-300 text-xs sm:text-sm mt-1">
-              {isPhysics
+              {isMechanics
+                ? 'تجميعة منتقاة لأفضل شروحات متجهات الفراغ، ردود أفعال الركائز، الجمالونات، الاحتكاك، ومراكز الثقل والقصور لأساتذة ومهندسي الجامعات المصرية.' :
+               isPhysics
                 ? 'تجميعة منتقاة لأفضل شروحات خواص المادة والميكانيكا والحرارة والموجات التوافقية وتجارب المعمل لأساتذة ومهندسي الجامعات المصرية.' :
                isMath 
                 ? 'تجميعة منتقاة لأفضل شروحات التفاضل والجبر لأساتذة ومهندسي الجامعات المصرية مع أفكار امتحانات شبرا.'

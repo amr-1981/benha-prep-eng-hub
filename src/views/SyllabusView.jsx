@@ -8,6 +8,7 @@ import { CHEMISTRY_MODULES, CHEMISTRY_DIVISIONS, BENHA_EXAM_TIPS } from '../data
 import { MATH_MODULES, MATH_DIVISIONS, MATH_INFO } from '../data/mathCurriculumData';
 import { ENGLISH_MODULES, ENGLISH_DIVISIONS, ENGLISH_FACULTY_INFO } from '../data/englishCurriculumData';
 import { PHYSICS_MODULES, PHYSICS_DIVISIONS, PHYSICS_EXAM_TIPS } from '../data/physicsCurriculumData';
+import { STATICS_MODULES, STATICS_DIVISIONS, STATICS_EXAM_TIPS } from '../data/staticsCurriculumData';
 import { ConceptAccordion } from '../components/BilingualExplainer';
 
 const MATH_EXAM_TIPS = [
@@ -58,6 +59,7 @@ export default function SyllabusView({
   const isChemistry = activeSubject === 'chemistry';
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
+  const isMechanics = activeSubject === 'mechanics';
   const [showObjectivesAr, setShowObjectivesAr] = useState(false);
 
   const iconMap = {
@@ -83,8 +85,8 @@ export default function SyllabusView({
     CheckCircle2: CheckCircle2
   };
 
-  const modulesList = isPhysics ? PHYSICS_MODULES : isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;
-  const divisionsList = isPhysics ? PHYSICS_DIVISIONS : isEnglish ? ENGLISH_DIVISIONS : isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
+  const modulesList = isMechanics ? STATICS_MODULES : isPhysics ? PHYSICS_MODULES : isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;
+  const divisionsList = isMechanics ? STATICS_DIVISIONS : isPhysics ? PHYSICS_DIVISIONS : isEnglish ? ENGLISH_DIVISIONS : isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
 
   const filteredModules = modulesList.filter(m => {
     return !activeDivision || activeDivision === 'all' || m.division === activeDivision;
@@ -425,11 +427,11 @@ export default function SyllabusView({
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xl">💡</span>
           <h2 className="text-lg font-black text-white">
-            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة شبرا (جامعة بنها) • {isMath ? 'الرياضيات 1' : isEnglish ? 'اللغة الإنجليزية الفنية' : isPhysics ? 'الفيزياء الهندسية 1' : 'الكيمياء الهندسية'}
+            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة شبرا (جامعة بنها) • {isMath ? 'الرياضيات 1' : isEnglish ? 'اللغة الإنجليزية الفنية' : isPhysics ? 'الفيزياء الهندسية 1' : isMechanics ? 'الميكانيكا الهندسية 1 (الاستاتيكا)' : 'الكيمياء الهندسية'}
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {(isPhysics ? PHYSICS_EXAM_TIPS : isEnglish ? ENGLISH_EXAM_TIPS : isMath ? MATH_EXAM_TIPS : BENHA_EXAM_TIPS).map((tip, i) => (
+          {(isMechanics ? STATICS_EXAM_TIPS : isPhysics ? PHYSICS_EXAM_TIPS : isEnglish ? ENGLISH_EXAM_TIPS : isMath ? MATH_EXAM_TIPS : BENHA_EXAM_TIPS).map((tip, i) => (
             <div key={i} className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/60 space-y-1">
               <h4 className="text-xs font-black text-amber-300 flex items-center gap-1.5">
                 <span>📌</span>

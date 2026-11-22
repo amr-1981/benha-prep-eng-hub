@@ -157,17 +157,40 @@ export const AVAILABLE_SUBJECTS = [
   {
     id: 'mechanics',
     code: 'MEC 001',
-    status: 'coming_soon',
+    status: 'active',
     titleAr: 'الميكانيكا الهندسية 1 (الاستاتيكا - علم السكون)',
     titleEn: 'Engineering Mechanics 1 (Statics)',
-    shortTitleAr: 'الميكانيكا (استاتيكا)',
+    shortTitleAr: 'الاستاتيكا',
     shortTitleEn: 'Statics',
     icon: 'Activity',
     color: 'from-amber-600 via-orange-600 to-red-500',
     borderColor: 'border-amber-500/40',
-    badge: '125 درجة • قيد التجهيز',
-    divisions: [],
-    descriptionAr: 'قريباً: تحليل القوى وعزوم القوى في المستوي والفراغ، الاتزان، الجمالونات (Trusses)، والمركز الهندسي والقصور الذاتي.'
+    badge: '125 درجة إجمالية',
+    badgeEn: '125 Total Marks (75 Final + 25 Midterm + 25 Coursework)',
+    divisions: [
+      { 
+        id: 'force_equilibrium', 
+        titleAr: 'قسم نظم القوى والعزوم والاتزان في المستوي والفراغ', 
+        titleEn: 'Force Systems, Moments & Equilibrium Branch',
+        subtitleAr: 'متجهات القوى بالفراغ والمحصلة، عزم القوة حول نقطة ومحور، الازدواج والمحصلة المحورية (Wrench)، واتزان الجسيم والجسم الجاسئ',
+        subtitleEn: '2D/3D Force Vectors & Resultants, Moment about Points & Axes, Couples & Wrench Reduction, Particle & Rigid Body Equilibrium',
+        icon: 'Compass',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Force & Equilibrium'
+      },
+      { 
+        id: 'structures_inertia', 
+        titleAr: 'قسم المنشآت والجمالونات والاحتكاك والمراكز الهندسية والقصور الذاتي', 
+        titleEn: 'Structures, Trusses, Friction & Inertia Branch',
+        subtitleAr: 'تحليل الجمالونات بطريقتي العقد والقطاعات، الإطارات والآلات، الاحتكاك الجاف والانزلاق والانقلاب، ومراكز الثقل وعزوم القصور الذاتي',
+        subtitleEn: 'Truss Analysis (Joints & Sections), Frames & Machines, Dry Friction (Slipping vs Tipping), Centroids & Area Moments of Inertia',
+        icon: 'Layers',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Structures & Inertia'
+      }
+    ],
+    descriptionAr: 'المقرر الأكاديمي المعتمد لإعدادي شبرا يشمل فرعين رئيسيين: نظم القوى والعزوم والازدواج والاتزان للجسيمات والأجسام الجاسئة في المستوي والفراغ، وتحليل المنشآت والجمالونات والإطارات والاحتكاك الجاف ومراكز الثقل وعزوم القصور الذاتي.',
+    descriptionEn: 'The accredited curriculum for Preparatory Engineering at Shoubra (MEC 001) covers two core branches: Force Systems, Moments, Couples & Spatial Rigid Body Equilibrium, and Structural Analysis of Trusses, Frames, Dry Friction (Tipping vs Slipping), Centroids, and Area Moments of Inertia (Steiner\'s Parallel-Axis Theorem).'
   },
   {
     id: 'drawing',

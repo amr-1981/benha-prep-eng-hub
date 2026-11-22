@@ -16,6 +16,7 @@ export default function SubjectPortalView({
   const isChemistry = subject === 'chemistry';
   const isEnglish = subject === 'english';
   const isPhysics = subject === 'physics';
+  const isMechanics = subject === 'mechanics';
 
   const [expandedArabicDivisions, setExpandedArabicDivisions] = useState(new Set());
 
@@ -42,7 +43,7 @@ export default function SubjectPortalView({
           </button>
           <span className="text-slate-600">/</span>
           <span className="text-white font-mono font-black">
-            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : isEnglish ? 'Technical English (HUM 001)' : 'Engineering Physics 1 (PHY 001)'}
+            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : isEnglish ? 'Technical English (HUM 001)' : isPhysics ? 'Engineering Physics 1 (PHY 001)' : 'Engineering Mechanics 1 - Statics (MEC 001)'}
           </span>
         </div>
 
@@ -1137,6 +1138,290 @@ export default function SubjectPortalView({
 
         </div>
       )}
+
+      {/* ======================================================== */}
+      {/* SUBJECT 5: ENGINEERING MECHANICS 1 (STATICS - MEC 001)    */}
+      {/* ======================================================== */}
+      {isMechanics && (
+        <div className="space-y-8">
+          
+          {/* Main Subject Welcome Hero */}
+          <div className="bg-gradient-to-r from-slate-900 via-amber-950 to-slate-900 rounded-3xl p-6 sm:p-10 border-2 border-amber-500/40 shadow-2xl relative overflow-hidden text-left" dir="ltr">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+
+            <div className="relative z-10 space-y-4 max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 text-xs font-bold border border-amber-400/30">
+                <Activity className="w-4 h-4 text-orange-400" />
+                <span>MEC 001 • Engineering Mechanics 1 (Statics) Portal • Shoubra</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight font-mono">
+                ENGINEERING MECHANICS 1 (STATICS)
+                <span className="block text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-300 to-yellow-300 font-bold mt-2">
+                  Force Systems, Equilibrium, Trusses, Frames, Dry Friction & Area Inertia • 125 Marks
+                </span>
+              </h1>
+
+              <p className="text-xs font-bold text-amber-300" dir="rtl">
+                الصفحة الرئيسية لمادة الميكانيكا الهندسية 1 (الاستاتيكا) • كلية الهندسة بشبرا (جامعة بنها)
+              </p>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                Welcome to the Engineering Mechanics 1 (Statics - MEC 001) Portal at Shoubra Engineering. The curriculum is strictly organized into two independent academic branches. Select a branch below to access its isolated curriculum modules, interactive engineering simulation engines, high-density cheat sheets, and past exam questions:
+              </p>
+
+              <div className="flex flex-wrap items-center justify-start gap-3 pt-2 text-xs">
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-amber-300 border border-slate-700 font-bold font-mono">
+                  📐 10 Accredited Curriculum Modules
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-orange-300 border border-slate-700 font-bold">
+                  💡 On-Demand Arabic Explanations Available
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-yellow-300 border border-slate-700 font-bold font-mono">
+                  ⚙️ 6 Interactive Statics Solvers & Simulators
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-red-300 border border-slate-700 font-bold font-mono">
+                  🖨️ 5 Printable A4 Cheat Sheets
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Department Cards Section */}
+          <div className="space-y-4">
+            <div className="text-left" dir="ltr">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-amber-400" />
+                <h2 className="text-xl sm:text-2xl font-black text-white font-mono uppercase tracking-wide">
+                  Academic Branches (Select to Enter)
+                </h2>
+              </div>
+              <p className="text-xs text-slate-400 font-normal">
+                Notice: Upon entering either branch, you operate strictly within its isolated curriculum with zero cross-branch distractions.
+              </p>
+              <p className="text-xs text-amber-300 font-bold mt-1" dir="rtl">
+                أقسام مادة الاستاتيكا (اختر قسماً للدخول المباشر):
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* ======================================================== */}
+              {/* DEPARTMENT 1: FORCE SYSTEMS, MOMENTS & EQUILIBRIUM       */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-amber-500/40 hover:border-amber-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-amber-300 bg-amber-950 px-3 py-1 rounded-full border border-amber-800/80 font-mono">
+                      Branch 1 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('force_equilibrium')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('force_equilibrium')
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                          : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{expandedArabicDivisions.has('force_equilibrium') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-amber-300 transition-colors mt-1 font-mono">
+                      Force Systems, Moments & Equilibrium
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      نظم القوى والعزوم والاتزان في المستوي والفراغ • <span className="text-amber-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers 2D and 3D Cartesian force vectors, coordinate direction angles, position vectors along cables, dot product projections, 3D moment cross products (r × F), Varignon's theorem, moments about specified axes, couple moments, reduction to equivalent systems and wrenches, 2D/3D particle equilibrium with springs and pulleys, and 2D/3D rigid body equilibrium with support reactions and two-force members.
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('force_equilibrium') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/95 border border-amber-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-300 border-b border-amber-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم نظم القوى والاتزان:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز هذا القسم على تمثيل القوى الفراغية كمتجهات كارتيزية وحساب زوايا الاتجاه ومتجهات الوحدة على امتداد الكابلات، حساب العزوم بالمحددات والضرب الاتجاهي وعزم الازدواج، اختزال مجموعات القوى إلى قوة واحدة أو بريمة (Wrench)، وشروط اتزان الجسيمات ومخطط الجسم الحر (FBD)، وردود أفعال الركائز (مفصلة، دحرجة، تثبيت كامل) للأجسام الجاسئة في المستوي والفراغ.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-amber-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>3D Force Vectors & Direction Angles</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Activity className="w-4 h-4 text-orange-400 shrink-0" />
+                        <span>Moments (r × F), Varignon & Couples</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Layers className="w-4 h-4 text-yellow-400 shrink-0" />
+                        <span>System Reduction & Wrench Central Axis</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Box className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>Rigid Body Equilibrium & Support Reactions</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-amber-950/60 text-amber-300 text-[11px] font-bold border border-amber-800/50 font-mono">
+                      📐 3D Force & Position Vector Analyzer
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🔄 3D Moment & Cross Product Engine
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⚖️ 2D Beam Reactions & Equilibrium Solver
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 2 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('force_equilibrium')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 hover:from-amber-500 hover:to-orange-500 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-amber-950/60 transition-all active:scale-[0.98] group-hover:shadow-amber-500/20 font-mono"
+                  >
+                    <span>Enter Force Systems & Equilibrium Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+              {/* ======================================================== */}
+              {/* DEPARTMENT 2: STRUCTURES, FRICTION & INERTIA             */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-orange-500/40 hover:border-orange-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-orange-300 bg-orange-950 px-3 py-1 rounded-full border border-orange-800/80 font-mono">
+                      Branch 2 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('structures_inertia')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('structures_inertia')
+                          ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                          : 'bg-slate-900 text-amber-400/90 hover:text-amber-300 border-slate-700 hover:border-amber-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                      <span>{expandedArabicDivisions.has('structures_inertia') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-orange-300 transition-colors mt-1 font-mono">
+                      Structures, Trusses, Friction & Inertia
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      المنشآت والجمالونات والاحتكاك والمراكز الهندسية والقصور الذاتي • <span className="text-orange-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers structural analysis of plane trusses via Method of Joints and Method of Sections, zero-force member visual inspection rules, frames and machines with multi-force members and internal pin action-reaction pairs, Coulomb dry friction, impending motion tipping vs. slipping analysis, capstan belt friction, centroids of composite bodies, Pappus-Guldinus theorems, and area moments of inertia with Steiner's parallel-axis theorem.
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('structures_inertia') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/25 to-slate-900/95 border border-amber-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-amber-300 border-b border-amber-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-amber-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم المنشآت والقصور الذاتي:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز هذا القسم على تحليل الجمالونات بطريقتي العقد والقطاعات، اكتشاف الأعضاء الصفرية بمجرد النظر، فك الإطارات والآلات لحساب قوى المفصلات الداخلية بتطبيق قانون نيوتن الثالث، تحليل الاحتكاك الجاف ومقارنة قوة الانزلاق مع قوة الانقلاب لتحديد أيهما يحدث أولاً، حساب مراكز الثقل للأشكال المركبة بالجدول ونظريتي بابوس-جولدين، وحساب عزم القصور الذاتي للكمرات المركبة (I-Beam و T-Section) بنظرية المحاور المتوازية لشتينر.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-orange-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Layers className="w-4 h-4 text-orange-400 shrink-0" />
+                        <span>Plane Trusses & Zero-Force Members</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Activity className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>Frames, Machines & Internal Pin Forces</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-red-400 shrink-0" />
+                        <span>Dry Friction: Slipping vs. Tipping & Belts</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Sparkles className="w-4 h-4 text-yellow-400 shrink-0" />
+                        <span>Centroids & Area Inertia (Steiner)</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-orange-950/60 text-orange-300 text-[11px] font-bold border border-orange-800/50 font-mono">
+                      🏗️ Truss Zero-Force Inspector
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⚠️ Friction Slipping vs. Tipping Analyzer
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      📐 I-Beam Centroid & Inertia Calculator
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🔄 Capstan Belt Friction Engine
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 3 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('structures_inertia')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-orange-600 via-red-600 to-orange-700 hover:from-orange-500 hover:to-red-500 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-orange-950/60 transition-all active:scale-[0.98] group-hover:shadow-orange-500/20 font-mono"
+                  >
+                    <span>Enter Structures, Friction & Inertia Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      )}
+
 
 
     </div>

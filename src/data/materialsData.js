@@ -466,7 +466,128 @@ export const REAL_MATERIAL_FILES = [
     actionType: 'platform_sheet',
     targetTab: 'glossary',
     tags: ['Physics 1', 'PHY 001', 'Glossary', 'Flashcards', 'EMP Department']
+  },
+
+  // 23. Real Platform Printable A4 Sheet: 3D Force Vectors & Moments
+  {
+    id: 'mat-sheet-stat-vectors',
+    category: 'cheatsheets',
+    division: 'force_equilibrium',
+    title: 'شيت متجهات الفراغ 3D، العزوم بالمحددات والازدواج والبريمة Wrench (A4)',
+    titleEn: '3D Cartesian Vectors, Determinant Moments & Wrench Reduction (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing 3D coordinate direction angles, cable position vectors, vector cross products r x F, Varignon theorem, and wrench pitch.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: متجهات القوى الكارتيزية ثلاثية الأبعاد، زوايا الاتجاه الكارتيزية، ضرب المتجهات الاتجاهي بالمحددات، عزم الازدواج كمتجه حر، والبريمة.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Statics', 'MEC 001', '3D Vectors', 'Cross Product', 'Varignon', 'Wrench']
+  },
+
+  // 24. Real Platform Printable A4 Sheet: Rigid Body Equilibrium & Support Reactions
+  {
+    id: 'mat-sheet-stat-equilibrium',
+    category: 'cheatsheets',
+    division: 'force_equilibrium',
+    title: 'شيت شروط اتزان الجسيم والجسم الجاسئ وردود أفعال الركائز 2D/3D (A4)',
+    titleEn: 'Rigid Body Equilibrium, Support Reactions & Spring Systems (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering 2D and 3D support reactions (roller, pin, fixed support), free-body diagrams, linear elastic springs, and two-force members.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: نمذجة ردود أفعال الركائز في المستوي والفراغ، معادلات اتزان الجسم الجاسئ، قانون هوك للزنبرك، ومبدأ العضو ثنائي القوى Two-Force Member.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Statics', 'MEC 001', 'Equilibrium', 'FBD', 'Support Reactions', 'Two-Force Member']
+  },
+
+  // 25. Real Platform Printable A4 Sheet: Trusses & Zero-Force Rules
+  {
+    id: 'mat-sheet-stat-trusses',
+    category: 'cheatsheets',
+    division: 'structures_inertia',
+    title: 'شيت تحليل الجمالونات (العقد والقطاعات) وقواعد التصفير الفوري والإطارات (A4)',
+    titleEn: 'Truss Analysis (Joints & Sections), Zero-Force Rules & Frame Mechanics (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering method of joints, visual inspection rules for zero-force members, method of sections cutting protocol, and frame pin reactions.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: شرط التحديد الاستاتيكي b + r = 2j، القواعد الهندسية لاكتشاف الأعضاء الصفرية بمجرد النظر، وطريقة القطاعات للأعضاء الداخلية.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Statics', 'MEC 001', 'Trusses', 'Zero-Force', 'Method of Sections', 'Frames']
+  },
+
+  // 26. Real Platform Printable A4 Sheet: Dry Friction & Slipping vs Tipping
+  {
+    id: 'mat-sheet-stat-friction',
+    category: 'cheatsheets',
+    division: 'structures_inertia',
+    title: 'شيت قوانين الاحتكاك الجاف (كولوم)، معايير الانزلاق والانقلاب واحتكاك السيور (A4)',
+    titleEn: 'Dry Coulomb Friction, Slipping vs Tipping Criterion & Belt Friction (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing static friction laws, impending motion conditions, slipping vs. tipping threshold formulas, normal force shift, and capstan belt formula.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: قانون كولوم F = μ_s N، مقارنة القوة الحرجة للانزلاق مع قوة الانقلاب P_tip = W(b/2h)، ومضاعفة الشد في السيور T2 = T1 · e^(μβ).',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Statics', 'MEC 001', 'Friction', 'Coulomb', 'Tipping', 'Slipping', 'Belt Friction']
+  },
+
+  // 27. Real Platform Printable A4 Sheet: Centroids & Inertia (Steiner)
+  {
+    id: 'mat-sheet-stat-inertia',
+    category: 'cheatsheets',
+    division: 'structures_inertia',
+    title: 'شيت مراكز الثقل، نظريتي بابوس، وعزوم القصور الذاتي ونظرية شتينر للكمرات (A4)',
+    titleEn: 'Centroids, Pappus Theorems, Area Moments of Inertia & Steiner Parallel Axis (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering tabular composite centroids, Pappus surface/volume theorems, centroidal area inertia, Steiner parallel-axis theorem, and radius of gyration.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: جدول حساب مركز الثقل y_bar للأشكال المركبة، نظريتا بابوس للأجسام الدورانية، ونظرية شتينر I = I_bar + A·d² للكمرات المركبة (I-Beam).',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Statics', 'MEC 001', 'Centroids', 'Pappus', 'Moment of Inertia', 'Steiner Theorem']
+  },
+
+  // 28. Engineering Statics 1 Laws & Formulas Vault
+  {
+    id: 'mat-stat-glossary-vault',
+    category: 'vault',
+    division: 'all',
+    title: 'معجم قوانين ومصطلحات الميكانيكا الهندسية 1 الشامل (استاتيكا - MEC 001)',
+    titleEn: 'Comprehensive Engineering Statics 1 Laws & Formulas Vault (MEC 001)',
+    descriptionEn: 'Interactive vault of 26+ statics laws, equilibrium axioms, free-body diagram rules, and structural mechanics derivations covering vectors, trusses, friction, and inertia.',
+    description: 'بنك شامل لجميع قوانين وتعريفات ومعايير الاستاتيكا المقررة على طلاب إعدادي هندسة شبرا، مزود بفلاش كاردز تفاعلية وأمثلة تطبيقية وشرح بالعربي.',
+    author: 'منصة إعدادي هندسة شبرا • قسم الرياضيات والفيزياء الهندسية / الميكانيكا',
+    format: 'تفاعلي / طباعة',
+    size: 'بنك شامل',
+    pages: 26,
+    date: 'مراجعة نهائية',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'glossary',
+    tags: ['Statics', 'MEC 001', 'Glossary', 'Flashcards', 'Mechanics Department']
   }
 ];
 
 export const MATERIAL_FILES = REAL_MATERIAL_FILES;
+

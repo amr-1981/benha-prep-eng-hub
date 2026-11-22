@@ -22,6 +22,7 @@ export default function Navbar({
   const isChemistry = selectedSubject === 'chemistry';
   const isEnglish = selectedSubject === 'english';
   const isPhysics = selectedSubject === 'physics';
+  const isMechanics = selectedSubject === 'mechanics';
 
   const isCalculus = selectedDivision === 'calculus';
   const isAlgebra = selectedDivision === 'algebra';
@@ -31,10 +32,34 @@ export default function Navbar({
   const isReportsWriting = selectedDivision === 'reports_writing';
   const isPropertiesMechanics = selectedDivision === 'properties_mechanics';
   const isHeatWaves = selectedDivision === 'heat_waves';
+  const isForceEquilibrium = selectedDivision === 'force_equilibrium';
+  const isStructuresInertia = selectedDivision === 'structures_inertia';
 
   // Division-specific labels & icons for Level 3
   const getNavItems = () => {
-    if (isPhysics) {
+    if (isMechanics) {
+      if (isForceEquilibrium) {
+        return [
+          { id: 'syllabus', label: 'مقرر نظم القوى والاتزان', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم متجهات وعزوم الاستاتيكا', icon: BrainCircuit, badge: 'فارينون والبريمة' },
+          { id: 'lab', label: 'حاسبات القوى والاتزان', icon: Calculator, badge: '3 حاسبات' },
+          { id: 'cheatsheets', label: 'شيتات اتزان A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات الاستاتيكا MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات الاستاتيكا', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات الاستاتيكا', icon: Youtube, badge: 'YouTube' }
+        ];
+      } else {
+        return [
+          { id: 'syllabus', label: 'مقرر المنشآت والقصور الذاتي', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم الجمالونات والاحتكاك والقصور', icon: BrainCircuit, badge: 'شتينر وكولوم' },
+          { id: 'lab', label: 'حاسبات المنشآت والقصور', icon: Calculator, badge: '3 حاسبات' },
+          { id: 'cheatsheets', label: 'شيتات منشآت وقصور A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات المنشآت MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات المنشآت والقصور', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات المنشآت والقصور', icon: Youtube, badge: 'YouTube' }
+        ];
+      }
+    } else if (isPhysics) {
       if (isPropertiesMechanics) {
         return [
           { id: 'syllabus', label: 'مقرر خواص المادة والميكانيكا', icon: BookOpen, badge: '5 وحدات' },
@@ -162,7 +187,7 @@ export default function Navbar({
                       onClick={onBackToSubject}
                       className={`transition ${isLevel2 ? 'text-cyan-300 font-black' : 'text-slate-400 hover:text-white'}`}
                     >
-                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : isEnglish ? 'اللغة الإنجليزية الفنية (HUM 001)' : 'الفيزياء الهندسية 1 (PHY 001)'}
+                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : isEnglish ? 'اللغة الإنجليزية الفنية (HUM 001)' : isPhysics ? 'الفيزياء الهندسية 1 (PHY 001)' : 'الميكانيكا الهندسية 1 - استاتيكا (MEC 001)'}
                     </button>
                   </>
                 )}
@@ -177,6 +202,8 @@ export default function Navbar({
                        isElectro ? 'الكيمياء الكهربية (د. سمر)' :
                        isVocabGrammar ? 'المصطلحات والقواعد (Vocab & Grammar)' :
                        isReportsWriting ? 'الكتابة الفنية والتقارير (Reports & Writing)' :
+                       isForceEquilibrium ? 'نظم القوى والاتزان (Force & Equilibrium)' :
+                       isStructuresInertia ? 'المنشآت والقصور الذاتي (Structures & Inertia)' :
                        isPropertiesMechanics ? 'خواص المادة والميكانيكا (Properties & Mechanics)' :
                        'الحرارة والموجات (Heat & Waves)'}
                     </span>
@@ -190,7 +217,7 @@ export default function Navbar({
                   isMath ? 'Engineering Mathematics 1 (MTH 001) • Academic Branches' :
                   isChemistry ? 'Engineering Chemistry (CHM 001) • Academic Divisions' :
                   isEnglish ? 'Technical English & Reports (HUM 001) • Academic Branches' :
-                  'Engineering Physics 1 (PHY 001) • Academic Branches'
+                  isPhysics ? 'Engineering Physics 1 (PHY 001) • Academic Branches' : 'Engineering Mechanics 1 (MEC 001) • Academic Branches'
                 )}
                 {isLevel3 && (
                   isCalculus ? 'Calculus & Applications Branch • قسم حساب التفاضل' :
@@ -199,6 +226,8 @@ export default function Navbar({
                   isElectro ? 'Electrochemistry & Corrosion • قسم الكيمياء الكهربية (د. سمر)' :
                   isVocabGrammar ? 'Technical Vocabulary & Grammar • قسم المصطلحات والقواعد' :
                   isReportsWriting ? 'Technical Writing & Reports • قسم التقارير والمراسلات' :
+                  isForceEquilibrium ? 'Force Systems & Equilibrium • قسم نظم القوى والاتزان' :
+                  isStructuresInertia ? 'Structures & Inertia • قسم المنشآت والقصور الذاتي' :
                   isPropertiesMechanics ? 'Properties of Matter & Fluid Mechanics • قسم خواص المادة والموائع' :
                   'Heat, Thermodynamics & Wave Motion • قسم الحرارة والموجات'
                 )}
@@ -254,7 +283,11 @@ export default function Navbar({
                   onClick={() => setActiveTab(item.id)}
                   className={`px-3 sm:px-4 py-2 rounded-xl text-xs font-black whitespace-nowrap transition-all flex items-center gap-2 shrink-0 ${
                     isActive
-                      ? isPhysics
+                      ? isMechanics
+                      ? isForceEquilibrium
+                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white shadow-md shadow-amber-900/40'
+                        : 'bg-gradient-to-r from-orange-600 to-red-600 text-white shadow-md shadow-orange-900/40'
+                      : isPhysics
                         ? isPropertiesMechanics
                           ? 'bg-gradient-to-r from-purple-600 to-violet-600 text-white shadow-md shadow-purple-900/40'
                           : 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md shadow-indigo-900/40'

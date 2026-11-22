@@ -9,6 +9,7 @@ import LabView from './views/LabView';
 import MathCalculatorsView from './views/MathCalculatorsView';
 import EnglishToolsView from './views/EnglishToolsView';
 import PhysicsToolsView from './views/PhysicsToolsView';
+import StaticsToolsView from './views/StaticsToolsView';
 import CheatSheetsView from './views/CheatSheetsView';
 import QuizArenaView from './views/QuizArenaView';
 import MaterialsView from './views/MaterialsView';
@@ -70,6 +71,7 @@ export default function App() {
   const isMath = selectedSubject === 'math';
   const isEnglish = selectedSubject === 'english';
   const isPhysics = selectedSubject === 'physics';
+  const isMechanics = selectedSubject === 'mechanics';
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-950 text-slate-100 font-arabic selection:bg-blue-600 selection:text-white">
@@ -144,7 +146,7 @@ export default function App() {
                   onClick={handleBackToSubject}
                   className="text-slate-300 hover:text-white transition font-black"
                 >
-                  {isMath ? 'Engineering Mathematics 1 (مادة الرياضيات 1)' : isEnglish ? 'Technical English (مادة اللغة الإنجليزية الفنية)' : isPhysics ? 'Engineering Physics 1 (مادة الفيزياء الهندسية 1)' : 'Engineering Chemistry (مادة الكيمياء الهندسية)'}
+                  {isMath ? 'Engineering Mathematics 1 (مادة الرياضيات 1)' : isEnglish ? 'Technical English (مادة اللغة الإنجليزية الفنية)' : isPhysics ? 'Engineering Physics 1 (مادة الفيزياء الهندسية 1)' : isMechanics ? 'Engineering Mechanics 1 - Statics (مادة الاستاتيكا)' : 'Engineering Chemistry (مادة الكيمياء الهندسية)'}
                 </button>
                 <span className="text-slate-600">/</span>
                 <span className="text-amber-300 font-black">
@@ -152,6 +154,8 @@ export default function App() {
                    selectedDivision === 'algebra' ? 'Algebra & 3D Branch (قسم الجبر والهندسة الفراغية)' :
                    selectedDivision === 'vocab_grammar' ? 'Vocab & Grammar Branch (قسم المصطلحات الفنية وقواعد الكتابة)' :
                    selectedDivision === 'reports_writing' ? 'Reports & Writing Branch (قسم التقارير والمراسلات)' :
+                   selectedDivision === 'force_equilibrium' ? 'Force Systems & Equilibrium Branch (قسم نظم القوى والعزوم والاتزان)' :
+                   selectedDivision === 'structures_inertia' ? 'Structures & Inertia Branch (قسم المنشآت والجمالونات والاحتكاك والقصور)' :
                    selectedDivision === 'properties_mechanics' ? 'Properties & Mechanics Branch (قسم خواص المادة وميكانيكا الموائع)' :
                    selectedDivision === 'heat_waves' ? 'Heat & Waves Branch (قسم الحرارة والديناميكا الحرارية والموجات)' :
                    selectedDivision === 'thermal' ? 'Thermal Chemistry Division (قسم الكيمياء الحرارية - د. هناء)' :
