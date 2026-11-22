@@ -31,7 +31,7 @@ export default function Footer({ setActiveTab }) {
         </div>
 
         <div className="pt-4 border-t border-slate-900 flex flex-col sm:flex-row items-center justify-between gap-2 text-[11px] text-slate-500">
-          <span>المواد القادمة قريباً: الرياضيات الهندسية 1 • الميكانيكا الهندسية • الفيزياء • الرسم الهندسي الإسقاطي</span>
+          <span>المواد المعتمدة والمكتملة: الرياضيات الهندسية 1 • الكيمياء الهندسية • اللغة الإنجليزية الفنية • الفيزياء الهندسية 1 • الاستاتيكا • الرسم الهندسي والإسقاط</span>
           <span className="flex items-center gap-1">
             صنع بكل 💙 لدعم مهندسي المستقبل
           </span>
