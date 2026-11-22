@@ -9,6 +9,7 @@ import { MATH_MODULES, MATH_DIVISIONS, MATH_INFO } from '../data/mathCurriculumD
 import { ENGLISH_MODULES, ENGLISH_DIVISIONS, ENGLISH_FACULTY_INFO } from '../data/englishCurriculumData';
 import { PHYSICS_MODULES, PHYSICS_DIVISIONS, PHYSICS_EXAM_TIPS } from '../data/physicsCurriculumData';
 import { STATICS_MODULES, STATICS_DIVISIONS, STATICS_EXAM_TIPS } from '../data/staticsCurriculumData';
+import { DRAWING_MODULES, DRAWING_DIVISIONS, DRAWING_EXAM_TIPS } from '../data/drawingCurriculumData';
 import { ConceptAccordion } from '../components/BilingualExplainer';
 
 const MATH_EXAM_TIPS = [
@@ -60,6 +61,7 @@ export default function SyllabusView({
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
+  const isDrawing = activeSubject === 'drawing';
   const [showObjectivesAr, setShowObjectivesAr] = useState(false);
 
   const iconMap = {
@@ -85,8 +87,8 @@ export default function SyllabusView({
     CheckCircle2: CheckCircle2
   };
 
-  const modulesList = isMechanics ? STATICS_MODULES : isPhysics ? PHYSICS_MODULES : isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;
-  const divisionsList = isMechanics ? STATICS_DIVISIONS : isPhysics ? PHYSICS_DIVISIONS : isEnglish ? ENGLISH_DIVISIONS : isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
+  const modulesList = isDrawing ? DRAWING_MODULES : isMechanics ? STATICS_MODULES : isPhysics ? PHYSICS_MODULES : isEnglish ? ENGLISH_MODULES : isMath ? MATH_MODULES : CHEMISTRY_MODULES;
+  const divisionsList = isDrawing ? DRAWING_DIVISIONS : isMechanics ? STATICS_DIVISIONS : isPhysics ? PHYSICS_DIVISIONS : isEnglish ? ENGLISH_DIVISIONS : isMath ? MATH_DIVISIONS : CHEMISTRY_DIVISIONS;
 
   const filteredModules = modulesList.filter(m => {
     return !activeDivision || activeDivision === 'all' || m.division === activeDivision;
@@ -107,7 +109,7 @@ export default function SyllabusView({
 
   const getModuleBilingualInsight = (mod) => {
     if (!mod) return null;
-    if (isMath || isEnglish || isPhysics) {
+    if (isMath || isEnglish || isPhysics || isMechanics || isDrawing) {
       return mod.bilingualInsight || null;
     }
 
@@ -410,7 +412,7 @@ export default function SyllabusView({
               <span>النقاط المتكررة وأسئلة الفاينال المفضلة لدكاترة هندسة شبرا (Exam Hotspots):</span>
             </h3>
             <div className="space-y-2">
-              {selectedModule.examHotspots.map((spot, i) => (
+              {(selectedModule.examHotspots || []).map((spot, i) => (
                 <div key={i} className="p-3.5 rounded-xl bg-rose-950/20 border border-rose-800/40 text-xs font-bold text-rose-200 flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-rose-400 shrink-0"></span>
                   <span>{spot}</span>
@@ -427,17 +429,17 @@ export default function SyllabusView({
         <div className="flex items-center gap-2 mb-4">
           <span className="text-xl">💡</span>
           <h2 className="text-lg font-black text-white">
-            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة شبرا (جامعة بنها) • {isMath ? 'الرياضيات 1' : isEnglish ? 'اللغة الإنجليزية الفنية' : isPhysics ? 'الفيزياء الهندسية 1' : isMechanics ? 'الميكانيكا الهندسية 1 (الاستاتيكا)' : 'الكيمياء الهندسية'}
+            نصائح وتوجيهات الامتحانات لطلاب إعدادي هندسة شبرا (جامعة بنها) • {isMath ? 'الرياضيات 1' : isEnglish ? 'اللغة الإنجليزية الفنية' : isPhysics ? 'الفيزياء الهندسية 1' : isMechanics ? 'الميكانيكا الهندسية 1 (الاستاتيكا)' : isDrawing ? 'الرسم الهندسي والإسقاط (MDP 001)' : 'الكيمياء الهندسية'}
           </h2>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {(isMechanics ? STATICS_EXAM_TIPS : isPhysics ? PHYSICS_EXAM_TIPS : isEnglish ? ENGLISH_EXAM_TIPS : isMath ? MATH_EXAM_TIPS : BENHA_EXAM_TIPS).map((tip, i) => (
+          {(isDrawing ? DRAWING_EXAM_TIPS : isMechanics ? STATICS_EXAM_TIPS : isPhysics ? PHYSICS_EXAM_TIPS : isEnglish ? ENGLISH_EXAM_TIPS : isMath ? MATH_EXAM_TIPS : BENHA_EXAM_TIPS).map((tip, i) => (
             <div key={i} className="p-4 rounded-2xl bg-slate-900/80 border border-slate-700/60 space-y-1">
               <h4 className="text-xs font-black text-amber-300 flex items-center gap-1.5">
                 <span>📌</span>
                 <span>{tip.title}</span>
               </h4>
-              <p className="text-xs text-slate-300 font-bold leading-relaxed">{tip.tip}</p>
+              <p className="text-xs text-slate-300 font-bold leading-relaxed">{tip.tip || tip.tipAr}</p>
             </div>
           ))}
         </div>

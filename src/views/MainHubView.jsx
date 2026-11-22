@@ -159,6 +159,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
                         ? 'bg-gradient-to-br from-purple-600 to-indigo-600 text-white border-purple-400/40 shadow-purple-900/50'
                         : subject.id === 'mechanics'
                         ? 'bg-gradient-to-br from-amber-600 to-orange-600 text-white border-amber-400/40 shadow-amber-900/50'
+                        : subject.id === 'drawing'
+                        ? 'bg-gradient-to-br from-slate-600 to-cyan-700 text-white border-slate-400/40 shadow-slate-900/50'
                         : 'bg-slate-800 text-slate-400 border-slate-700'
                     }`}>
                       <Icon className="w-7 h-7" />
@@ -236,6 +238,8 @@ export default function MainHubView({ onSelectSubject, onOpenGpa }) {
                           ? 'bg-gradient-to-r from-purple-600 via-violet-600 to-indigo-700 hover:from-purple-500 hover:to-violet-500 text-white shadow-purple-900/50'
                           : subject.id === 'mechanics'
                           ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 hover:from-amber-500 hover:to-orange-500 text-white shadow-amber-900/50'
+                          : subject.id === 'drawing'
+                          ? 'bg-gradient-to-r from-slate-700 via-zinc-600 to-cyan-700 hover:from-slate-600 hover:to-cyan-600 text-white shadow-slate-900/50'
                           : 'bg-gradient-to-r from-cyan-600 via-teal-600 to-cyan-700 hover:from-cyan-500 hover:to-teal-500 text-white shadow-cyan-900/50'
                       }`}
                     >

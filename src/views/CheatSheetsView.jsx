@@ -5,6 +5,7 @@ import { MATH_CHEAT_SHEETS_CATEGORIES, MATH_CHEAT_SHEETS_DATA } from '../data/ma
 import { ENGLISH_CHEAT_SHEETS } from '../data/englishCheatSheetsData';
 import { PHYSICS_CHEAT_SHEETS, PHYSICS_CHEAT_SHEETS_CATEGORIES } from '../data/physicsCheatSheetsData';
 import { STATICS_CHEAT_SHEETS, STATICS_CHEAT_SHEETS_CATEGORIES } from '../data/staticsCheatSheetsData';
+import { DRAWING_CHEAT_SHEETS, DRAWING_CHEAT_SHEETS_CATEGORIES } from '../data/drawingCheatSheetsData';
 import { FACULTY_INFO } from '../data/chemistryCurriculumData';
 
 // BiDi Isolation Helper: Guarantees English formulas, brackets, and notations inside Arabic text never flip backwards
@@ -45,8 +46,9 @@ export default function CheatSheetsView({
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
+  const isDrawing = activeSubject === 'drawing';
 
-  const categoriesList = isMechanics ? STATICS_CHEAT_SHEETS_CATEGORIES : isPhysics
+  const categoriesList = isDrawing ? DRAWING_CHEAT_SHEETS_CATEGORIES : isMechanics ? STATICS_CHEAT_SHEETS_CATEGORIES : isPhysics
     ? PHYSICS_CHEAT_SHEETS_CATEGORIES
     : isEnglish
     ? [
@@ -58,7 +60,7 @@ export default function CheatSheetsView({
       ? MATH_CHEAT_SHEETS_CATEGORIES 
       : CHEAT_SHEETS_CATEGORIES;
 
-  const rawSheetsList = isMechanics ? STATICS_CHEAT_SHEETS : isPhysics ? PHYSICS_CHEAT_SHEETS : isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
+  const rawSheetsList = isDrawing ? DRAWING_CHEAT_SHEETS : isMechanics ? STATICS_CHEAT_SHEETS : isPhysics ? PHYSICS_CHEAT_SHEETS : isEnglish ? ENGLISH_CHEAT_SHEETS : isMath ? MATH_CHEAT_SHEETS_DATA : CHEAT_SHEETS_DATA;
 
   const [activeCategory, setActiveCategory] = useState('all');
   const [previewSheet, setPreviewSheet] = useState(null);
@@ -104,7 +106,7 @@ export default function CheatSheetsView({
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
             <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border mb-2 ${
-              isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-teal-500/20 text-teal-300 border-teal-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
+              isDrawing ? 'bg-slate-800 text-cyan-300 border-cyan-500/40' : isMechanics ? 'bg-amber-500/20 text-amber-300 border-amber-400/30' : isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-teal-500/20 text-teal-300 border-teal-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30'
             }`}>
               <Printer className="w-3.5 h-3.5" />
               <span>مكتبة الملخصات الهندسية الجاهزة للطباعة (A4) • هندسة شبرا</span>
@@ -132,7 +134,7 @@ export default function CheatSheetsView({
           <button
             onClick={() => window.print()}
             className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-white font-black text-xs shadow-lg transition active:scale-95 shrink-0 ${
-              isPhysics ? 'bg-purple-600 hover:bg-purple-500' : isEnglish ? 'bg-teal-600 hover:bg-teal-500' : isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
+              isDrawing ? 'bg-cyan-600 hover:bg-cyan-500' : isMechanics ? 'bg-amber-600 hover:bg-amber-500' : isPhysics ? 'bg-purple-600 hover:bg-purple-500' : isEnglish ? 'bg-teal-600 hover:bg-teal-500' : isMath ? 'bg-indigo-600 hover:bg-indigo-500' : 'bg-emerald-600 hover:bg-emerald-500'
             }`}
           >
             <Printer className="w-4 h-4" />

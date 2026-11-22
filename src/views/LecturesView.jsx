@@ -5,7 +5,8 @@ import {
   MATH_VIDEO_TOPICS, MATH_YOUTUBE_CHANNELS, MATH_LECTURE_VIDEOS,
   ENGLISH_VIDEO_TOPICS, ENGLISH_YOUTUBE_CHANNELS, ENGLISH_LECTURE_VIDEOS,
   PHYSICS_VIDEO_TOPICS, PHYSICS_YOUTUBE_CHANNELS, PHYSICS_LECTURE_VIDEOS,
-  STATICS_VIDEO_TOPICS, STATICS_YOUTUBE_CHANNELS, STATICS_LECTURE_VIDEOS
+  STATICS_VIDEO_TOPICS, STATICS_YOUTUBE_CHANNELS, STATICS_LECTURE_VIDEOS,
+  DRAWING_VIDEO_TOPICS, DRAWING_YOUTUBE_CHANNELS, DRAWING_LECTURE_VIDEOS
 } from '../data/videosData';
 
 export default function LecturesView({ activeDivision = 'all', setActiveDivision, activeSubject = 'chemistry' }) {
@@ -13,16 +14,23 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
-  const rawTopics = isMechanics ? STATICS_VIDEO_TOPICS : isPhysics ? PHYSICS_VIDEO_TOPICS : isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
-  const rawChannels = isMechanics ? STATICS_YOUTUBE_CHANNELS : isPhysics ? PHYSICS_YOUTUBE_CHANNELS : isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
-  const rawVideos = isMechanics ? STATICS_LECTURE_VIDEOS : isPhysics ? PHYSICS_LECTURE_VIDEOS : isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
+  const isDrawing = activeSubject === 'drawing';
+  const rawTopics = isDrawing ? DRAWING_VIDEO_TOPICS : isMechanics ? STATICS_VIDEO_TOPICS : isPhysics ? PHYSICS_VIDEO_TOPICS : isMath ? MATH_VIDEO_TOPICS : isEnglish ? ENGLISH_VIDEO_TOPICS : VIDEO_TOPICS;
+  const rawChannels = isDrawing ? DRAWING_YOUTUBE_CHANNELS : isMechanics ? STATICS_YOUTUBE_CHANNELS : isPhysics ? PHYSICS_YOUTUBE_CHANNELS : isMath ? MATH_YOUTUBE_CHANNELS : isEnglish ? ENGLISH_YOUTUBE_CHANNELS : YOUTUBE_CHANNELS;
+  const rawVideos = isDrawing ? DRAWING_LECTURE_VIDEOS : isMechanics ? STATICS_LECTURE_VIDEOS : isPhysics ? PHYSICS_LECTURE_VIDEOS : isMath ? MATH_LECTURE_VIDEOS : isEnglish ? ENGLISH_LECTURE_VIDEOS : LECTURE_VIDEOS;
 
   const [activeTopic, setActiveTopic] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
   // Isolate topics by active division
   const divisionTopics = React.useMemo(() => {
-    if (isMechanics) {
+    if (isDrawing) {
+      if (activeDivision === 'geometric_orthographic') {
+        return rawTopics.filter(t => t.id === 'all' || ['lines_tangency', 'orthographic'].includes(t.id));
+      } else if (activeDivision === 'isometric_sections') {
+        return rawTopics.filter(t => t.id === 'all' || ['isometric', 'four_center', 'sections', 'dimensioning'].includes(t.id));
+      }
+    } else if (isMechanics) {
       if (activeDivision === 'force_equilibrium') {
         return rawTopics.filter(t => t.id === 'all' || ['vectors_moments', 'equilibrium'].includes(t.id));
       } else if (activeDivision === 'structures_inertia') {
@@ -54,7 +62,7 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
       }
     }
     return rawTopics;
-  }, [rawTopics, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
+  }, [rawTopics, activeDivision, isMath, isEnglish, isPhysics, isMechanics, isDrawing]);
 
   const filteredVideos = rawVideos.filter((v) => {
     let matchDivision = true;
@@ -86,7 +94,7 @@ export default function LecturesView({ activeDivision = 'all', setActiveDivision
               <span>دليل المحاضرات المرئية • Curated Video Lectures</span>
             </div>
             <h1 className="text-2xl sm:text-3xl font-black text-white">
-              {isMechanics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ المِيكَانِيكَا 1 (الاسْتَاتِيكَا)' : isPhysics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
+              {isDrawing ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الرَّسْمِ الهَنْدَسِيِّ وَالإِسْقَاطِ (MDP 001)' : isMechanics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ المِيكَانِيكَا 1 (الاسْتَاتِيكَا)' : isPhysics ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ الفِيزْيَاءِ الهَنْدَسِيَّةِ 1' :
                isMath ? 'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الرِّيَاضِيَّاتِ 1' : 
                isEnglish ? 'مَحَطَّةُ شُرُوحَاتِ وَفِيدْيُوهَاتِ اللُّغَةِ الإِنْجِلِيزِيَّةِ الفَنِّيَّةِ' : 
                'مَحَطَّةُ فِيدْيُوهَاتِ وَشُرُوحَاتِ الكِيمْيَاءِ الهَنْدَسِيَّةِ'}

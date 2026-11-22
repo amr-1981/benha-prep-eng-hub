@@ -10,6 +10,7 @@ import { MATH_GLOSSARY_ITEMS, MATH_GLOSSARY_MODULES, MATH_GLOSSARY_TYPES } from 
 import { ENGLISH_GLOSSARY_ITEMS, ENGLISH_GLOSSARY_MODULES, ENGLISH_GLOSSARY_TYPES } from '../data/englishGlossaryData';
 import { PHYSICS_GLOSSARY_ITEMS, PHYSICS_GLOSSARY_MODULES, PHYSICS_GLOSSARY_TYPES } from '../data/physicsGlossaryData';
 import { STATICS_GLOSSARY_ITEMS, STATICS_GLOSSARY_MODULES, STATICS_GLOSSARY_TYPES } from '../data/staticsGlossaryData';
+import { DRAWING_GLOSSARY_ITEMS, DRAWING_GLOSSARY_MODULES, DRAWING_GLOSSARY_TYPES } from '../data/drawingGlossaryData';
 import { ENGINEERING_TERMS } from '../data/engineeringTermsData';
 
 export default function GlossaryView({ 
@@ -23,10 +24,11 @@ export default function GlossaryView({
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
+  const isDrawing = activeSubject === 'drawing';
 
-  const rawItems = isMechanics ? STATICS_GLOSSARY_ITEMS : isPhysics ? PHYSICS_GLOSSARY_ITEMS : isEnglish ? ENGLISH_GLOSSARY_ITEMS : isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
-  const rawModules = isMechanics ? STATICS_GLOSSARY_MODULES : isPhysics ? PHYSICS_GLOSSARY_MODULES : isEnglish ? ENGLISH_GLOSSARY_MODULES : isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
-  const rawTypes = isMechanics ? STATICS_GLOSSARY_TYPES : isPhysics ? PHYSICS_GLOSSARY_TYPES : isEnglish ? ENGLISH_GLOSSARY_TYPES : isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
+  const rawItems = isDrawing ? DRAWING_GLOSSARY_ITEMS : isMechanics ? STATICS_GLOSSARY_ITEMS : isPhysics ? PHYSICS_GLOSSARY_ITEMS : isEnglish ? ENGLISH_GLOSSARY_ITEMS : isMath ? MATH_GLOSSARY_ITEMS : GLOSSARY_ITEMS;
+  const rawModules = isDrawing ? DRAWING_GLOSSARY_MODULES : isMechanics ? STATICS_GLOSSARY_MODULES : isPhysics ? PHYSICS_GLOSSARY_MODULES : isEnglish ? ENGLISH_GLOSSARY_MODULES : isMath ? MATH_GLOSSARY_MODULES : GLOSSARY_MODULES;
+  const rawTypes = isDrawing ? DRAWING_GLOSSARY_TYPES : isMechanics ? STATICS_GLOSSARY_TYPES : isPhysics ? PHYSICS_GLOSSARY_TYPES : isEnglish ? ENGLISH_GLOSSARY_TYPES : isMath ? MATH_GLOSSARY_TYPES : GLOSSARY_TYPES;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedModule, setSelectedModule] = useState('all');
@@ -47,7 +49,13 @@ export default function GlossaryView({
   const divisionModules = useMemo(() => {
     let mods = rawModules;
     if (activeDivision && activeDivision !== 'all') {
-      if (isMechanics) {
+      if (isDrawing) {
+        if (activeDivision === 'geometric_orthographic') {
+          mods = rawModules.filter(m => m.id === 'all' || ['instruments_lines', 'tangency_arcs', 'orthographic_projection', 'missing_view', 'cylinders_inclined'].includes(m.id));
+        } else if (activeDivision === 'isometric_sections') {
+          mods = rawModules.filter(m => m.id === 'all' || ['isometric_box', 'four_center_ellipse', 'sections_hatching', 'sectioned_missing_view', 'dimensioning_rules'].includes(m.id));
+        }
+      } else if (isMechanics) {
         if (activeDivision === 'force_equilibrium') {
           mods = rawModules.filter(m => m.id === 'all' || ['vectors', 'moments', 'equivalent_systems', 'particle_equilibrium', 'rigid_body_equilibrium'].includes(m.id));
         } else if (activeDivision === 'structures_inertia') {
@@ -80,7 +88,7 @@ export default function GlossaryView({
       }
     }
     return mods;
-  }, [rawModules, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
+  }, [rawModules, activeDivision, isMath, isEnglish, isPhysics, isMechanics, isDrawing]);
 
   // Reset selectedModule if it is outside current division
   React.useEffect(() => {
@@ -95,7 +103,7 @@ export default function GlossaryView({
       // Division filter
       let matchDivision = true;
       if (activeDivision && activeDivision !== 'all') {
-        if (isEnglish || isMath || isPhysics || isMechanics) {
+        if (isEnglish || isMath || isPhysics || isMechanics || isDrawing) {
           matchDivision = item.division === activeDivision || item.division === 'all';
         } else {
           const isElectro = item.module === 'corrosion' || item.id.startsWith('c-');
@@ -116,7 +124,7 @@ export default function GlossaryView({
 
       return matchDivision && matchModule && matchType && matchSearch;
     });
-  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath, isEnglish, isPhysics, isMechanics]);
+  }, [rawItems, searchQuery, selectedModule, selectedType, activeDivision, isMath, isEnglish, isPhysics, isMechanics, isDrawing]);
 
   const currentFlashcard = filteredItems[flashcardIdx] || filteredItems[0];
 
@@ -204,7 +212,7 @@ export default function GlossaryView({
           <div className="space-y-2 text-center md:text-right">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-500/20 text-indigo-300 text-xs font-bold border border-indigo-400/30">
               <BrainCircuit className="w-3.5 h-3.5 text-cyan-400" />
-              <span>معجم الحفظ والمراجعة السريعة • {isPhysics ? 'Physics Laws & Vault' : isEnglish ? 'Technical Vocab & Phrasing Vault' : isMath ? 'Math Formulas Vault' : 'Glossary & Formulas Vault'}</span>
+              <span>معجم الحفظ والمراجعة السريعة • {isDrawing ? 'Engineering Drawing ISO Conventions & Standards Vault' : isMechanics ? 'Engineering Statics Laws & Formulas Vault' : isPhysics ? 'Physics Laws & Vault' : isEnglish ? 'Technical Vocab & Phrasing Vault' : isMath ? 'Math Formulas Vault' : 'Glossary & Formulas Vault'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
               {isPhysics

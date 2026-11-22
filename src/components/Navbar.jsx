@@ -23,6 +23,7 @@ export default function Navbar({
   const isEnglish = selectedSubject === 'english';
   const isPhysics = selectedSubject === 'physics';
   const isMechanics = selectedSubject === 'mechanics';
+  const isDrawing = selectedSubject === 'drawing';
 
   const isCalculus = selectedDivision === 'calculus';
   const isAlgebra = selectedDivision === 'algebra';
@@ -34,10 +35,34 @@ export default function Navbar({
   const isHeatWaves = selectedDivision === 'heat_waves';
   const isForceEquilibrium = selectedDivision === 'force_equilibrium';
   const isStructuresInertia = selectedDivision === 'structures_inertia';
+  const isGeometricOrthographic = selectedDivision === 'geometric_orthographic';
+  const isIsometricSections = selectedDivision === 'isometric_sections';
 
   // Division-specific labels & icons for Level 3
   const getNavItems = () => {
-    if (isMechanics) {
+    if (isDrawing) {
+      if (isGeometricOrthographic) {
+        return [
+          { id: 'syllabus', label: 'مقرر العمليات والإسقاط', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم الخطوط والمماسات', icon: BrainCircuit, badge: 'ISO 128' },
+          { id: 'lab', label: 'حاسبات المماسات والمساقط', icon: Calculator, badge: '3 حاسبات' },
+          { id: 'cheatsheets', label: 'شيتات إسقاط ومماسات A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات الإسقاط MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات الإسقاط', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات الإسقاط', icon: Youtube, badge: 'YouTube' }
+        ];
+      } else {
+        return [
+          { id: 'syllabus', label: 'مقرر المنظور والقطاعات', icon: BookOpen, badge: '5 وحدات' },
+          { id: 'glossary', label: 'معجم المنظور والقطاعات والأبعاد', icon: BrainCircuit, badge: 'المراكز الأربعة' },
+          { id: 'lab', label: 'حاسبات المنظور والتهشير', icon: Calculator, badge: 'أدوات تفاعلية' },
+          { id: 'cheatsheets', label: 'شيتات منظور وقطاعات A4', icon: Printer, badge: 'جاهز للطباعة' },
+          { id: 'quiz', label: 'امتحانات المنظور MCQ', icon: Award, badge: 'شبرا' },
+          { id: 'materials', label: 'مذكرات المنظور والقطاعات', icon: FolderArchive, badge: 'PDF' },
+          { id: 'lectures', label: 'فيديوهات المنظور والقطاعات', icon: Youtube, badge: 'YouTube' }
+        ];
+      }
+    } else if (isMechanics) {
       if (isForceEquilibrium) {
         return [
           { id: 'syllabus', label: 'مقرر نظم القوى والاتزان', icon: BookOpen, badge: '5 وحدات' },
@@ -187,7 +212,7 @@ export default function Navbar({
                       onClick={onBackToSubject}
                       className={`transition ${isLevel2 ? 'text-cyan-300 font-black' : 'text-slate-400 hover:text-white'}`}
                     >
-                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : isEnglish ? 'اللغة الإنجليزية الفنية (HUM 001)' : isPhysics ? 'الفيزياء الهندسية 1 (PHY 001)' : 'الميكانيكا الهندسية 1 - استاتيكا (MEC 001)'}
+                      {isMath ? 'الرياضيات 1 (MTH 001)' : isChemistry ? 'الكيمياء الهندسية (CHM 001)' : isEnglish ? 'اللغة الإنجليزية الفنية (HUM 001)' : isPhysics ? 'الفيزياء الهندسية 1 (PHY 001)' : isMechanics ? 'الميكانيكا الهندسية 1 - استاتيكا (MEC 001)' : 'الرسم الهندسي والإسقاط (MDP 001)'}
                     </button>
                   </>
                 )}
@@ -217,7 +242,7 @@ export default function Navbar({
                   isMath ? 'Engineering Mathematics 1 (MTH 001) • Academic Branches' :
                   isChemistry ? 'Engineering Chemistry (CHM 001) • Academic Divisions' :
                   isEnglish ? 'Technical English & Reports (HUM 001) • Academic Branches' :
-                  isPhysics ? 'Engineering Physics 1 (PHY 001) • Academic Branches' : 'Engineering Mechanics 1 (MEC 001) • Academic Branches'
+                  isPhysics ? 'Engineering Physics 1 (PHY 001) • Academic Branches' : isMechanics ? 'Engineering Mechanics 1 (MEC 001) • Academic Branches' : 'Engineering Drawing & Projection (MDP 001) • Academic Branches'
                 )}
                 {isLevel3 && (
                   isCalculus ? 'Calculus & Applications Branch • قسم حساب التفاضل' :

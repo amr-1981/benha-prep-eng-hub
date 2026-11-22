@@ -17,6 +17,7 @@ export default function SubjectPortalView({
   const isEnglish = subject === 'english';
   const isPhysics = subject === 'physics';
   const isMechanics = subject === 'mechanics';
+  const isDrawing = subject === 'drawing';
 
   const [expandedArabicDivisions, setExpandedArabicDivisions] = useState(new Set());
 
@@ -43,7 +44,7 @@ export default function SubjectPortalView({
           </button>
           <span className="text-slate-600">/</span>
           <span className="text-white font-mono font-black">
-            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : isEnglish ? 'Technical English (HUM 001)' : isPhysics ? 'Engineering Physics 1 (PHY 001)' : 'Engineering Mechanics 1 - Statics (MEC 001)'}
+            {isMath ? 'Engineering Mathematics 1 (MTH 001)' : isChemistry ? 'Engineering Chemistry (CHM 001)' : isEnglish ? 'Technical English (HUM 001)' : isPhysics ? 'Engineering Physics 1 (PHY 001)' : isMechanics ? 'Engineering Mechanics 1 - Statics (MEC 001)' : 'Engineering Drawing & Projection (MDP 001)'}
           </span>
         </div>
 
@@ -1422,6 +1423,291 @@ export default function SubjectPortalView({
         </div>
       )}
 
+
+
+    
+      {/* ======================================================== */}
+      {/* SUBJECT 6: ENGINEERING DRAWING & PROJECTION (MDP 001)    */}
+      {/* ======================================================== */}
+      {isDrawing && (
+        <div className="space-y-8">
+          
+          {/* Main Subject Welcome Hero */}
+          <div className="bg-gradient-to-r from-slate-900 via-zinc-950 to-slate-900 rounded-3xl p-6 sm:p-10 border-2 border-slate-500/40 shadow-2xl relative overflow-hidden text-left" dir="ltr">
+            <div className="absolute top-0 right-0 w-96 h-96 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-zinc-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+
+            <div className="relative z-10 space-y-4 max-w-4xl">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800/80 text-cyan-300 text-xs font-bold border border-cyan-500/40">
+                <Compass className="w-4 h-4 text-cyan-400" />
+                <span>MDP 001 • Engineering Drawing & Projection Academic Portal • Shoubra</span>
+              </div>
+
+              <h1 className="text-3xl sm:text-5xl font-black text-white tracking-tight leading-tight font-mono">
+                ENGINEERING DRAWING & PROJECTION
+                <span className="block text-xl sm:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-slate-300 to-teal-300 font-bold mt-2">
+                  Geometric Constructions, Orthographic Projection, 30° Isometric, Four-Center Ellipse & Sections • 125 Marks
+                </span>
+              </h1>
+
+              <p className="text-xs font-bold text-amber-300" dir="rtl">
+                الصفحة الرئيسية لمادة الرسم الهندسي والإسقاط والعمليات الهندسية • كلية الهندسة بشبرا (جامعة بنها)
+              </p>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed font-normal">
+                Welcome to the Engineering Drawing, Projection & Geometric Constructions (MDP 001) Portal at Shoubra Engineering. The curriculum is structurally divided into two independent academic branches. Select a branch below to enter its dedicated academic environment with full syllabus modules, interactive drafting simulators, printable A4 cheat sheets, and past exam questions:
+              </p>
+
+              <div className="flex flex-wrap items-center justify-start gap-3 pt-2 text-xs">
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-cyan-300 border border-slate-700 font-bold font-mono">
+                  📐 10 Accredited Curriculum Modules
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-amber-300 border border-slate-700 font-bold">
+                  💡 On-Demand Arabic Explanations Available
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-teal-300 border border-slate-700 font-bold font-mono">
+                  ⚙️ 5 Interactive Drafting Solvers & Simulators
+                </span>
+                <span className="px-3 py-1 rounded-xl bg-slate-800 text-slate-300 border border-slate-700 font-bold font-mono">
+                  🖨️ 5 Printable A4 Cheat Sheets
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Department Cards Section */}
+          <div className="space-y-4">
+            <div className="text-left" dir="ltr">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-cyan-400" />
+                <h2 className="text-xl sm:text-2xl font-black text-white font-mono uppercase tracking-wide">
+                  Academic Branches (Select to Enter)
+                </h2>
+              </div>
+              <p className="text-xs text-slate-400 font-normal">
+                Notice: Upon entering either branch, you operate strictly within its isolated curriculum with zero cross-branch distractions.
+              </p>
+              <p className="text-xs text-amber-300 font-bold mt-1" dir="rtl">
+                أقسام مادة الرسم الهندسي (اختر قسماً للدخول المباشر):
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              
+              {/* ======================================================== */}
+              {/* BRANCH 1: GEOMETRIC CONSTRUCTIONS & ORTHOGRAPHIC        */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-slate-600/40 hover:border-cyan-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-cyan-300 bg-slate-900 px-3 py-1 rounded-full border border-cyan-800/80 font-mono">
+                      Branch 1 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('geometric_orthographic')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('geometric_orthographic')
+                          ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                          : 'bg-slate-900 text-cyan-400/90 hover:text-cyan-300 border-slate-700 hover:border-cyan-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-cyan-400" />
+                      <span>{expandedArabicDivisions.has('geometric_orthographic') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-cyan-300 transition-colors mt-1 font-mono">
+                      Geometric Constructions & Orthographic Projection
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      العمليات الهندسية وأقواس المماسات والإسقاط المتعامد والمسقط الثالث • <span className="text-cyan-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers drawing equipment, sheet layout, standard ISO line types and precedence hierarchy (0.7 mm solid outline vs 0.35 mm hidden dashed line vs 0.25 mm centerline), tangency arc constructions (external sum R1+R, internal enclosing difference R-R1, and line-to-circle fillet), first-angle orthographic multi-view projection (Elevation, Plan, and Left Side View drawn on the right), 45° miter line alignment and depth transfer, systematic 4-step missing third view deduction, and cylindrical feature projection.
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('geometric_orthographic') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-950/40 to-slate-900/95 border border-cyan-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-cyan-300 border-b border-cyan-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-cyan-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم العمليات الهندسية والإسقاط المتعامد:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز هذا القسم على إتقان رسم الخطوط الهندسية القياسية وفقاً لـ ISO وتطبيق هرم أسبقية تراكب الخطوط عند التطابق (الخط الظاهر يلغي الخط المخفي والسنتر لاين)، رسم أقواس التماس الدائرية الخارجية والداخلية بتحديد مراكز الفرجار ونقاط التماس بدقة، توزيع المساقط بنظام زاوية الإسقاط الأولى (المسقط الأفقي تحت الرأسي تماماً والمسقط الجانبي على يمينه)، استخدام خط الـ 45° لنقل أبعاد العمق من الأفقي إلى الجانبي ميكانيكياً، ومنهجية استنتاج المسقط الثالث المفقود بالتحليل المستوي والكتلي.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-cyan-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-cyan-400 shrink-0" />
+                        <span>Equipment, Scales & ISO Line Types</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Activity className="w-4 h-4 text-blue-400 shrink-0" />
+                        <span>Geometric Constructions & Tangency Arcs</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Layers className="w-4 h-4 text-teal-400 shrink-0" />
+                        <span>First-Angle Projection & 45° Miter Line</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-indigo-400 shrink-0" />
+                        <span>Missing Third View Deduction Protocol</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-cyan-950/60 text-cyan-300 text-[11px] font-bold border border-cyan-800/50 font-mono">
+                      📐 Tangency Arc Center Solver
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🔄 45° Miter Line View Aligner
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      📏 Line Precedence Inspector
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 2 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('geometric_orthographic')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-slate-700 via-zinc-600 to-cyan-700 hover:from-slate-600 hover:to-cyan-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-slate-950/60 transition-all active:scale-[0.98] group-hover:shadow-cyan-500/20 font-mono"
+                  >
+                    <span>Enter Geometric Constructions & Orthographic Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+              {/* ======================================================== */}
+              {/* BRANCH 2: ISOMETRIC DRAWING, SECTIONS & DIMENSIONING     */}
+              {/* ======================================================== */}
+              <div className="p-6 sm:p-8 rounded-3xl bg-slate-850/95 border-2 border-zinc-600/40 hover:border-teal-400 shadow-xl transition-all duration-300 flex flex-col justify-between group text-left" dir="ltr">
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between gap-2 flex-wrap">
+                    <span className="text-[11px] font-black text-teal-300 bg-slate-900 px-3 py-1 rounded-full border border-teal-800/80 font-mono">
+                      Branch 2 • 5 Curriculum Modules
+                    </span>
+
+                    <button
+                      onClick={() => toggleArabicDivision('isometric_sections')}
+                      className={`px-2.5 py-1 rounded-xl text-[11px] font-bold transition flex items-center gap-1.5 border ${
+                        expandedArabicDivisions.has('isometric_sections')
+                          ? 'bg-teal-500/20 text-teal-300 border-teal-500/40'
+                          : 'bg-slate-900 text-teal-400/90 hover:text-teal-300 border-slate-700 hover:border-teal-500/40'
+                      }`}
+                    >
+                      <Lightbulb className="w-3.5 h-3.5 text-teal-400" />
+                      <span>{expandedArabicDivisions.has('isometric_sections') ? 'إخفاء الشرح' : '💡 الشرح بالعربي'}</span>
+                    </button>
+                  </div>
+
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-black text-white group-hover:text-teal-300 transition-colors mt-1 font-mono">
+                      Isometric Drawing, Sections & Dimensioning
+                    </h3>
+                    <p className="text-xs font-bold text-slate-400 mt-1" dir="rtl">
+                      المنظور الهندسي الأيزومتري والقطاعات وقواعد التهشير والأبعاد • <span className="text-teal-300 font-black">هندسة شبرا</span>
+                    </p>
+                  </div>
+
+                  <p className="text-xs sm:text-sm text-slate-300 leading-relaxed font-normal font-mono">
+                    Covers 30° axonometric isometric projection, bounding isometric box construction, isometric lines (1:1 measurement) vs. non-isometric slanted lines, the four-center method for drawing isometric circles and ellipses on top, front, and side faces, cylinder depth extrusion, full/half/offset sectional views, cutting plane lines (Type H), standard 45° hatching rules (0.25-0.35 mm lines spaced 1.5-3 mm), strict non-hatching exceptions for longitudinally sliced webs/ribs, shafts, bolts, nuts, and pins, deduction of missing views with full sectioning, and standard engineering dimensioning rules (aligned system, 3:1 arrowheads, ⌀ for circles, R for fillets).
+                  </p>
+
+                  {/* On-Demand Arabic Explanation Drawer */}
+                  {expandedArabicDivisions.has('isometric_sections') && (
+                    <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-950/40 to-slate-900/95 border border-teal-500/40 text-right space-y-1.5 animate-in fade-in duration-200" dir="rtl">
+                      <div className="flex items-center gap-1.5 text-xs font-black text-teal-300 border-b border-teal-500/20 pb-1">
+                        <Lightbulb className="w-3.5 h-3.5 text-teal-400" />
+                        <span>💡 الفهم والتوجيه الأكاديمي بالعربي لقسم المنظور والقطاعات والأبعاد:</span>
+                      </div>
+                      <p className="text-xs text-slate-200 leading-relaxed font-medium">
+                        يركز هذا القسم على رسم المنظور الهندسي الأيزومتري بزاوية 30° باستخدام مثلث الـ 30°-60° والمسطرة الـ T، إنشاء صندوق المنظور المحيط (Isometric Box)، إتقان رسم الدوائر والأسطوانات في المنظور بطريقة المراكز الأربعة بتحديد المعين والرؤوس المنفرجة (120°)، تنفيذ القطاعات الكاملة ونصف القطاعات، تطبيق القواعد الصارمة لخطوط التهشير 45° مع الالتزام التام باستثناء الأعصاب والمسامير والأعمدة من التهشير الطولي، ووضع الأبعاد بنظام المحاذاة القياسي وتجنب محظورات وضع الأبعاد على الخطوط المخفية.
+                      </p>
+                    </div>
+                  )}
+
+                  <div className="space-y-2 pt-2">
+                    <span className="text-[11px] font-bold text-teal-400 block font-mono uppercase tracking-wider">
+                      Accredited Academic Modules:
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Box className="w-4 h-4 text-teal-400 shrink-0" />
+                        <span>30° Isometric Drawing & The Bounding Box</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Compass className="w-4 h-4 text-emerald-400 shrink-0" />
+                        <span>Four-Center Method for Isometric Ellipses</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <Scissors className="w-4 h-4 text-red-400 shrink-0" />
+                        <span>Full/Half Sections & 45° Hatching Rules</span>
+                      </div>
+                      <div className="p-2.5 rounded-xl bg-slate-900/80 border border-slate-700/80 flex items-center gap-2 text-slate-200">
+                        <FileText className="w-4 h-4 text-amber-400 shrink-0" />
+                        <span>Engineering Dimensioning & Tolerancing</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2">
+                    <span className="px-2.5 py-1 rounded-lg bg-teal-950/60 text-teal-300 text-[11px] font-bold border border-teal-800/50 font-mono">
+                      📦 Isometric Bounding Box Builder
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⭕ Four-Center Ellipse Generator
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ✂️ Sectional Hatching Validator
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      ⚠️ Web & Fastener Non-Hatch Rules
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🖨️ 3 High-Density A4 Cheat Sheets
+                    </span>
+                    <span className="px-2.5 py-1 rounded-lg bg-slate-900 text-slate-300 text-[11px] font-bold border border-slate-700 font-mono">
+                      🏆 Past Exam MCQ Bank
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-6 mt-6 border-t border-slate-800">
+                  <button
+                    onClick={() => onSelectDivision('isometric_sections')}
+                    className="w-full py-4 rounded-2xl bg-gradient-to-r from-zinc-700 via-slate-700 to-teal-700 hover:from-zinc-600 hover:to-teal-600 text-white font-black text-sm sm:text-base flex items-center justify-center gap-2 shadow-xl shadow-zinc-950/60 transition-all active:scale-[0.98] group-hover:shadow-teal-500/20 font-mono"
+                  >
+                    <span>Enter Isometric Drawing, Sections & Dimensioning Branch</span>
+                    <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      )}
 
 
     </div>

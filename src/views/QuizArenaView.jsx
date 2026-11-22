@@ -9,6 +9,7 @@ import { MATH_QUIZ_QUESTIONS } from '../data/mathQuizBankData';
 import { ENGLISH_QUIZ_QUESTIONS } from '../data/englishQuizBankData';
 import { PHYSICS_QUIZ_QUESTIONS } from '../data/physicsQuizBankData';
 import { STATICS_QUIZ_QUESTIONS } from '../data/staticsQuizBankData';
+import { DRAWING_QUIZ_QUESTIONS } from '../data/drawingQuizBankData';
 
 export default function QuizArenaView({ 
   activeDivision = 'all', 
@@ -21,8 +22,9 @@ export default function QuizArenaView({
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
+  const isDrawing = activeSubject === 'drawing';
 
-  const questionsList = isMechanics ? STATICS_QUIZ_QUESTIONS : isPhysics ? PHYSICS_QUIZ_QUESTIONS : isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
+  const questionsList = isDrawing ? DRAWING_QUIZ_QUESTIONS : isMechanics ? STATICS_QUIZ_QUESTIONS : isPhysics ? PHYSICS_QUIZ_QUESTIONS : isEnglish ? ENGLISH_QUIZ_QUESTIONS : isMath ? MATH_QUIZ_QUESTIONS : QUIZ_QUESTIONS;
 
   const [activeFilter, setActiveFilter] = useState('all');
   const [currentIdx, setCurrentIdx] = useState(0);
@@ -34,7 +36,7 @@ export default function QuizArenaView({
   const filteredQuestions = questionsList.filter((q) => {
     let matchDivision = true;
     if (activeDivision && activeDivision !== 'all') {
-      if (isEnglish || isMath || isPhysics || isMechanics) {
+      if (isEnglish || isMath || isPhysics || isMechanics || isDrawing) {
         matchDivision = q.division === activeDivision || q.division === 'all';
       } else {
         const isElectro = q.module === 'corrosion-control' || q.module === 'electrochemistry-cells' || q.topic?.includes('تآكل') || q.topic?.includes('نيرنست');
@@ -78,7 +80,27 @@ export default function QuizArenaView({
   };
 
   const activeFilters = useMemo(() => {
-    if (isMechanics) {
+    if (isDrawing) {
+      if (activeDivision === 'geometric_orthographic') {
+        return [
+          { id: 'all', label: 'جميع أسئلة العمليات والإسقاط' },
+          { id: 'instruments_lines', label: 'أنواع الخطوط وأسبقيتها' },
+          { id: 'tangency_arcs', label: 'أقواس التماس الخارجية والداخلية' },
+          { id: 'orthographic_projection', label: 'الإسقاط المتعامد وزاوية 1' },
+          { id: 'missing_view', label: 'استنتاج المسقط الثالث' },
+          { id: 'cylinders_inclined', label: 'الأسطوانات والأسطح المائلة' }
+        ];
+      } else {
+        return [
+          { id: 'all', label: 'جميع أسئلة المنظور والقطاعات' },
+          { id: 'isometric_box', label: 'المنظور 30° والصندوق' },
+          { id: 'four_center_ellipse', label: 'الدوائر بالمراكز الأربعة' },
+          { id: 'sections_hatching', label: 'القطاعات والتهشير واستثناء الأعصاب' },
+          { id: 'sectioned_missing_view', label: 'المسقط الثالث بقطاع كامل' },
+          { id: 'dimensioning_rules', label: 'قواعد وضع الأبعاد الهندسية' }
+        ];
+      }
+    } else if (isMechanics) {
       if (activeDivision === 'force_equilibrium') {
         return [
           { id: 'all', label: 'جميع أسئلة نظم القوى والاتزان' },
@@ -172,7 +194,7 @@ export default function QuizArenaView({
         ];
       }
     }
-  }, [isMath, isEnglish, isPhysics, isMechanics, activeDivision]);
+  }, [isMath, isEnglish, isPhysics, isMechanics, isDrawing, activeDivision]);
 
   return (
     <div className="space-y-8 pb-16 font-arabic max-w-4xl mx-auto">
@@ -195,7 +217,7 @@ export default function QuizArenaView({
               isPhysics ? 'bg-purple-500/20 text-purple-300 border-purple-400/30' : isEnglish ? 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30' : isMath ? 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30' : 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30'
             }`}>
               <Award className="w-3.5 h-3.5 text-amber-400" />
-              <span>بنك الأسئلة والامتحانات التفاعلي • {isMechanics ? 'Statics 1 Exam Arena' : isPhysics ? 'Physics 1 Exam Arena' : isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
+              <span>بنك الأسئلة والامتحانات التفاعلي • {isDrawing ? 'Engineering Drawing Exam Arena' : isMechanics ? 'Statics 1 Exam Arena' : isPhysics ? 'Physics 1 Exam Arena' : isEnglish ? 'Technical English Exam Arena' : isMath ? 'Math Exam Arena' : 'Chemistry Exam Arena'}</span>
             </div>
             <h1 className="text-2xl sm:text-4xl font-black text-white">
               {isMechanics

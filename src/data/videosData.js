@@ -559,6 +559,150 @@ export const STATICS_YOUTUBE_CHANNELS = [
   }
 ];
 
+
+
+// =========================================================================
+// ENGINEERING DRAWING & PROJECTION (MDP 001) VIDEO REGISTRY
+// =========================================================================
+export const DRAWING_VIDEO_TOPICS = [
+  { id: "all", label: "جميع دروس ومحاضرات الرسم الهندسي", icon: "Layers" },
+  { id: "lines_tangency", label: "أنواع الخطوط ومقاييس الرسم وأقواس التماس", icon: "Compass" },
+  { id: "orthographic", label: "الإسقاط المتعامد وزاوية 1 والمسقط الثالث", icon: "Layers" },
+  { id: "isometric", label: "المنظور الأيزومتري بزاوية 30° وصندوق الإسقاط", icon: "Box" },
+  { id: "four_center", label: "رسم الدوائر والأسطوانات بالمراكز الأربعة", icon: "Compass" },
+  { id: "sections", label: "القطاعات وقواعد التهشير 45° واستثناء الأعصاب", icon: "Scissors" },
+  { id: "dimensioning", label: "القواعد القياسية لوضع الأبعاد الهندسية", icon: "FileText" }
+];
+
+export const DRAWING_YOUTUBE_CHANNELS = [
+  {
+    name: "Engineering Drawing & Projection - Dr. Mamdouh Zaki",
+    badge: "شرح أكاديمي معتمد للجامعات المصرية 🎓",
+    description: "أقوى وأشهر سلسلة لشرح الرسم الهندسي والإسقاط والعمليات والمنظور والقطاعات لكليات الهندسة المصرية خطوة بخطوة بالمسطرة والمثلثات.",
+    subscribers: "+380 ألف طالب هندسة",
+    searchQuery: "رسم هندسي إعدادي هندسة شبرا عمليات إسقاط منظور قطاعات",
+    avatar: "📐"
+  },
+  {
+    name: "منصة المهندس - رسم إعدادي هندسة شبرا وبنها",
+    badge: "شيتات وامتحانات شبرا 🏛️",
+    description: "شرح وتطبيق عملي للوحات الرسم الهندسي واستنتاج المسقط الثالث بالقطاع الكامل لكلية الهندسة بشبرا.",
+    subscribers: "+110 ألف طالب",
+    searchQuery: "رسم هندسي شبرا استنتاج المسقط الثالث قطاع كامل",
+    avatar: "👨‍🏫"
+  },
+  {
+    name: "Tirupati Rao Engineering Drawing / Manas Patnaik",
+    badge: "رسوم متحركة ثلاثية الأبعاد 🎬",
+    description: "شروحات بصرية ثلاثية الأبعاد تفاعلية توضح زاوية الإسقاط الأولى وطريقة المراكز الأربعة للقطع الناقص والقطاعات.",
+    subscribers: "+500 ألف طالب",
+    searchQuery: "First angle projection isometric drawing four center method sections",
+    avatar: "⚙️"
+  }
+];
+
+export const DRAWING_LECTURE_VIDEOS = [
+  // Branch 1: Geometric Constructions & Orthographic Projection
+  {
+    id: "vd-line-1",
+    topic: "lines_tangency",
+    division: "geometric_orthographic",
+    title: "أدوات الرسم وتخطيط اللوحة ومواصفات أنواع الخطوط القياسية ISO 128 وأولويات التراكب",
+    channel: "منصة المهندس",
+    duration: "35 دقيقة",
+    views: "175,000 مشاهدة",
+    description: "شرح سمك واستخدامات الخط المتصل العريض 0.7 مم، والخط المخفي المتقطع، وسنتر لاين المحاور، وقاعدة أسبقية الخطوط عند التطابق ومقاييس الرسم.",
+    url: "https://www.youtube.com/results?search_query=engineering+drawing+lines+types+scales+iso+128",
+    tags: ["أنواع الخطوط", "أدوات الرسم", "ISO 128", "تخطيط اللوحة", "Lines"]
+  },
+  {
+    id: "vd-tang-1",
+    topic: "lines_tangency",
+    division: "geometric_orthographic",
+    title: "العمليات الهندسية: أقواس التماس للدوائر من الخارج والداخل والمماسات المركبة خطوة بخطوة",
+    channel: "Dr. Mamdouh Zaki",
+    duration: "48 دقيقة",
+    views: "210,000 مشاهدة",
+    description: "قواعد جمع أنصاف الأقطار (R1+R) وطرحها (R-R1) لتحديد مركز القوس O، وتحديد نقطتي التماس T1 و T2 بالمسطرة ورسم القوس الناعم بالفرجار.",
+    url: "https://www.youtube.com/results?search_query=tangency+arcs+engineering+drawing+geometric+constructions",
+    tags: ["أقواس التماس", "عمليات هندسية", "مماسات", "فرجار", "Tangency"]
+  },
+  {
+    id: "vd-ortho-1",
+    topic: "orthographic",
+    division: "geometric_orthographic",
+    title: "الإسقاط المتعامد زاوية أولى (First-Angle): توزيع المساقط الثلاثة ونقل الأبعاد بخط الميتر 45°",
+    channel: "Dr. Mamdouh Zaki",
+    duration: "52 دقيقة",
+    views: "290,000 مشاهدة",
+    description: "مفهوم صندوق الزجاج 3D، وضع المسقط الأفقي تحت الرأسي تماماً والمسقط الجانبي الأيسر على اليمين، واستخدام خط الـ 45° لنقل أبعاد العمق بدون مسطرة.",
+    url: "https://www.youtube.com/results?search_query=first+angle+orthographic+projection+45+degree+miter+line",
+    tags: ["إسقاط متعامد", "زاوية أولى", "خط 45", "مساقط", "Orthographic"]
+  },
+  {
+    id: "vd-miss-1",
+    topic: "orthographic",
+    division: "geometric_orthographic",
+    title: "استنتاج المسقط الثالث المفقود: الطريقة السحرية في 4 خطوات محكمة لتحليل الأسطح والتجاويف",
+    channel: "منصة المهندس",
+    duration: "58 دقيقة",
+    views: "340,000 مشاهدة",
+    description: "رسم صندوق الإحاطة، سحب خطوط الإسقاط عبر خط الـ 45°، تحديد الحواف المرئية والمخفية وقواعد تلاقي الخطوط المتقطعة.",
+    url: "https://www.youtube.com/results?search_query=missing+third+view+engineering+drawing+orthographic",
+    tags: ["المسقط الثالث", "استنتاج", "مساقط", "خطوط مخفية", "Missing View"]
+  },
+
+  // Branch 2: Isometric Drawing, Sections & Dimensioning
+  {
+    id: "vd-iso-1",
+    topic: "isometric",
+    division: "isometric_sections",
+    title: "الرسم الأيزومتري بزاوية 30°: بناء محاور المنظور وصندوق الإسقاط ورسم الخطوط غير الأيزومترية",
+    channel: "Dr. Mamdouh Zaki",
+    duration: "45 دقيقة",
+    views: "230,000 مشاهدة",
+    description: "استخدام مثلث 30-60 مع المسطرة T، رسم متوازي المستطيلات المحيط بالأبعاد الكلية، وتحديد إحداثيات الخطوط المائلة وتوصيلها.",
+    url: "https://www.youtube.com/results?search_query=isometric+drawing+30+degrees+bounding+box+tutorial",
+    tags: ["منظور أيزومتري", "زاوية 30", "صندوق المنظور", "Isometric"]
+  },
+  {
+    id: "vd-four-1",
+    topic: "four_center",
+    division: "isometric_sections",
+    title: "طريقة المراكز الأربعة لرسم الدوائر والأسطوانات في المنظور على الأوجه الثلاثة بالتفصيل",
+    channel: "منصة المهندس",
+    duration: "50 دقيقة",
+    views: "310,000 مشاهدة",
+    description: "رسم المعين المحيط بقطر D، تحديد الرؤوس المنفرجة 120°، شبكة خطوط الأرقام 7 و 8، إيجاد المراكز C1-C4، وسحب أسطوانة بعمق L.",
+    url: "https://www.youtube.com/results?search_query=four+center+method+isometric+circle+ellipse+cylinder",
+    tags: ["المراكز الأربعة", "قطع ناقص أيزومتري", "معين", "أسطوانة", "Four-Center"]
+  },
+  {
+    id: "vd-sec-1",
+    topic: "sections",
+    division: "isometric_sections",
+    title: "القطاعات الهندسية الكاملة ونصف القطاع: قواعد التهشير 45° والقاعدة الذهبية لاستثناء الأعصاب",
+    channel: "Dr. Mamdouh Zaki",
+    duration: "55 دقيقة",
+    views: "260,000 مشاهدة",
+    description: "مستويات القطع وسهام اتجاه النظر، تحويل الخطوط المخفية إلى ظاهرة، رسم خطوط التهشير بزاوية 45°، واستثناء الأعصاب والمسامير والأعمدة من التهشير الطولي.",
+    url: "https://www.youtube.com/results?search_query=sectional+views+hatching+rules+web+rib+exception+engineering+drawing",
+    tags: ["قطاعات", "تهشير 45", "استثناء الأعصاب", "قطاع كامل", "Sections"]
+  },
+  {
+    id: "vd-dim-1",
+    topic: "dimensioning",
+    division: "isometric_sections",
+    title: "القواعد القياسية لوضع الأبعاد الهندسية: نظام المحاذاة (Aligned System) ونسب الأسهم والمحظورات",
+    channel: "منصة المهندس",
+    duration: "38 دقيقة",
+    views: "140,000 مشاهدة",
+    description: "العناصر الخمسة للأبعاد، وضع رمز القطر ⌀ ونصف القطر R، نسب السهم 3:1، ومحظورات وضع الأبعاد على الخطوط المخفية وتكرار الأبعاد.",
+    url: "https://www.youtube.com/results?search_query=engineering+dimensioning+rules+iso+standards+aligned+system",
+    tags: ["وضع الأبعاد", "أسهم", "أقطار", "Aligned System", "Dimensioning"]
+  }
+];
+
 export const STATICS_LECTURE_VIDEOS = [
   // Branch 1: Force Systems & Equilibrium
   {

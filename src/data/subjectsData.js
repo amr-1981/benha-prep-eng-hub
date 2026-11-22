@@ -195,16 +195,39 @@ export const AVAILABLE_SUBJECTS = [
   {
     id: 'drawing',
     code: 'MDP 001',
-    status: 'coming_soon',
+    status: 'active',
     titleAr: 'الرسم الهندسي والإسقاط والعمليات الهندسية',
     titleEn: 'Engineering Drawing & Projection',
     shortTitleAr: 'الرسم الهندسي',
     shortTitleEn: 'Drawing',
     icon: 'Layers',
-    color: 'from-slate-600 via-zinc-600 to-neutral-500',
+    color: 'from-slate-600 via-zinc-600 to-cyan-600',
     borderColor: 'border-slate-500/40',
-    badge: '125 درجة • قيد التجهيز',
-    divisions: [],
-    descriptionAr: 'قريباً: العمليات الهندسية، استنتاج المساقط الثلاثة، والقطاعات والتهشير، والرسم المنظوري (Isometric).'
+    badge: '125 درجة إجمالية',
+    badgeEn: '125 Total Marks (75 Final + 25 Midterm + 25 Plates & Classwork)',
+    divisions: [
+      { 
+        id: 'geometric_orthographic', 
+        titleAr: 'قسم العمليات الهندسية ومبادئ الإسقاط والمساقط الثلاثة', 
+        titleEn: 'Geometric Constructions & Orthographic Projection Branch',
+        subtitleAr: 'أنواع الخطوط والمقاييس، مماس الأقواس والدوائر، مبادئ الإسقاط المتعامد، واستنتاج المسقط الثالث الناقص',
+        subtitleEn: 'Standard Line Conventions & Scales, Tangency Arcs, Multi-View Orthographic Projection & Missing View Extraction',
+        icon: 'Compass',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Geometric & Orthographic'
+      },
+      { 
+        id: 'isometric_sections', 
+        titleAr: 'قسم الرسم المنظوري والقطاعات الكاملة والنصفية والأبعاد', 
+        titleEn: 'Isometric Drawing, Sectional Views & Dimensioning Branch',
+        subtitleAr: 'المنظور الأيزومتري بالزاوية 30°، طريقة المراكز الأربعة للدوائر، القطاعات الكاملة والنصفية والتهشير، ووضع الأبعاد القياسية',
+        subtitleEn: '30° Isometric Projection & Box Method, Four-Center Ellipses, Full/Half Sectioning, Hatching Rules & Dimensioning',
+        icon: 'Layers',
+        badge: '5 وحدات دراسية',
+        badgeEn: '5 Modules • Isometric & Sections'
+      }
+    ],
+    descriptionAr: 'المقرر الأكاديمي المعتمد لقسم هندسة التصميم الميكانيكي والإنتاج بشبرا يشمل فرعين رئيسيين: العمليات الهندسية ومماسات الأقواس ومبادئ الإسقاط واستنتاج المسقط الثالث، والرسم المنظوري المجسم (Isometric) والقطاعات والتهشير ووضع الأبعاد الهندسية القياسية.',
+    descriptionEn: 'The accredited engineering drafting curriculum at Shoubra (MDP 001) covers two core branches: Geometric Constructions, Tangency Arcs, Multi-View Orthographic Projection & Third-View Deduction, and Isometric Drawing (Four-Center Ellipses), Full/Half Sectioning with ISO Hatching Conventions, and Standard Engineering Dimensioning.'
   }
 ];

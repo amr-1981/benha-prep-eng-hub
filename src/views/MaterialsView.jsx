@@ -11,6 +11,7 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
   const isEnglish = activeSubject === 'english';
   const isPhysics = activeSubject === 'physics';
   const isMechanics = activeSubject === 'mechanics';
+  const isDrawing = activeSubject === 'drawing';
   const [activeCategory, setActiveCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [showIntegrateModal, setShowIntegrateModal] = useState(false);
@@ -33,8 +34,9 @@ export default function MaterialsView({ setActiveTab, activeDivision = 'all', se
         isMath ? file.tags?.includes('Math 1') :
         isEnglish ? file.tags?.includes('Technical English') :
         isPhysics ? file.tags?.includes('Physics 1') :
+        isDrawing ? file.tags?.includes('Drawing') :
         isMechanics ? file.tags?.includes('Statics') :
-        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English') && !file.tags?.includes('Physics 1') && !file.tags?.includes('Statics'))
+        (!file.tags?.includes('Math 1') && !file.tags?.includes('Technical English') && !file.tags?.includes('Physics 1') && !file.tags?.includes('Statics') && !file.tags?.includes('Drawing'))
       ));
     }
     const matchCat = activeCategory === 'all' || file.category === activeCategory;

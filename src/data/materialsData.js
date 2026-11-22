@@ -586,6 +586,130 @@ export const REAL_MATERIAL_FILES = [
     actionType: 'platform_sheet',
     targetTab: 'glossary',
     tags: ['Statics', 'MEC 001', 'Glossary', 'Flashcards', 'Mechanics Department']
+  },
+
+  // =========================================================================
+  // ENGINEERING DRAWING & PROJECTION (MDP 001) - AUTHENTIC PLATFORM MATERIALS
+  // =========================================================================
+
+  // 29. Real Platform Printable A4 Sheet: ISO 128 Lines & Tangency Arcs
+  {
+    id: 'mat-sheet-draw-lines',
+    category: 'cheatsheets',
+    division: 'geometric_orthographic',
+    title: 'شيت مصفوفة أنواع وسمك الخطوط ISO 128 وقوانين أقواس التماس الهندسية (A4)',
+    titleEn: 'ISO 128 Standard Line Conventions & Tangency Arcs Matrix (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet containing ISO 128 line types, line precedence hierarchy, title block border margins, and external/internal tangency radius formulas.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: أنواع الخطوط وسماكاتها (0.7 مم، 0.35 مم، 0.25 مم)، هرم أسبقية تراكب الخطوط، مقاييس الرسم 1:2 و 2:1، وقواعد أقواس التماس الخارجية والداخلية.',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Drawing', 'MDP 001', 'ISO 128', 'Line Types', 'Tangency Arcs', 'Scales']
+  },
+
+  // 30. Real Platform Printable A4 Sheet: First-Angle Projection & 45° Miter
+  {
+    id: 'mat-sheet-draw-orthographic',
+    category: 'cheatsheets',
+    division: 'geometric_orthographic',
+    title: 'شيت الإسقاط المتعامد زاوية أولى ونقل الأبعاد بخط الميتر 45° والمسقط الثالث (A4)',
+    titleEn: 'First-Angle Orthographic Projection, 45° Miter Line & Missing View Protocol (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering First-Angle view arrangement (Elevation, Plan, Left Side View on right), 45° miter line transfer, and the 4-step missing view protocol.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: محاذاة المساقط الهندسية، نقل أبعاد العمق عبر خط الـ 45° ميكانيكياً، وإسقاط الأسطوانات (دائرة واحدة ومستطيلان مع سنتر لاين).',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Drawing', 'MDP 001', 'First-Angle', 'Orthographic', '45 Miter Line', 'Missing View']
+  },
+
+  // 31. Real Platform Printable A4 Sheet: 30° Isometric & Four-Center Ellipse
+  {
+    id: 'mat-sheet-draw-isometric',
+    category: 'cheatsheets',
+    division: 'isometric_sections',
+    title: 'شيت المنظور الأيزومتري بزاوية 30° ورسم الدوائر بطريقة المراكز الأربعة (A4)',
+    titleEn: '30° Isometric Drawing, Isometric Box & The Four-Center Ellipse Method (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering 30° isometric axes, bounding isometric box, non-isometric slanted lines, the four-center rhombus method, and 3D cylinder extrusion.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: محاور المنظور الأيزومتري بمثلث 30°-60°، صندوق المنظور، تحديد المعين والرؤوس المنفرجة (120°)، ورسم البيضاويات على الأوجه الثلاثة.',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Drawing', 'MDP 001', 'Isometric', 'Four-Center Ellipse', '30 Degrees', 'Rhombus']
+  },
+
+  // 32. Real Platform Printable A4 Sheet: Sections & Hatching Rules
+  {
+    id: 'mat-sheet-draw-sections',
+    category: 'cheatsheets',
+    division: 'isometric_sections',
+    title: 'شيت القطاعات الهندسية، مواصفات خطوط التهشير 45° واستثناءات الأعصاب (A4)',
+    titleEn: 'Sectional Views, ISO 45° Hatching Conventions & Web Non-Hatching Exceptions (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet covering full, half, and offset sections, cutting plane line (Type H), 45° hatching rules, and strict non-hatching of webs, ribs, shafts, and bolts.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: أنواع القطاعات ومستويات القطع، القواعد الذهبية لخطوط التهشير 45°، واستثناء الأعصاب والمسامير والأعمدة المصمتة من التهشير الطولي.',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Drawing', 'MDP 001', 'Sections', 'Hatching', 'Web Exception', 'Full Section', 'Half Section']
+  },
+
+  // 33. Real Platform Printable A4 Sheet: Dimensioning Rules
+  {
+    id: 'mat-sheet-draw-dimensioning',
+    category: 'cheatsheets',
+    division: 'isometric_sections',
+    title: 'شيت القواعد الهندسية القياسية لوضع الأبعاد ورموز التشغيل والتفاوتات (A4)',
+    titleEn: 'Standard Engineering Dimensioning Rules, Tolerances & Machining Symbols (A4 Sheet)',
+    descriptionEn: 'Printable A4 cheat sheet detailing the 5 elements of dimensioning, Aligned Dimensioning System, 3:1 arrowhead proportions, diameter (⌀) vs. radius (R), and dimension taboos.',
+    description: 'ورقة A4 مكثفة ومجهزة للطباعة: نظام الأبعاد المحاذي (Aligned System)، نسب الأسهم 3:1، قواعد وضع أقطار الدوائر وأنصاف الأقطار، ومحظورات وضع الأبعاد على الخطوط المخفية.',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'A4 / PDF',
+    size: 'محتوى تفاعلي',
+    pages: 1,
+    date: '2024 / 2025',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'cheatsheets',
+    tags: ['Drawing', 'MDP 001', 'Dimensioning', 'Aligned System', 'Arrowheads', 'Tolerances']
+  },
+
+  // 34. Engineering Drawing & Projection ISO Standards Vault
+  {
+    id: 'mat-draw-glossary-vault',
+    category: 'vault',
+    division: 'all',
+    title: 'معجم مواصفات وقواعد الرسم الهندسي والإسقاط القياسية الشامل (ISO 128 - MDP 001)',
+    titleEn: 'Comprehensive Engineering Drawing & Projection ISO 128 Standards Vault (MDP 001)',
+    descriptionEn: 'Interactive vault of 26+ engineering drawing standards, ISO 128 line conventions, tangency formulas, first-angle projection rules, four-center ellipse methods, and sectioning exceptions.',
+    description: 'بنك شامل لجميع قواعد ومواصفات ومعايير الرسم الهندسي والإسقاط المقررة على طلاب إعدادي هندسة شبرا، مزود بفلاش كاردز تفاعلية وأمثلة تطبيقية وشرح بالعربي.',
+    author: 'منصة إعدادي هندسة شبرا • قسم هندسة التصميم الميكانيكي والإنتاج',
+    format: 'تفاعلي / طباعة',
+    size: 'بنك شامل',
+    pages: 26,
+    date: 'مراجعة نهائية',
+    isOfficial: true,
+    actionType: 'platform_sheet',
+    targetTab: 'glossary',
+    tags: ['Drawing', 'MDP 001', 'ISO 128', 'Glossary', 'Flashcards', 'Mechanical Design Department']
   }
 ];
 
